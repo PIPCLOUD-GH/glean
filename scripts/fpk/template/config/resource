@@ -1,0 +1,38 @@
+{
+    "docker-project":
+    {
+        "projects":
+        [
+            {
+                "name": "glean",
+                "path": "docker"
+            }
+        ]
+    },
+    "data-share":
+    {
+        "shares":
+        [
+            {
+                "name": "glean",
+                "permission":
+                {
+                    "rw":
+                    [
+                        "docker-glean"
+                    ]
+                }
+            },
+            {
+                "name": "glean/data",
+                "permission":
+                {
+                    "rw":
+                    [
+                        "docker-glean"
+                    ]
+                }
+            }
+        ]
+    }
+}

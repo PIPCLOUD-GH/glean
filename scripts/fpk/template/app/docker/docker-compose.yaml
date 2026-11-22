@@ -1,0 +1,13 @@
+services:
+  glean:
+    image: {{DOCKERHUB_REPO}}:{{IMAGE_TAG}}
+    container_name: glean
+    restart: unless-stopped
+    ports:
+      - "3501:3001"
+    volumes:
+      - "/var/apps/glean/shares/glean/data:/app/data"
+    environment:
+      - NODE_ENV=production
+      - DB_PATH=/app/data/glean.db
+      - PORT=3001

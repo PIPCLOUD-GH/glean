@@ -1,0 +1,100 @@
+services:
+  glean:
+    image: pipcloud/glean:${GLEAN_IMAGE_TAG:-latest}
+    container_name: glean
+    restart: unless-stopped
+    ports:
+      - "${GLEAN_PORT:-3001}:3001"
+    volumes:
+      - glean-data:/app/data
+      # 推荐把备份放到独立物理卷，并同时设置 BACKUP_DIR=/app/backups
+      # - /path/on/another-disk/glean-backups:/app/backups
+    env_file:
+      - path: .env
+        required: false
+    environment:
+      - NODE_ENV=production
+      - DB_PATH=/app/data/glean.db
+      - PORT=3001
+      - TZ=${TZ:-Asia/Shanghai}
+      - PUBLIC_WEB_ORIGIN=${PUBLIC_WEB_ORIGIN:-}
+      - FILE_PUBLIC_ORIGIN=${FILE_PUBLIC_ORIGIN:-}
+      - GLEAN_DEPLOYMENT_TYPE=docker-compose-managed
+      - GLEAN_IMAGE_TAG=${GLEAN_IMAGE_TAG:-latest}
+      - GLEAN_UPDATER_URL=http://glean-updater:3002
+      - GLEAN_UPDATER_TOKEN=${GLEAN_UPDATER_TOKEN:-}
+      - GLEAN_UPDATER_INSTANCE=${GLEAN_INSTANCE_ID:-glean}
+    labels:
+      com.glean.managed: "true"
+      com.glean.role: "app"
+      com.glean.project: "glean"
+      com.glean.instance: "${GLEAN_INSTANCE_ID:-glean}"
+      com.glean.image-repository: "pipcloud/glean"
+    healthcheck:
+      test:
+        - CMD
+        - node
+        - -e
+        - "const p=process.env.PORT||'3001';fetch('http://127.0.0.1:'+p+'/api/health').then(r=>{if(!r.ok)process.exit(1)}).catch(()=>process.exit(1))"
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 30s
+    networks:
+      - glean-network
+      - glean-update-internal
+
+  # 默认关闭：只有显式传入 --profile updater 才会启动。
+  # 该容器是唯一挂载 Docker Socket 的进程；主应用永远不挂载 Socket。
+  glean-updater:
+    image: pipcloud/glean:${GLEAN_IMAGE_TAG:-latest}
+    container_name: glean-updater
+    profiles: ["updater"]
+    restart: unless-stopped
+    depends_on:
+      glean:
+        condition: service_healthy
+    entrypoint: ["/sbin/tini", "--"]
+    command: ["node", "backend/dist/updater/index.js"]
+    environment:
+      - NODE_ENV=production
+      - GLEAN_UPDATER_PORT=3002
+      - GLEAN_UPDATER_TOKEN=${GLEAN_UPDATER_TOKEN:-}
+      - GLEAN_UPDATER_INSTANCE=${GLEAN_INSTANCE_ID:-glean}
+      - GLEAN_UPDATER_CONTAINER_NAME=glean
+      - GLEAN_UPDATER_ALLOWED_IMAGE=pipcloud/glean
+      - GLEAN_UPDATER_TARGET_URL=http://glean:3001
+      - GLEAN_UPDATER_STATE_DIR=/var/lib/glean-updater
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - glean-updater-state:/var/lib/glean-updater
+    read_only: true
+    tmpfs:
+      - /tmp:size=64m,noexec,nosuid,nodev
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    healthcheck:
+      test:
+        - CMD
+        - node
+        - -e
+        - "fetch('http://127.0.0.1:3002/health').then(r=>{if(!r.ok)process.exit(1)}).catch(()=>process.exit(1))"
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    networks:
+      - glean-update-internal
+
+volumes:
+  glean-data:
+    driver: local
+  glean-updater-state:
+    driver: local
+
+networks:
+  glean-network:
+  glean-update-internal:
+    internal: true

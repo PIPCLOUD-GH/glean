@@ -1,0 +1,3 @@
+https://{$GLEAN_DOMAIN} {
+	reverse_proxy glean:3001
+}

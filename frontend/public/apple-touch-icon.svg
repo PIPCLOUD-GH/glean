@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="180" height="180" viewBox="0 0 180 180">
+  <!-- Glean · iOS/Android 主屏幕图标（180x180 squircle） -->
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#60A5FA"/>
+      <stop offset="100%" stop-color="#3B82F6"/>
+    </linearGradient>
+  </defs>
+  <rect width="180" height="180" rx="40" fill="url(#g)"/>
+  <circle cx="40" cy="40" r="60" fill="#FFFFFF" opacity="0.12"/>
+  <path d="M64.2 126.9 A45 45 0 0 1 64.2 53.1" fill="none" stroke="#FFFFFF" stroke-width="19" stroke-linecap="round"/>
+  <path d="M115.8 53.1 A45 45 0 0 1 115.8 126.9" fill="none" stroke="#FFFFFF" stroke-width="19" stroke-linecap="round"/>
+  <circle cx="90" cy="90" r="14" fill="#FFFFFF"/>
+</svg>

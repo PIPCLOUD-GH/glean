@@ -1,0 +1,506 @@
+import { Hono } from "hono";
+import { getDb } from "../db/schema.js";
+import { previewPersonalAIApp } from "../plugins/personalStudioAI.js";
+import { listPersonalStudioVersions, restorePersonalStudioVersion } from "../plugins/personalStudioHistory.js";
+import { listPersonalStudioApps, getPersonalStudioApp, createPersonalStudioApp, updatePersonalStudioApp, deletePersonalStudioApp } from "../plugins/personalStudioApps.js";
+import { bodyLimit } from "hono/body-limit";
+import { streamSSE } from "hono/streaming";
+import crypto from "node:crypto";
+import { createInboundWebhook, listInboundWebhooks, removeInboundWebhook } from "../plugins/inboundWebhooks.js";
+import { isSystemAdmin, requireAdmin, getUserWorkspaceRole } from "../middleware/acl.js";
+import { getExtensionPlatformFeatureFlags } from "../plugins/featureFlags.js";
+import { getApplicationV3FeatureFlags, type AppPlatformV3 } from "../plugins/applicationV3.js";
+import { getPluginService } from "../plugins/pluginService.js";
+import { EXTENSION_V21_TARGET_GLEAN_VERSION, GLEAN_VERSION } from "../plugins/types.js";
+import { APP_DOCUMENT_V3_CSP } from "../plugins/appDocumentV3.js";
+
+const pluginsRouter = new Hono();
+
+function userId(c: any): string {
+  return c.req.header("X-User-Id") || "";
+}
+
+function errorResponse(c: any, error: unknown) {
+  const coded = error as Error & { code?: string; executionId?: string; confirmationRequired?: boolean };
+  const status = coded.code === "STUDIO_APP_NOT_FOUND" || coded.code === "STUDIO_VERSION_NOT_FOUND" ? 404
+    : coded.code === "STUDIO_AI_RATE_LIMIT" || coded.code === "STUDIO_AI_BUSY" ? 429
+    : coded.code === "STUDIO_AI_NOT_CONFIGURED" || coded.code === "STUDIO_AI_UNAVAILABLE" ? 409
+    : coded.code === "STUDIO_AI_INVALID_OUTPUT" || coded.code === "STUDIO_AI_DESTRUCTIVE_CHANGE" ? 422
+    : coded.code === "STUDIO_CONFLICT" || coded.code === "STUDIO_APP_LIMIT" ? 409
+    : coded.code === "PLUGIN_NOT_FOUND" || coded.code === "PLUGIN_ACTION_NOT_FOUND" ? 404
+    : coded.code === "RESOURCE_FORBIDDEN" || coded.code === "PLUGIN_PERMISSION_DENIED" ? 403
+      : coded.code === "PLUGIN_TIMEOUT" ? 408
+        : coded.code === "PLUGIN_NODE_RUNTIME_CONFIRMATION_REQUIRED" || coded.code === "PLUGIN_DATA_CONFLICT" ? 409
+          : 400;
+  return c.json({
+    success: false,
+    error: coded.message || String(error),
+    code: coded.code || "PLUGIN_ERROR",
+    executionId: coded.executionId,
+    ...(coded.code === "PLUGIN_NODE_RUNTIME_CONFIRMATION_REQUIRED" && coded.confirmationRequired
+      ? { confirmNodeRuntimeAllowed: true }
+      : {}),
+  }, status as any);
+}
+
+pluginsRouter.get("/", (c) => {
+  const actor = userId(c);
+  return c.json(getPluginService().list(isSystemAdmin(actor)));
+});
+
+pluginsRouter.get("/features", (c) => c.json({
+  ...getExtensionPlatformFeatureFlags(),
+  applicationV3: getApplicationV3FeatureFlags(),
+  currentGleanVersion: GLEAN_VERSION,
+  targetGleanVersion: EXTENSION_V21_TARGET_GLEAN_VERSION,
+}));
+pluginsRouter.get("/actions", (c) => c.json(getPluginService().listActions()));
+pluginsRouter.get("/apps", (c) => {
+  const raw = c.req.query("platform") || "web";
+  if (!["web", "desktop", "android", "ios"].includes(raw)) return c.json({ code: "INVALID_PLATFORM" }, 400);
+  return c.json(getPluginService().listApplicationPages(raw as AppPlatformV3));
+});
+function appActor(c: any) {
+  const token = c.req.header("Authorization") || "";
+  return { userId: c.req.header("X-Auth-Mode") === "api-token" ? "" : userId(c), credential: token ? crypto.createHash("sha256").update(token).digest("hex") : "" };
+}
+function dataContext(c: any, workspace: unknown) {
+  const actor = appActor(c);
+  if (!actor.userId) throw Object.assign(new Error("RESOURCE_FORBIDDEN"), { code: "RESOURCE_FORBIDDEN" });
+  const workspaceId = workspace === undefined || workspace === null || workspace === "personal" ? null : workspace;
+  if (workspaceId !== null && (typeof workspaceId !== "string" || !getUserWorkspaceRole(workspaceId, actor.userId))) throw Object.assign(new Error("RESOURCE_FORBIDDEN"), { code: "RESOURCE_FORBIDDEN" });
+  return { userId: actor.userId, workspaceId: workspaceId as string | null, actionId: "data-management", executionId: "data-management" };
+}
+
+function studioActor(c: any): string {
+  // Personal Studio never accepts API tokens, client-supplied user IDs or
+  // workspaces. The global auth middleware supplies this authenticated actor.
+  const id = appActor(c).userId;
+  if (!id) throw Object.assign(new Error("RESOURCE_FORBIDDEN"), { code: "RESOURCE_FORBIDDEN" });
+  return id;
+}
+
+pluginsRouter.post("/personal-apps/ai-preview", bodyLimit({ maxSize: 64 * 1024 }), async c => {
+  try {
+    const actor = studioActor(c);
+    const body: unknown = await c.req.json();
+    c.header("Cache-Control", "no-store");
+    // The service validates the entire untrusted request (including extra keys).
+    // Never persists a proposal; user must accept it and save explicitly.
+    return c.json({ spec: await previewPersonalAIApp(actor, body as Parameters<typeof previewPersonalAIApp>[1]) });
+  } catch (error) {
+    const coded = error as { code?: string };
+    // Only Glean-issued, bounded error codes may reach the client. Errors from
+    // fetch/Undici/providers can contain API URLs, keys or private response bodies,
+    // sometimes with their OWN "code" property.
+    const safeCodes = new Set([
+      "RESOURCE_FORBIDDEN", "STUDIO_INVALID_SPEC", "STUDIO_SPEC_TOO_LARGE",
+      "STUDIO_AI_INVALID_INPUT", "STUDIO_AI_NOT_CONFIGURED", "STUDIO_AI_UNAVAILABLE",
+      "STUDIO_AI_BUSY", "STUDIO_AI_RATE_LIMIT", "STUDIO_AI_INVALID_OUTPUT",
+      "STUDIO_AI_DESTRUCTIVE_CHANGE",
+    ]);
+    if (!coded.code || !safeCodes.has(coded.code)) return c.json({
+      success: false, code: "STUDIO_AI_PROVIDER_FAILED", error: "AI 生成失败，请核对模型配置后重试",
+    }, 502);
+    return errorResponse(c, error);
+  }
+});
+pluginsRouter.get("/personal-apps/:appId/versions", c => {
+  try { c.header("Cache-Control", "no-store"); return c.json(listPersonalStudioVersions(getDb(), studioActor(c), c.req.param("appId"))); }
+  catch (error) { return errorResponse(c, error); }
+});
+pluginsRouter.post("/personal-apps/:appId/restore", bodyLimit({ maxSize: 1024 }), async c => {
+  try {
+    const actor = studioActor(c);
+    const body = await c.req.json() as { revision?: number; expectedRevision?: number };
+    return c.json(restorePersonalStudioVersion(getDb(), actor, c.req.param("appId"), body.revision as number, body.expectedRevision as number));
+  } catch (error) { return errorResponse(c, error); }
+});
+
+pluginsRouter.get("/personal-apps", c => {
+  try { c.header("Cache-Control", "no-store"); return c.json(listPersonalStudioApps(getDb(), studioActor(c))); }
+  catch (error) { return errorResponse(c, error); }
+});
+pluginsRouter.post("/personal-apps", bodyLimit({ maxSize: 64 * 1024 }), async c => {
+  try {
+    const actor = studioActor(c);
+    return c.json(createPersonalStudioApp(getDb(), actor, await c.req.json()), 201);
+  } catch (error) { return errorResponse(c, error); }
+});
+pluginsRouter.get("/personal-apps/:appId", c => {
+  try { c.header("Cache-Control", "no-store"); return c.json(getPersonalStudioApp(getDb(), studioActor(c), c.req.param("appId"))); }
+  catch (error) { return errorResponse(c, error); }
+});
+pluginsRouter.put("/personal-apps/:appId", bodyLimit({ maxSize: 64 * 1024 }), async c => {
+  try {
+    const actor = studioActor(c);
+    const body = await c.req.json() as { expectedRevision?: number; spec?: unknown };
+    return c.json(updatePersonalStudioApp(getDb(), actor, c.req.param("appId"), body.expectedRevision as number, body.spec));
+  } catch (error) { return errorResponse(c, error); }
+});
+pluginsRouter.delete("/personal-apps/:appId", bodyLimit({ maxSize: 1024 }), async c => {
+  try {
+    const actor = studioActor(c);
+    const body = await c.req.json() as { expectedRevision?: number };
+    deletePersonalStudioApp(getDb(), actor, c.req.param("appId"), body.expectedRevision as number);
+    return c.json({ success: true });
+  } catch (error) { return errorResponse(c, error); }
+});
+
+pluginsRouter.get("/widgets", async c => {
+  try {
+    const platform = c.req.query("platform") || "web";
+    if (platform !== "web" && platform !== "desktop") return c.json([], 200);
+    const context = dataContext(c, c.req.query("workspaceId"));
+    c.header("Cache-Control", "no-store");
+    return c.json(await getPluginService().listDashboardWidgets(context.userId, context.workspaceId, platform));
+  } catch (error) { return errorResponse(c, error); }
+});
+pluginsRouter.get("/inspectors", c => {
+  try {
+    dataContext(c, c.req.query("workspaceId"));
+    const platform = c.req.query("platform") || "web", resourceType = c.req.query("resourceType");
+    if (!["note", "task", "attachment"].includes(resourceType || "")) return c.json({ code: "PLUGIN_UI_INVALID_PAYLOAD" }, 400);
+    c.header("Cache-Control", "no-store");
+    return c.json(getPluginService().listInspectors(platform as AppPlatformV3, resourceType as "note" | "task" | "attachment"));
+  } catch (error) { return errorResponse(c, error); }
+});
+const widgetWatchers = new Map<string, number>();
+pluginsRouter.post("/widget-events", bodyLimit({ maxSize: 2048 }), async c => {
+  let context: ReturnType<typeof dataContext>;
+  try { context = dataContext(c, (await c.req.json()).workspaceId); } catch (error) { return errorResponse(c, error); }
+  const credential = appActor(c).credential;
+  if (widgetWatchers.size >= 128 || (widgetWatchers.get(credential) || 0) >= 4) return c.json({ code: "PLUGIN_UI_RATE_LIMITED" }, 429);
+  widgetWatchers.set(credential, (widgetWatchers.get(credential) || 0) + 1);
+  c.header("Cache-Control", "no-store"); c.header("X-Accel-Buffering", "no");
+  return streamSSE(c, async stream => {
+    try {
+      const service = getPluginService();
+      const fingerprint = () => JSON.stringify([service.listApplicationPages("web"), service.registry.list().map(row => [row.id, row.status, row.checksum, row.lifecycleState]), service.registry.list().map(row => service.permissions.list(row.id)), getApplicationV3FeatureFlags()]);
+      let previous = fingerprint(), ticks = 0;
+      await new Promise<void>(resolve => {
+        const finish = () => { clearInterval(timer); resolve(); };
+        const timer = setInterval(() => {
+          try {
+            if (context.workspaceId && !getUserWorkspaceRole(context.workspaceId, context.userId) || !getApplicationV3FeatureFlags().dashboardWidgets || ++ticks >= 1200) { void stream.writeSSE({ event: "revoked", data: "{}" }).catch(() => undefined).finally(finish); return; }
+            const next = fingerprint();
+            if (next !== previous) { previous = next; void stream.writeSSE({ event: "changed", data: "{}" }).catch(finish); }
+            else if (ticks % 15 === 0) void stream.writeSSE({ event: "ping", data: "{}" }).catch(finish);
+          } catch { finish(); }
+        }, 1000);
+        stream.onAbort(finish); void stream.writeSSE({ event: "ready", data: "{}" }).catch(finish);
+      });
+    } finally {
+      const count = (widgetWatchers.get(credential) || 1) - 1;
+      if (count) widgetWatchers.set(credential, count); else widgetWatchers.delete(credential);
+    }
+  });
+});
+pluginsRouter.get("/data/:id/export", async c => {
+  try {
+    const service = getPluginService(), pluginId = c.req.param("id"); service.appRuntime.eligible(pluginId);
+    const context = { ...dataContext(c, c.req.query("workspaceId")), pluginId };
+    c.header("Cache-Control", "no-store");
+    return c.json(await service.broker.call(context, { method: "data.export", args: {} }));
+  } catch (error) { return errorResponse(c, error); }
+});
+pluginsRouter.post("/data/:id/import", bodyLimit({ maxSize: 256 * 1024 }), async c => {
+  try {
+    const service = getPluginService(), pluginId = c.req.param("id"), body = await c.req.json(); service.appRuntime.eligible(pluginId);
+    const context = { ...dataContext(c, body.workspaceId), pluginId };
+    const result = await service.broker.call(context, { method: "data.import", args: { snapshot: body.snapshot, expectedDigest: body.expectedDigest } });
+    service.appRuntime.revokePlugin(pluginId);
+    return c.json(result);
+  } catch (error) { return errorResponse(c, error); }
+});
+// Mounted before bearer auth. A one-use 256-bit ticket reads verified code only, never Host API data.
+export function pluginAppDocumentResponse(c: any) {
+  if (!getApplicationV3FeatureFlags().appPages || !/^[a-f0-9]{64}$/.test(c.req.param("ticket"))) return c.text("App document unavailable", 404);
+  if (c.req.header("Sec-Fetch-Dest") !== "iframe") return c.text("Iframe required", 403);
+  try {
+    const html = getPluginService().appRuntime.takeDocument(c.req.param("ticket"));
+    c.header("Content-Security-Policy", `sandbox allow-scripts; ${APP_DOCUMENT_V3_CSP}; frame-ancestors 'self'`);
+    c.header("X-Frame-Options", "SAMEORIGIN");
+    c.header("Referrer-Policy", "no-referrer"); c.header("Cache-Control", "no-store");
+    return c.html(html);
+  } catch { return c.text("App document unavailable", 404); }
+}
+pluginsRouter.post("/apps/:pluginId/:pageId/session", bodyLimit({ maxSize: 2048 }), async (c) => {
+  try {
+    const session = getPluginService().appRuntime.create(c.req.param("pluginId"), c.req.param("pageId"), appActor(c), await c.req.json());
+    c.header("Cache-Control", "no-store");
+    return c.json(session, 201);
+  } catch (error) { return errorResponse(c, error); }
+});
+pluginsRouter.post("/app-sessions/:id/call", bodyLimit({ maxSize: 64 * 1024 }), async (c) => {
+  try { return c.json(await getPluginService().appRuntime.call(c.req.param("id"), appActor(c), await c.req.json())); }
+  catch (error) { return errorResponse(c, error); }
+});
+pluginsRouter.post("/app-sessions/:id/close", bodyLimit({ maxSize: 2048 }), async (c) => {
+  try {
+    const runtime = getPluginService().appRuntime;
+    runtime.check(c.req.param("id"), (await c.req.json()).nonce, appActor(c));
+    runtime.revoke(c.req.param("id"));
+    return c.json({ success: true });
+  } catch (error) { return errorResponse(c, error); }
+});
+pluginsRouter.post("/app-sessions/:id/events", bodyLimit({ maxSize: 2048 }), async (c) => {
+  const runtime = getPluginService().appRuntime;
+  const id = c.req.param("id"), actor = appActor(c);
+  const nonce = (await c.req.json().catch(() => ({}))).nonce;
+  try { runtime.check(id, nonce, actor); } catch (error) { return errorResponse(c, error); }
+  c.header("Cache-Control", "no-store");
+  c.header("X-Accel-Buffering", "no");
+  return streamSSE(c, async stream => {
+    await new Promise<void>(resolve => {
+      let ticks = 0;
+      const unsubscribe = runtime.subscribe(id, nonce, actor, () => {
+        void stream.writeSSE({ event: "revoked", data: "{}" }).catch(() => undefined).finally(finish);
+      });
+      const timer = setInterval(() => {
+        try { runtime.check(id, nonce, actor); } catch { /* check revokes and notifies */ }
+        if (++ticks % 15 === 0) void stream.writeSSE({ event: "ping", data: "{}" }).catch(() => { finish(); runtime.revoke(id); });
+      }, 1000);
+      function finish() { clearInterval(timer); unsubscribe(); resolve(); }
+      stream.onAbort(() => { finish(); runtime.revoke(id); });
+      // Subscribe before yielding the initial event: revocation may race the first read.
+      void stream.writeSSE({ event: "ready", data: "{}" }).catch(() => { finish(); runtime.revoke(id); });
+    });
+  });
+});
+pluginsRouter.get("/contributions", (c) => c.json(getPluginService().contributions()));
+pluginsRouter.get("/ecosystem/sources", (c) => c.json(getPluginService().ecosystem.listSources()));
+pluginsRouter.put("/ecosystem/sources", requireAdmin, async (c) => {
+  try { return c.json(getPluginService().ecosystem.upsertSource(await c.req.json())); } catch (error) { return errorResponse(c, error); }
+});
+pluginsRouter.get("/ecosystem/catalog", async (c) => {
+  try { return c.json(await getPluginService().ecosystemCatalog(String(c.req.query("source") || "official-v2"))); } catch (error) { return errorResponse(c, error); }
+});
+pluginsRouter.get("/ecosystem/advisories", requireAdmin, (c) => {
+  try { return c.json(getPluginService().securityAdvisories(c.req.query("source") || undefined)); } catch (error) { return errorResponse(c, error); }
+});
+pluginsRouter.post("/ecosystem/install", requireAdmin, async (c) => {
+  try { const body = await c.req.json() as any; return c.json({ success: true, plugin: await getPluginService().installFromEcosystem(String(body.sourceId || "official-v2"), String(body.pluginId || ""), body.version, userId(c)) }, 201); } catch (error) { return errorResponse(c, error); }
+});
+pluginsRouter.get("/ecosystem/updates", requireAdmin, async (c) => {
+  try { return c.json(await getPluginService().checkUpdates(String(c.req.query("source") || "official-v2"))); } catch (error) { return errorResponse(c, error); }
+});
+pluginsRouter.post("/ecosystem/update", requireAdmin, async (c) => {
+  try { const body = await c.req.json() as any; return c.json({ success: true, plugin: await getPluginService().applyUpdate(String(body.sourceId || "official-v2"), String(body.pluginId || ""), body.version, userId(c), body.confirmed === true) }); } catch (error) { return errorResponse(c, error); }
+});
+pluginsRouter.get("/policy", requireAdmin, (c) => c.json(getPluginService().policy.get()));
+pluginsRouter.put("/policy", requireAdmin, async (c) => {
+  try { return c.json(getPluginService().policy.set(await c.req.json(), userId(c))); } catch (error) { return errorResponse(c, error); }
+});
+
+pluginsRouter.post("/install", requireAdmin, bodyLimit({
+  maxSize: 21 * 1024 * 1024,
+  onError: (c) => c.json({ error: "插件上传请求不能超过 21MB", code: "PLUGIN_UPLOAD_TOO_LARGE" }, 413),
+}), async (c) => {
+  try {
+    const body = await c.req.parseBody();
+    const upload = body.file;
+    if (!(upload instanceof File)) return c.json({ error: "请上传 file 字段中的 .glean-plugin 文件" }, 400);
+    if (!upload.name.endsWith(".glean-plugin")) return c.json({ error: "文件扩展名必须是 .glean-plugin" }, 400);
+    const confirmNodeRuntime = body.confirmNodeRuntime === "true";
+    const record = await getPluginService().install(Buffer.from(await upload.arrayBuffer()), userId(c), confirmNodeRuntime);
+    return c.json({ success: true, plugin: record }, 201);
+  } catch (error) {
+    return errorResponse(c, error);
+  }
+});
+
+pluginsRouter.get("/developer-mode", requireAdmin, (c) => c.json({ enabled: getPluginService().isDeveloperModeEnabled(), available: getPluginService().isDeveloperModeAvailable() }));
+pluginsRouter.put("/developer-mode", requireAdmin, async (c) => {
+  try {
+    const body = await c.req.json().catch(() => ({})) as { enabled?: boolean };
+    getPluginService().setDeveloperMode(body.enabled === true);
+    return c.json({ success: true, enabled: body.enabled === true });
+  } catch (error) { return errorResponse(c, error); }
+});
+
+pluginsRouter.post("/dev/load", requireAdmin, async (c) => {
+  try {
+    const body = await c.req.json() as { directory?: string; confirmNodeRuntime?: boolean };
+    const plugin = await getPluginService().loadDevelopmentDirectory(
+      String(body.directory || ""),
+      userId(c),
+      body.confirmNodeRuntime === true,
+    );
+    return c.json({ success: true, plugin }, 201);
+  } catch (error) {
+    return errorResponse(c, error);
+  }
+});
+
+pluginsRouter.get("/registry/sources", (c) => c.json(getPluginService().community.listSources()));
+pluginsRouter.put("/registry/sources", requireAdmin, async (c) => {
+  try {
+    const body = await c.req.json() as { sources?: Array<{ id: string; name: string; url: string }> };
+    return c.json(getPluginService().community.setSources(Array.isArray(body.sources) ? body.sources : []));
+  } catch (error) { return errorResponse(c, error); }
+});
+pluginsRouter.get("/registry/catalog", async (c) => {
+  try { return c.json(await getPluginService().community.catalog(c.req.query("source") || "official")); }
+  catch (error) { return errorResponse(c, error); }
+});
+pluginsRouter.post("/registry/install", requireAdmin, async (c) => {
+  try {
+    const body = await c.req.json() as { sourceId?: string; pluginId?: string; version?: string };
+    const plugin = await getPluginService().installFromRegistry(
+      String(body.sourceId || "official"), String(body.pluginId || ""), body.version, userId(c),
+    );
+    return c.json({ success: true, plugin }, 201);
+  } catch (error) { return errorResponse(c, error); }
+});
+
+pluginsRouter.get("/:id/connections", (c) => {
+  try { return c.json(getPluginService().connections(c.req.param("id"), userId(c))); }
+  catch (error) { return errorResponse(c, error); }
+});
+pluginsRouter.get("/:id/settings", (c) => {
+  try { return c.json(getPluginService().getSettings(c.req.param("id"), userId(c))); } catch (error) { return errorResponse(c, error); }
+});
+pluginsRouter.get("/:id/inbound-webhooks", (c) => c.json(listInboundWebhooks(c.req.param("id"), userId(c))));
+pluginsRouter.post("/:id/inbound-webhooks/:hookId", (c) => {
+  try { return c.json(createInboundWebhook(c.req.param("id"), c.req.param("hookId"), userId(c)), 201); } catch (error) { return errorResponse(c, error); }
+});
+pluginsRouter.delete("/:id/inbound-webhooks/:hookId", (c) => {
+  removeInboundWebhook(c.req.param("id"), c.req.param("hookId"), userId(c));
+  return c.json({ success: true });
+});
+pluginsRouter.put("/:id/settings", async (c) => {
+  try { return c.json(getPluginService().setSettings(c.req.param("id"), userId(c), await c.req.json())); } catch (error) { return errorResponse(c, error); }
+});
+pluginsRouter.post("/:id/automation-templates/:templateId/install", async (c) => {
+  try { return c.json({ success: true, workflow: await getPluginService().installAutomationTemplate(c.req.param("id"), c.req.param("templateId"), userId(c)) }, 201); } catch (error) { return errorResponse(c, error); }
+});
+pluginsRouter.post("/:id/note-templates/:templateId/create", async (c) => {
+  try {
+    const body = await c.req.json().catch(() => ({})) as { workspaceId?: string | null; parentId?: string | null; values?: Record<string, unknown> };
+    return c.json({ success: true, ...getPluginService().createNoteFromTemplateContribution(c.req.param("id"), c.req.param("templateId"), userId(c), body) }, 201);
+  } catch (error) { return errorResponse(c, error); }
+});
+pluginsRouter.put("/:id/update-policy", requireAdmin, async (c) => {
+  try { const body = await c.req.json() as any; return c.json(getPluginService().setUpdatePolicy(c.req.param("id"), body.policy, body.pinnedVersion)); } catch (error) { return errorResponse(c, error); }
+});
+
+pluginsRouter.get("/:id/versions", requireAdmin, (c) => {
+  try { return c.json(getPluginService().listVersions(c.req.param("id"))); }
+  catch (error) { return errorResponse(c, error); }
+});
+
+pluginsRouter.post("/:id/rollback", requireAdmin, async (c) => {
+  try {
+    const body = await c.req.json().catch(() => ({})) as { version?: string };
+    return c.json({ success: true, plugin: await getPluginService().rollback(c.req.param("id"), body.version) });
+  } catch (error) { return errorResponse(c, error); }
+});
+
+pluginsRouter.get("/:id", (c) => {
+  try {
+    const plugin = getPluginService().get(c.req.param("id"));
+    if (!isSystemAdmin(userId(c)) && plugin.status !== "enabled") return c.json({ error: "插件不可用", code: "PLUGIN_NOT_ENABLED" }, 404);
+    return c.json(plugin);
+  } catch (error) {
+    return errorResponse(c, error);
+  }
+});
+
+pluginsRouter.put("/:id/permissions", requireAdmin, async (c) => {
+  try {
+    const body = await c.req.json() as { granted?: string[] };
+    return c.json({ success: true, ...getPluginService().grantPermissions(c.req.param("id"), Array.isArray(body.granted) ? body.granted : [], userId(c)) });
+  } catch (error) {
+    return errorResponse(c, error);
+  }
+});
+
+for (const [action, handler] of [
+  ["enable", (id: string) => getPluginService().enable(id)],
+  ["disable", (id: string) => getPluginService().disable(id)],
+  ["reload", (id: string) => getPluginService().reload(id)],
+] as const) {
+  pluginsRouter.post(`/:id/${action}`, requireAdmin, async (c) => {
+    try { return c.json({ success: true, plugin: await handler(c.req.param("id")) }); }
+    catch (error) { return errorResponse(c, error); }
+  });
+}
+
+pluginsRouter.delete("/:id", requireAdmin, async (c) => {
+  try {
+    const body = await c.req.json().catch(() => ({}));
+    await getPluginService().uninstall(c.req.param("id"), body.deleteAppData === true, body.retainAppData === true);
+    return c.json({ success: true });
+  } catch (error) {
+    return errorResponse(c, error);
+  }
+});
+
+pluginsRouter.get("/:id/executions", (c) => {
+  const actor = userId(c);
+  const rows = getPluginService().executions.list(c.req.param("id"), isSystemAdmin(actor) ? undefined : actor, Number(c.req.query("limit")) || 100);
+  return c.json(rows);
+});
+
+pluginsRouter.get("/:id/logs", requireAdmin, (c) => {
+  const rows = getPluginService().executions.list(c.req.param("id"), undefined, 100);
+  return c.json(rows.map((row) => ({ executionId: row.id, startedAt: row.startedAt, status: row.status, logTail: row.logTail })));
+});
+
+pluginsRouter.get("/:id/secrets", (c) => {
+  try {
+    getPluginService().get(c.req.param("id"));
+    return c.json(getPluginService().secrets.list(c.req.param("id"), userId(c)));
+  } catch (error) { return errorResponse(c, error); }
+});
+
+pluginsRouter.put("/:id/secrets/:name", async (c) => {
+  try {
+    const body = await c.req.json() as { value?: string };
+    getPluginService().secrets.set(c.req.param("id"), userId(c), c.req.param("name"), String(body.value || ""));
+    return c.json({ success: true });
+  } catch (error) { return errorResponse(c, error); }
+});
+
+pluginsRouter.delete("/:id/secrets/:name", (c) => {
+  getPluginService().secrets.remove(c.req.param("id"), userId(c), c.req.param("name"));
+  return c.json({ success: true });
+});
+
+pluginsRouter.post("/:id/actions/:actionId/execute", async (c) => {
+  try {
+    const body = await c.req.json().catch(() => ({})) as { input?: unknown; workspaceId?: string | null };
+    const plugin = getPluginService().get(c.req.param("id"));
+    const action = (plugin.actions as Array<{ id: string; execution?: string }>).find((item) => item.id === c.req.param("actionId"));
+    if (action?.execution === "background") {
+      const executionId = crypto.randomUUID();
+      void getPluginService().execute(c.req.param("id"), c.req.param("actionId"), userId(c), body.workspaceId || null, body.input || {}, executionId).catch(() => undefined);
+      return c.json({ success: true, executionId, status: "queued" }, 202);
+    }
+    const execution = await getPluginService().execute(c.req.param("id"), c.req.param("actionId"), userId(c), body.workspaceId || null, body.input || {});
+    return c.json({ success: true, executionId: execution.executionId, data: execution.result });
+  } catch (error) {
+    return errorResponse(c, error);
+  }
+});
+
+/** @deprecated V1.5 compatibility shim. Prefer /:id/actions/:actionId/execute. */
+pluginsRouter.post("/:name/execute", async (c) => {
+  c.header("Deprecation", "true");
+  c.header("Sunset", "2027-02-23");
+  try {
+    const name = c.req.param("name");
+    const plugin = getPluginService().list(false).find((item) => item.id === name || item.name === name);
+    if (!plugin) return c.json({ success: false, error: "插件不存在", code: "PLUGIN_NOT_FOUND" }, 404);
+    const body = await c.req.json().catch(() => ({})) as Record<string, unknown>;
+    const requestedAction = typeof body.actionId === "string" ? body.actionId : undefined;
+    const action = (plugin.actions as Array<{ id: string }>).find((item) => item.id === requestedAction) || (plugin.actions as Array<{ id: string }>)[0];
+    if (!action) return c.json({ success: false, error: "插件没有可执行 Action" }, 400);
+    const params = requestedAction ? (body.input || {}) : body;
+    const execution = await getPluginService().execute(String(plugin.id), action.id, userId(c), null, params);
+    return c.json({ ...execution.result, executionId: execution.executionId });
+  } catch (error) { return errorResponse(c, error); }
+});
+
+export default pluginsRouter;

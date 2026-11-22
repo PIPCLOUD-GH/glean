@@ -1,0 +1,13 @@
+{
+  "modelVersion": "6.1.1",
+  "name": "glean-harmony",
+  "version": "1.0.0",
+  "description": "Glean HarmonyOS App",
+  "main": "",
+  "author": "Glean",
+  "license": "MIT",
+  "dependencies": {},
+  "devDependencies": {
+    "@ohos/hypium": "1.0.19"
+  }
+}

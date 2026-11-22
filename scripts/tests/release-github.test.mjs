@@ -1,0 +1,196 @@
+import assert from "node:assert/strict";
+import fs from "node:fs";
+import os from "node:os";
+import path from "node:path";
+import test from "node:test";
+import { createRequire } from "node:module";
+import { spawnSync } from "node:child_process";
+import { identity, stageFiles, verifyFiles, publishRelease, assertDockerManifest, assertFullInventory, assertUploadedFiles, prepareSigning, registryDigest } from "../release-github.mjs";
+
+const source = { tag: "v1.5.3", sha: "a".repeat(40), runId: "100", attempt: 1 };
+const env = { GITHUB_REPOSITORY: "pipcloud/glean", GITHUB_REF: "refs/tags/v1.5.3",
+  GITHUB_SHA: source.sha, GITHUB_RUN_ID: "100", GITHUB_RUN_ATTEMPT: "1" };
+
+test("only an immutable stable tag from the release repository is accepted", () => {
+  assert.deepEqual(identity(env), source);
+  for (const change of [{ GITHUB_REF: "refs/heads/main" }, { GITHUB_REF: "refs/tags/v1.5.3-rc1" },
+    { GITHUB_SHA: "main" }, { GITHUB_REPOSITORY: "fork/glean" }, { GITHUB_RUN_ATTEMPT: "0" }])
+    assert.throws(() => identity({ ...env, ...change }));
+});
+
+test("Android signing properties round-trip special characters through Java Properties", (t) => {
+  if (spawnSync("java", ["-version"]).status !== 0) { t.skip("Java is unavailable"); return; }
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "glean-signing-properties-"));
+  t.after(() => fs.rmSync(dir, { recursive: true, force: true }));
+  fs.mkdirSync(path.join(dir, "app"));
+  const password = " leading\\space:=#\n中文🔑";
+  prepareSigning(dir, { GLEAN_ANDROID_KEYSTORE_B64: Buffer.from("keystore fixture").toString("base64"),
+    GLEAN_ANDROID_KEYSTORE_PASSWORD: password, GLEAN_ANDROID_KEY_ALIAS: "glean-release", GLEAN_ANDROID_KEY_PASSWORD: password });
+  const java = path.join(dir, "ReadProperties.java");
+  fs.writeFileSync(java, 'import java.util.*;import java.io.*;class ReadProperties { public static void main(String[] args)throws Exception {var p=new Properties();try(var in=new FileInputStream(args[0])){p.load(in);}System.out.print(Base64.getEncoder().encodeToString(p.getProperty("storePassword").getBytes(java.nio.charset.StandardCharsets.UTF_8)));}}');
+  const result = spawnSync("java", [java, path.join(dir, "keystore.properties")], { encoding: "utf8" });
+  assert.equal(result.status, 0, result.stderr);
+  assert.equal(Buffer.from(result.stdout, "base64").toString(), password);
+  assert.equal(fs.readFileSync(path.join(dir, "app/github-release.keystore"), "utf8"), "keystore fixture");
+});
+
+test("artifact evidence rejects corruption, extra files, another run and future attempts", (t) => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "glean-github-release-"));
+  t.after(() => fs.rmSync(dir, { recursive: true, force: true }));
+  const file = path.join(dir, "Glean-1.5.3.apk");
+  fs.writeFileSync(file, "signed apk fixture");
+  const evidence = stageFiles(dir, "android", source);
+  assert.equal(verifyFiles(dir, "android", source).length, 1);
+  // Failed-job reruns may consume successful jobs from the previous attempt.
+  assert.equal(verifyFiles(dir, "android", { ...source, attempt: 2 }).length, 1);
+  assert.throws(() => verifyFiles(dir, "android", { ...source, runId: "101" }));
+  fs.writeFileSync(file, "tampered");
+  assert.throws(() => verifyFiles(dir, "android", source));
+  fs.writeFileSync(file, "signed apk fixture");
+  fs.writeFileSync(path.join(dir, "old.apk"), "unexpected");
+  assert.throws(() => verifyFiles(dir, "android", source));
+  fs.unlinkSync(path.join(dir, "old.apk"));
+  fs.writeFileSync(path.join(dir, "evidence.json"), JSON.stringify({ ...evidence, attempt: 2 }));
+  assert.throws(() => verifyFiles(dir, "android", source));
+});
+
+test("a missing second UPK architecture cannot silently pass", (t) => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "glean-github-upk-"));
+  t.after(() => fs.rmSync(dir, { recursive: true, force: true }));
+  fs.writeFileSync(path.join(dir, "amd64_com.glean.note_1.5.3.1.upk"), "upk");
+  assert.throws(() => stageFiles(dir, "upk", source));
+});
+
+test("Docker promotion requires the tested digests and both Linux architectures", () => {
+  const manifest = { manifests: [
+    { platform: { os: "linux", architecture: "amd64" }, digest: "sha256:a" },
+    { platform: { os: "linux", architecture: "arm64" }, digest: "sha256:b" },
+  ] };
+  assertDockerManifest(manifest, ["sha256:a", "sha256:b"]);
+  assert.throws(() => assertDockerManifest(manifest, ["sha256:old", "sha256:b"]));
+  assert.throws(() => assertDockerManifest({ manifests: manifest.manifests.slice(0, 1) }, ["sha256:a"]));
+});
+
+test("Docker registry digests are parsed from structured manifest output", () => {
+  const digest = "sha256:" + "a".repeat(64);
+  assert.equal(registryDigest(JSON.stringify({ digest, manifests: [] })), digest);
+  assert.throws(() => registryDigest("Name: image\nDigest: " + digest));
+  assert.throws(() => registryDigest(JSON.stringify({ digest: "latest" })));
+});
+
+test("full inventory rejects a missing platform and unrelated stale assets", () => {
+  const require = createRequire(import.meta.url);
+  const { requiredMacReleaseAssets, requiredDebugReleaseAssets } = require("../lib/release-platform-assets.cjs");
+  const names = [...requiredMacReleaseAssets("1.5.3"), ...requiredDebugReleaseAssets("linux", "1.5.3"),
+    ...["Glean", "Glean-Lite"].flatMap(prefix => [`${prefix}-1.5.3-setup.exe`, `${prefix}-1.5.3-portable.exe`, `${prefix}-1.5.3-setup.exe.blockmap`]),
+    "latest.yml", "latest-lite.yml", "Glean-1.5.3.apk"];
+  const assets = names.map(name => ({ name }));
+  assertFullInventory(assets, source, ["Glean-1.5.3.apk"]);
+  assert.throws(() => assertFullInventory(assets.slice(1), source, ["Glean-1.5.3.apk"]));
+  assert.throws(() => assertFullInventory([...assets, { name: "old.apk" }], source, ["Glean-1.5.3.apk"]));
+});
+
+test("supplemental packages cannot change while desktop collection is running", () => {
+  const expected = [{ name: "Glean-1.5.3.apk", size: 10, digest: "sha256:original" }];
+  assertUploadedFiles(expected, expected);
+  assert.throws(() => assertUploadedFiles([{ ...expected[0], digest: "sha256:changed" }], expected));
+  assert.throws(() => assertUploadedFiles([{ ...expected[0], size: 11 }], expected));
+  assert.throws(() => assertUploadedFiles([], expected));
+});
+
+function publicationFixture(settings = {}) {
+  const calls = [];
+  const release = { id: 7, tag_name: source.tag, draft: true, assets: [
+    { id: 1, name: "test.apk", size: 3, digest: "sha256:test", updated_at: "now" },
+  ] };
+  return { calls, release, deps: {
+    readRelease: () => { calls.push("read"); return structuredClone(release); },
+    assertTag: () => { calls.push("tag"); if (settings.movedTag) throw Error("tag moved"); },
+    promoteDocker: () => { calls.push("docker"); if (settings.dockerFailure) throw Error("push failed"); },
+    verifyRemote: () => { calls.push("verify"); if (settings.changed) release.assets[0].digest = "sha256:changed"; },
+    editRelease: () => { calls.push("publish"); release.draft = false; },
+  } };
+}
+
+test("Draft mode never pushes Docker or publishes; formal publication follows verification", async () => {
+  const draft = publicationFixture();
+  await publishRelease(source, false, draft.release.assets, draft.deps);
+  assert.ok(!draft.calls.includes("docker") && !draft.calls.includes("publish"));
+  const formal = publicationFixture();
+  await publishRelease(source, true, formal.release.assets, formal.deps);
+  assert.ok(formal.calls.indexOf("verify") < formal.calls.indexOf("docker"));
+  assert.ok(formal.calls.indexOf("docker") < formal.calls.indexOf("publish"));
+});
+
+test("moved tags, changing assets, published releases and Docker failure block publication", async () => {
+  for (const settings of [{ movedTag: true }, { changed: true }, { dockerFailure: true }, { published: true }]) {
+    const f = publicationFixture(settings);
+    if (settings.published) f.release.draft = false;
+    await assert.rejects(publishRelease(source, true, f.release.assets, f.deps));
+    assert.ok(!f.calls.includes("publish"));
+  }
+});
+
+test("legacy hosted publication stays disabled and unified publication remains verified and environment-gated", () => {
+  const require = createRequire(import.meta.url);
+  const yaml = require("js-yaml");
+  const legacy = yaml.load(fs.readFileSync(new URL("../../.github/workflows/publish.yml", import.meta.url), "utf8"));
+  assert.deepEqual(Object.keys(legacy.on), ["workflow_dispatch"]);
+  assert.equal(legacy.permissions.contents, "read");
+  assert.deepEqual(Object.keys(legacy.jobs), ["disabled"]);
+  assert.match(legacy.jobs.disabled.steps[0].run, /exit 1/);
+  const workflow = yaml.load(fs.readFileSync(new URL("../../.github/workflows/release-publish.yml", import.meta.url), "utf8"));
+  assert.deepEqual(Object.keys(workflow.on), ["workflow_dispatch"]);
+  assert.equal(workflow.permissions.contents, "read");
+  assert.deepEqual(workflow.jobs.github.needs, ["verify", "docker"]);
+  assert.match(workflow.jobs.github.if, /needs\.docker\.result == 'skipped'/);
+  assert.equal(workflow.jobs.github.permissions.contents, "write");
+  assert.equal(workflow.jobs.github.environment, "release-github");
+  assert.equal(workflow.jobs.docker.needs, "verify");
+  assert.equal(workflow.jobs.docker.environment, "release-docker");
+  assert.ok(workflow.jobs.verify.steps.some(step => step.run === "node scripts/release-cloud-ci.mjs verify"));
+  assert.deepEqual(workflow.jobs.gitee.needs, ["verify", "github", "r2-downloads"]);
+  assert.equal(workflow.jobs.gitee.uses, "./.github/workflows/sync-gitee-release.yml");
+  assert.equal(workflow.jobs.gitee.with.tag, "v${{ inputs.version }}");
+  for (const job of Object.values(workflow.jobs)) {
+    // Reusable-workflow jobs use \x60uses\x60 instead of \x60runs-on\x60 and \x60steps\x60.
+    if (job.uses) continue;
+    assert.doesNotMatch(JSON.stringify(job["runs-on"]), /self-hosted/);
+    assert.ok(job.steps.filter(s => s.uses?.startsWith("actions/checkout@")).every(s => s.with?.["persist-credentials"] === false));
+  }
+  const gitee = yaml.load(fs.readFileSync(new URL("../../.github/workflows/sync-gitee-release.yml", import.meta.url), "utf8"));
+  assert.equal(gitee.on.workflow_call.inputs.tag.required, true);
+  assert.equal(gitee.on.workflow_call.inputs.tag.type, "string");
+  const giteeReleaseStep = gitee.jobs.sync.steps.find(step => step.name === "Ensure Gitee release exists");
+  assert.ok(giteeReleaseStep);
+  assert.match(giteeReleaseStep.run, /for attempt in 1 2 3 4/);
+  assert.match(giteeReleaseStep.run, /--http1\.1/);
+  assert.match(giteeReleaseStep.run, /recovered existing release after ambiguous POST/);
+  const giteeUpload = gitee.jobs.sync.steps.find(step => step.name === "Upload assets to Gitee");
+  assert.ok(giteeUpload);
+  assert.match(giteeUpload.run, /if http=\$\(curl/);
+  assert.match(giteeUpload.run, /--max-time 180/);
+  assert.match(giteeUpload.run, /--speed-limit 10240/);
+  assert.match(giteeUpload.run, /if ! attachments=\$\(list_attachments\)/);
+  assert.match(giteeUpload.run, /recovered completed upload/);
+  // Gitee's cross-border asset endpoint is unreliable: metadata + official links
+  // must succeed independently; native upload requires an explicit opt-in.
+  assert.deepEqual(gitee.on.push.branches, ["main"]);
+  assert.deepEqual(gitee.on.push.paths, [".github/workflows/sync-gitee-release.yml"]);
+  assert.match(gitee.jobs.sync.if, /github.event_name == 'push'/);
+  assert.equal(gitee.on.workflow_dispatch.inputs.sync_assets.default, false);
+  assert.equal(gitee.on.workflow_call.inputs.sync_assets.default, false);
+  const downloadStep = gitee.jobs.sync.steps.find(step => step.name === "Download release assets from GitHub");
+  const filterStep = gitee.jobs.sync.steps.find(step => step.name?.startsWith("Filter assets by size"));
+  assert.match(downloadStep.if, /inputs\.sync_assets == true/);
+  assert.match(filterStep.if, /inputs\.sync_assets == true/);
+  assert.match(giteeUpload.if, /inputs\.sync_assets == true/);
+  const metadataStep = gitee.jobs.sync.steps.find(step => step.name === "Sync official release notes and download links");
+  assert.ok(metadataStep);
+  assert.match(metadataStep.run, /gh api/);
+  assert.match(metadataStep.run, /release-r2-links\.mjs/);
+  assert.match(metadataStep.run, /download\.glean\.cn/);
+  assert.match(metadataStep.run, /mirror_file/);
+  assert.match(metadataStep.run, /-X PATCH/);
+  assert.match(metadataStep.run, /status=success/);
+});

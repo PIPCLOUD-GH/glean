@@ -1,0 +1,9 @@
+{
+  "name": "create-glean-plugin",
+  "version": "2.0.0",
+  "description": "Create a Glean Extension Platform V1.1 plugin",
+  "type": "module",
+  "bin": { "create-glean-plugin": "bin/create-glean-plugin.mjs" },
+  "files": ["bin", "README.md"],
+  "engines": { "node": ">=24.22.1 <25" }
+}

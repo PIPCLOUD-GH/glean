@@ -1,0 +1,147 @@
+/*
+ * Mobile tree-mode density.
+ *
+ * The compact class is mounted directly on the mobile KnowledgeTreePanel, so
+ * these rules do not depend on viewport width, Portal ancestry or recursive DOM
+ * guesses. Document rows use the smallest baseline. Folder enhancements use
+ * :has() when available; browsers without :has() still receive the compact
+ * document baseline instead of falling back to the former spacious layout.
+ */
+.glean-mobile-tree-density {
+  /* Compatibility aliases retained for existing CI and downstream themes. */
+  --glean-mobile-tree-row-height: 30px;
+  --glean-mobile-tree-indent: 10px;
+
+  --glean-mobile-tree-root-folder-row-height: 32px;
+  --glean-mobile-tree-folder-row-height: 30px;
+  --glean-mobile-tree-note-row-height: 28px;
+  --glean-mobile-tree-expander-width: 20px;
+  --glean-mobile-tree-content-gap: 4px;
+  --glean-mobile-tree-action-width: 30px;
+}
+
+/*
+ * Compact fallback: every row starts at document density. This guarantees a
+ * visible reduction even in older embedded browsers without :has() support.
+ */
+.glean-mobile-tree-density [data-knowledge-tree-node-id] {
+  min-height: var(--glean-mobile-tree-note-row-height) !important;
+  border-radius: 4px;
+  gap: 2px;
+}
+
+.glean-mobile-tree-density [data-knowledge-tree-node-id] > button:first-child {
+  width: var(--glean-mobile-tree-expander-width) !important;
+  min-width: var(--glean-mobile-tree-expander-width) !important;
+  max-width: var(--glean-mobile-tree-expander-width) !important;
+  height: var(--glean-mobile-tree-note-row-height) !important;
+  min-height: var(--glean-mobile-tree-note-row-height) !important;
+  flex: 0 0 var(--glean-mobile-tree-expander-width) !important;
+  margin-right: 0 !important;
+  padding: 0 !important;
+}
+
+.glean-mobile-tree-density [data-knowledge-tree-node-id] > button:first-child > svg {
+  width: 9px;
+  height: 9px;
+  flex: 0 0 9px;
+}
+
+.glean-mobile-tree-density [data-knowledge-tree-node-id] > button:nth-child(2) {
+  min-height: var(--glean-mobile-tree-note-row-height) !important;
+  justify-content: flex-start;
+  gap: var(--glean-mobile-tree-content-gap) !important;
+  margin-left: 0 !important;
+  padding: 0 !important;
+  font-size: 11px !important;
+  line-height: 14px !important;
+  touch-action: manipulation;
+}
+
+.glean-mobile-tree-density [data-knowledge-tree-node-id] > button:nth-child(2) > svg {
+  width: 12px;
+  height: 12px;
+}
+
+.glean-mobile-tree-density [data-knowledge-tree-node-id] > button:nth-child(2) > span:first-child {
+  width: 13px !important;
+  font-size: 12px !important;
+}
+
+.glean-mobile-tree-density [data-knowledge-tree-node-id] > button:nth-child(n + 3) {
+  display: flex !important;
+  width: var(--glean-mobile-tree-action-width) !important;
+  min-width: var(--glean-mobile-tree-action-width) !important;
+  height: var(--glean-mobile-tree-note-row-height) !important;
+  min-height: var(--glean-mobile-tree-note-row-height) !important;
+  flex: 0 0 var(--glean-mobile-tree-action-width);
+  touch-action: manipulation;
+}
+
+.glean-mobile-tree-density [data-knowledge-tree-node-id] > button[title="更多"] > svg {
+  width: 12px;
+  height: 12px;
+}
+
+/* Nested folders remain slightly taller than documents for hierarchy scanning. */
+.glean-mobile-tree-density [data-knowledge-tree-node-id]:has(> button:nth-child(2) > svg.lucide-folder),
+.glean-mobile-tree-density [data-knowledge-tree-node-id]:has(> button:nth-child(2) > span:first-child) {
+  min-height: var(--glean-mobile-tree-folder-row-height) !important;
+}
+
+.glean-mobile-tree-density [data-knowledge-tree-node-id]:has(> button:nth-child(2) > svg.lucide-folder) > button:first-child,
+.glean-mobile-tree-density [data-knowledge-tree-node-id]:has(> button:nth-child(2) > span:first-child) > button:first-child,
+.glean-mobile-tree-density [data-knowledge-tree-node-id]:has(> button:nth-child(2) > svg.lucide-folder) > button[aria-label$="下新建文档"],
+.glean-mobile-tree-density [data-knowledge-tree-node-id]:has(> button:nth-child(2) > span:first-child) > button[aria-label$="下新建文档"],
+.glean-mobile-tree-density [data-knowledge-tree-node-id]:has(> button:nth-child(2) > svg.lucide-folder) > button[title="更多"],
+.glean-mobile-tree-density [data-knowledge-tree-node-id]:has(> button:nth-child(2) > span:first-child) > button[title="更多"] {
+  height: var(--glean-mobile-tree-folder-row-height) !important;
+}
+
+.glean-mobile-tree-density [data-knowledge-tree-node-id]:has(> button:nth-child(2) > svg.lucide-folder) > button:nth-child(2),
+.glean-mobile-tree-density [data-knowledge-tree-node-id]:has(> button:nth-child(2) > span:first-child) > button:nth-child(2) {
+  min-height: var(--glean-mobile-tree-folder-row-height) !important;
+  padding: 1px 0 !important;
+  line-height: 16px !important;
+}
+
+.glean-mobile-tree-density [data-knowledge-tree-node-id]:has(> button:nth-child(2) > svg.lucide-folder) > button:nth-child(2) > svg {
+  width: 13px;
+  height: 13px;
+}
+
+/* Top-level notebook folders keep one extra density step for readability. */
+.glean-mobile-tree-density [data-knowledge-tree-section] > div > [data-knowledge-tree-node-id]:has(> button:nth-child(2) > svg.lucide-folder),
+.glean-mobile-tree-density [data-knowledge-tree-section] > div > [data-knowledge-tree-node-id]:has(> button:nth-child(2) > span:first-child) {
+  min-height: var(--glean-mobile-tree-root-folder-row-height) !important;
+}
+
+.glean-mobile-tree-density [data-knowledge-tree-section] > div > [data-knowledge-tree-node-id]:has(> button:nth-child(2) > svg.lucide-folder) > button:first-child,
+.glean-mobile-tree-density [data-knowledge-tree-section] > div > [data-knowledge-tree-node-id]:has(> button:nth-child(2) > span:first-child) > button:first-child,
+.glean-mobile-tree-density [data-knowledge-tree-section] > div > [data-knowledge-tree-node-id]:has(> button:nth-child(2) > svg.lucide-folder) > button[aria-label$="下新建文档"],
+.glean-mobile-tree-density [data-knowledge-tree-section] > div > [data-knowledge-tree-node-id]:has(> button:nth-child(2) > span:first-child) > button[aria-label$="下新建文档"],
+.glean-mobile-tree-density [data-knowledge-tree-section] > div > [data-knowledge-tree-node-id]:has(> button:nth-child(2) > svg.lucide-folder) > button[title="更多"],
+.glean-mobile-tree-density [data-knowledge-tree-section] > div > [data-knowledge-tree-node-id]:has(> button:nth-child(2) > span:first-child) > button[title="更多"] {
+  height: var(--glean-mobile-tree-root-folder-row-height) !important;
+}
+
+.glean-mobile-tree-density [data-knowledge-tree-section] > div > [data-knowledge-tree-node-id]:has(> button:nth-child(2) > svg.lucide-folder) > button:nth-child(2),
+.glean-mobile-tree-density [data-knowledge-tree-section] > div > [data-knowledge-tree-node-id]:has(> button:nth-child(2) > span:first-child) > button:nth-child(2) {
+  min-height: var(--glean-mobile-tree-root-folder-row-height) !important;
+}
+
+.glean-mobile-tree-density [data-knowledge-tree-section-heading] {
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  line-height: 12px;
+}
+
+.glean-mobile-tree-density [data-knowledge-tree-inline-create] > div {
+  min-height: 24px;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+.glean-mobile-tree-density [data-swipe-blocker="knowledge-tree-scroll"] {
+  padding-bottom: 6px !important;
+}

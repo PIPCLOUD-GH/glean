@@ -1,0 +1,469 @@
+<div align="center">
+  <img src="./electron/icon.png" alt="Glean" width="104" />
+  <h1>Glean（拾记笔记）</h1>
+  <p><strong>开源、自托管的知识库、每日记录与任务协作平台</strong></p>
+  <p>
+    统一知识树 · 富文本 / Markdown 双编辑器 · 离线工作区 · AI RAG 问答 · 每日记录 · 任务中心 · 多端协作
+  </p>
+  <p>
+    <a href="./README.en.md">English</a> ·
+    <a href="https://glean.example.com/">官方网站</a> ·
+    <a href="https://glean.example.com/#/note/download">下载中心</a> ·
+    <a href="https://glean.example.com/#/note/tutorials">帮助中心</a> ·
+    <a href="http://note.glean.example.com/">在线体验</a> ·
+    <a href="https://github.com/PIPCLOUD-GH/glean/releases/latest">下载客户端</a> ·
+    <a href="./docs/tutorials/README.md">教程中心</a> ·
+    <a href="./docs/tutorials/mcp.md">MCP 安装</a> ·
+    <a href="./.agents/skills/glean-development/SKILL.md">AI 开发 Skill</a> ·
+    <a href="./CHANGELOG.md">更新日志</a>
+  </p>
+</div>
+
+<div align="center">
+
+[![GitHub Release](https://img.shields.io/github/v/release/pipcloud/glean?display_name=tag&sort=semver)](https://github.com/PIPCLOUD-GH/glean/releases/latest)
+[![Docker Pulls](https://img.shields.io/docker/pulls/pipcloud/glean?logo=docker&logoColor=white)](https://hub.docker.com/r/pipcloud/glean)
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](./LICENSE)
+[![Node.js 24.22.1+（24.x LTS）](https://img.shields.io/badge/Node.js-24.22.1%2B-339933?logo=node.js&logoColor=white)](https://nodejs.org/)
+[![Docker](https://img.shields.io/badge/Docker-Compose%20v2-2496ED?logo=docker&logoColor=white)](./docker-compose.yml)
+
+</div>
+
+> Glean 不只是一个编辑器。它希望成为一套由你掌控数据、可长期运行在 NAS / 服务器上，并能通过 Web、桌面端和移动端随时访问的个人与团队知识基础设施。
+
+> **NAS 远程连接登录**：支持部署到 **绿联 NAS（UGOS / UGOS Pro）** 和 **飞牛 NAS（fnOS）**。部署完成后，可在 Web、桌面端或 Android 客户端中，通过局域网 IP、IPv6 地址或已配置 HTTPS 的公网域名远程连接并登录。
+
+## v1.6.0 更新亮点 · 2026-11-21
+
+- **扩展中心与设置**。在「发现」「我的」「工作台」浏览和管理扩展，支持上传插件包。设置中的「使用偏好」支持搜索，并提供常用选项入口。
+- **笔记导入与 AI 对话归档**。「导入笔记」可识别 Obsidian、Logseq 和 AI 聊天记录，并引导至对应流程。浏览器剪藏扩展支持一键保存受支持的 AI 对话。
+- **说说附件**。发布或编辑说说时可添加 PDF、Office 文档、压缩包等文件。文件附件独立于图片和视频额度。
+- **AI 写作与 MCP**。写作助手从打开时的选区应用结果，原文变更后仍可复制生成内容。MCP 令牌可访问明确授权的团队笔记本，并按当前成员权限校验。个人任务支持修改和预览后确认删除。
+
+[v1.6.0 发布说明与安装包](https://github.com/PIPCLOUD-GH/glean/releases/tag/v1.6.0) · [官网下载中心](https://glean.example.com/#/note/download) · [Gitee 发布页与下载链接](https://gitee.com/pipcloud/glean/releases/tag/v1.6.0)
+
+发布包覆盖 Windows、macOS、Linux、Android、飞牛 fnOS、绿联 UGOS 与浏览器剪藏扩展。Docker 镜像支持 `amd64` 与 `arm64`。
+
+> [!IMPORTANT]
+> 升级前备份数据库、附件和部署配置，并确认可以恢复。**回滚程序或 Docker 镜像不会回滚持久化数据库。** GitHub 发布的 macOS 安装包未做 Apple Developer ID 签名或公证，Windows 直接下载的 EXE 未签名。
+
+## 近期版本
+
+- **v1.5.5**（2026-11-09）增强 Web、桌面和 Android 双向同步、知识树冲突处理和桌面启动恢复。[更新说明](./docs/releases/v1.5.5.md)
+- **v1.5.4**（2026-11-02）新增 AI 修改审核和 Markdown 章节折叠，增强附件恢复与桌面 NAS 离线体验。[更新说明](./docs/releases/v1.5.4.md)
+- **v1.5.3**（2026-10-23）改进笔记编辑、图片管理、加密操作、日历提醒和多平台稳定性。[发布说明](https://github.com/PIPCLOUD-GH/glean/releases/tag/v1.5.3)
+
+## 为什么选择 Glean
+
+| | |
+| --- | --- |
+| **数据真正属于你** | 支持 Docker / NAS 自托管，可部署到绿联 UGOS、飞牛 fnOS 等 NAS 平台；数据库、附件、索引和备份均由你管理，附件可接入 S3、Cloudflare R2 与 MinIO，备份可同步到邮件或 WebDAV。 |
+| **一棵树管理全部内容** | 文件夹、富文本和 Markdown 文档统一组织，根目录也能直接创建文档，支持拖拽、排序、导入、权限继承、密码保护和共享展示。 |
+| **在线与离线都能工作** | 可缓存完整工作区、正文和附件，断网继续阅读与编辑，联网后自动恢复增量同步。 |
+| **写作、知识与行动统一** | 笔记、每日记录、任务、AI、思维导图和协作权限在同一套产品中完成，无需在多套工具间反复切换。 |
+
+## 核心能力
+
+| 模块 | 当前能力 |
+| --- | --- |
+| **统一知识树** | 文件夹、富文本与 Markdown 文档混合组织；支持根目录文档、无限层级、拖拽排序与层级调整、统一创建菜单、全部展开 / 收起、筛选搜索、数量统计、回收站和共享目录；三栏布局可展示子文件夹与层级范围。 |
+| **富文本与 Markdown** | Tiptap 3、CodeMirror 6、富文本 / Markdown 双编辑器与格式互转、纯文本笔记、实时预览与分屏、大纲、表格、代码块、KaTeX、Mermaid、脚注、Callout、媒体嵌入、中文排版、阅读位置恢复、批注与版本历史。 |
+| **可靠保存与离线工作区** | Yjs 持久化确认、按笔记作用域的同步回执、未确认修改补传、IndexedDB 草稿恢复、富文本串行版本保存；支持个人空间、共享目录和离线工作区，包含个人目录结构同步、回收站恢复及误冲突防护；离线附件支持损坏 Blob 校验与恢复。 |
+| **性能与加载** | 工作区、编辑器、任务、日记、文件管理、AI 等功能按需加载；静态资源支持缓存验证、Gzip / Brotli 预压缩，减少首屏依赖和重复传输。 |
+| **知识组织与检索** | 彩色标签、收藏、置顶、全文搜索、当前目录笔记搜索、文内查找替换、双向链接、块引用、反向链接、知识图谱，以及“全部笔记”固定入口。 |
+| **AI 能力** | OpenAI 兼容接口、通义千问、Gemini、DeepSeek、豆包与 Ollama；支持续写、改写、翻译、标题与标签生成、总结、Embedding 索引和 RAG 知识问答，并支持查询今日任务、查看完成进度以及确认后创建或完成个人任务。 |
+| **每日记录** | 统一“瞬间 / 日历 / 日记”入口，支持短内容、心情、图片、视频、说说文件附件、AI 周报 / 月报、自然日期命令、日记实体归档、历史目录整理和工作区共享日记。 |
+| **任务与习惯** | 树形任务、列表、看板、日历、甘特图 / 时间轴、依赖、重复规则、提醒、模板、My Day、Inbox、离线任务 / 习惯和 Android 原生提醒；支持 AI 生成任务后确认创建、今日完成汇总、任务树归档、任务详情另存为笔记（保留原任务）、任务报表及子树导出 Excel / Markdown，并提供到期排序和 Webhook 早晚摘要。 |
+| **协作、权限与分享** | Yjs + WebSocket 实时协作、工作区角色、目录级 ACL、Restricted 受限模式、显式允许 / 拒绝规则、权限继承、所有权转移、分享密码与有效期、访客评论、公开知识空间，以及富文本 / Markdown 划词批注。 |
+| **导入、导出与迁移** | 支持 Markdown、Word / DOCX、网页 URL、微信公众号、SingleFile HTML、思源、Obsidian、Logseq、小米笔记等；支持选择导入为 Markdown 或富文本，并提供后台任务、进度、重试、远程图片本地化和 Markdown 图片 / 脚注导出；团队空间单篇 ZIP 会按笔记真实工作区执行权限校验。 |
+| **附件与存储** | 文件中心提供资源管理器式文件夹导航、瀑布流、标签、智能文件夹、批量上传进度、移动 / 重命名、文件回收站及恢复、个人附件目录同步和已有附件插入；支持远程图片安全转存与逐图进度。AI 文件整理采用元数据建议、人工确认和权限校验，语义检索基于文件名 / 标签 / 描述，不读取文件字节，且受 [平台与作用域限制](./docs/user/file-ai-organization.md)。附件可存储于本地磁盘、S3、R2、MinIO；参见[文件整理](./docs/user/file-asset-organization.md)、[回收站](./docs/user/file-recycle-bin.md)与[目录同步](./docs/user/file-folder-sync.md)。 |
+| **备份与恢复** | 本地自动备份、后台完整 ZIP 任务、流式归档与校验、浏览器原生下载、邮件备份、凭据加密的 WebDAV 远程备份、Docker 在线升级前备份与失败回滚检查。 |
+| **多端访问** | Web、Electron（Windows / macOS / Linux）、Android、iOS 工程、HarmonyOS 工程，以及 Docker / NAS 部署；支持绿联 UGOS、飞牛 fnOS，客户端可通过 IPv4、IPv6 或域名远程连接并登录 NAS 服务；Android 支持应用内图片手势预览。 |
+| **开放能力** | OpenAPI 3.0、TypeScript SDK、CLI、Webhook、插件系统、受限 Personal API Token、[MCP Server](./docs/tutorials/mcp.md) 和浏览器剪藏扩展；MCP 覆盖授权笔记 / 知识树（含选定的团队笔记本）、个人任务 / 项目、文件管理和个人自动化，敏感操作需要显式授权及预览确认；可选本机回环 HTTP 传输。 |
+
+## AI 问答与隐私
+
+Glean 的知识库问答采用 RAG 检索增强方式，**不会在每次提问时把全部笔记内容都发送给大模型**。
+
+- **知识库模式**：先在本地索引中检索相关笔记和附件，再发送匹配到的片段。
+- **当前笔记模式**：只使用当前打开的笔记。
+- **选中文本模式**：只使用当前选择或粘贴的文本。
+- **本地模型**：使用 Ollama 等本地服务时，可让问答内容留在自己的设备或服务器中。
+
+使用在线 Embedding 或在线大模型时，建立索引或回答问题所需的相关文本会发送给你自行配置的服务商。身份证、密码、API Key、助记词等高度敏感信息仍不建议以明文保存。
+
+## 让 AI 客户端连接 Glean
+
+Glean 的 MCP Server 可连接 Claude Code、Cursor、VS Code 等客户端。在 **Personal API Token 授权范围**内使用笔记、知识树、个人任务 / 项目、文件管理及个人自动化能力；已授权的团队笔记本仍受团队角色与目录权限限制。部分写入工具要求先预览、明确确认，并通过并发版本校验。高风险功能默认不开放，不能绕过笔记本范围与用户权限。
+
+- [MCP Server 中文安装与团队空间授权教程](https://github.com/PIPCLOUD-GH/glean/blob/v1.6.0/docs/tutorials/mcp.md)
+- [MCP Server English guide](https://github.com/PIPCLOUD-GH/glean/blob/v1.6.0/docs/tutorials/mcp.en.md)
+- [glean-mcp 包说明](./packages/glean-mcp/README.md)
+
+目前可通过源码构建 `packages/glean-mcp` 并使用 `bin/glean-mcp.mjs` 作为客户端入口（Node.js 24.22.1+（24.x LTS））；`dist/scoped-entry.js` 仅供启动器内部加载。标准接入以 stdio 为主；v1.5.2 另提供**需要明确开启、仅限本机回环地址且要求认证**的 Streamable HTTP 接入。请为不同客户端创建独立、最小权限的 Token，勿在配置中写入管理员密码。
+
+## 更早版本
+
+v1.5.1 的任务提醒、AI 任务操作与 Android 同步修复见 [v1.5.1 发布说明](https://github.com/PIPCLOUD-GH/glean/releases/tag/v1.5.1)；历史内容见 [更新日志](./CHANGELOG.md)。
+
+## 截图
+
+以下截图取自在本地真实运行的 Glean（演示账号，浅色主题，2× 分辨率）。
+
+### 桌面端
+
+| 工作区总览 | 知识树与文档管理 |
+| :---: | :---: |
+| ![工作区总览](./docs/screenshots/desktop-overview.png) | ![知识树与文档管理](./docs/screenshots/desktop-knowledge-tree.png) |
+
+| 富文本编辑器 | Markdown 分屏预览 |
+| :---: | :---: |
+| ![富文本编辑器](./docs/screenshots/desktop-editor.png) | ![Markdown 分屏预览](./docs/screenshots/desktop-markdown.png) |
+
+| AI 写作助手 | 任务中心 |
+| :---: | :---: |
+| ![AI 写作助手](./docs/screenshots/desktop-ai-writing.png) | ![任务中心](./docs/screenshots/desktop-tasks.png) |
+
+![AI 服务商配置](./docs/screenshots/settings-ai.png)
+
+### 移动端
+
+| 侧边栏 | 笔记列表 | 编辑器 |
+| :---: | :---: | :---: |
+| ![移动端侧边栏](./docs/screenshots/mobile-sidebar.png) | ![移动端笔记列表](./docs/screenshots/mobile-list.png) | ![移动端编辑器](./docs/screenshots/mobile-editor.png) |
+
+> 截图由 `node scripts/screenshots/capture-readme.mjs` 自动生成，连接本地开发环境时会自动准备演示数据。
+
+## 官网与在线体验
+
+- 官方网站：<https://glean.example.com/>
+- Glean 产品介绍：<https://glean.example.com/#/note>
+- 多平台下载中心：<https://glean.example.com/#/note/download>
+- 使用教程与帮助中心：<https://glean.example.com/#/note/tutorials>
+- 在线体验：<http://note.glean.example.com/>
+- 账号：`demo`
+- 密码：`demo123456`
+
+> 演示账号仅用于体验，数据可能被定期重置。请勿存放敏感或重要内容。
+
+## 快速部署
+
+### Docker Compose（推荐）
+
+要求已安装 Docker Engine 与 Docker Compose v2。
+
+```bash
+git clone https://github.com/PIPCLOUD-GH/glean.git
+cd glean
+docker compose up -d
+```
+
+打开 `http://<服务器IP>:3001`。
+
+默认管理员账号：
+
+```text
+用户名：admin
+密码：admin123
+```
+
+> 首次登录后请立即修改默认密码。公网部署还应配置 HTTPS、备份、正确的公开访问地址，并按需收紧 CORS。
+
+### HTTPS 部署（可选）
+
+已有 Nginx、Lucky 或 NAS 反代的用户可继续复用现有入口。新部署可使用配套的 Caddy 模板自动申请和续期证书，需要 Docker Compose **2.24.4+**、正确解析的公网域名及可达的 80/443 端口。
+
+在 `.env` 中设置 `GLEAN_DOMAIN=note.example.com`，然后执行：
+
+```bash
+docker compose -f docker-compose.yml -f docker-compose.https.yml config --quiet
+docker compose -f docker-compose.yml -f docker-compose.https.yml up -d
+```
+
+访问 `https://note.example.com`。此模板取消主应用的 3001 宿主机映射，自动设置公开分享地址，并持久化 Caddy 证书。后续管理命令也需同时指定这两个文件。
+
+已有实例请保持原 Compose 项目名和数据挂载，先备份再切换；HTTPS 就绪后，客户端改用域名地址。详见 [HTTPS 部署与验收](./docs/https-deployment.md)。
+
+### 绿联 NAS / 飞牛 NAS 远程连接登录
+
+Glean 支持部署在 **绿联 NAS（UGOS / UGOS Pro）** 与 **飞牛 NAS（fnOS）** 上。可使用 Releases 中对应的 `.upk` / `.fpk` 安装包，也可以直接通过 Docker Compose 部署。
+
+部署并启动服务后：
+
+- 局域网访问：浏览器打开 `http://<NAS局域网IP>:3001`。
+- 远程访问：在 Web、桌面端或 Android 客户端中填写 NAS 的公网域名、IPv4 或 IPv6 服务地址并登录。
+- 公网使用建议配置 HTTPS 反向代理，不建议直接暴露未加密的 HTTP 服务。
+
+查看各平台安装包：[GitHub Releases](https://github.com/PIPCLOUD-GH/glean/releases)。
+
+查看运行状态和日志：
+
+```bash
+docker compose ps
+docker compose logs -f --tail=200 glean
+```
+
+### 从旧版本升级
+
+升级前先在管理后台创建完整备份，并确认数据库与附件目录已经持久化。
+
+如需固定到 v1.6.0，请在 Compose 的 `.env` 文件中设置 `GLEAN_IMAGE_TAG=v1.6.0`，再执行以下命令。镜像标签可在 [Docker Hub](https://hub.docker.com/r/pipcloud/glean/tags) 查看。
+
+```bash
+docker compose pull
+docker compose up -d
+```
+
+> [!IMPORTANT]
+> **升级前请先完成完整备份，确认数据库与附件已持久化。** Docker / NAS 用户建议保留独立备份；镜像回滚不会还原数据库。版本详情见 [更新日志](./CHANGELOG.md) 与 [公开 Releases](https://github.com/PIPCLOUD-GH/glean/releases)。
+
+### Docker 在线升级（可选）
+
+在线升级仅支持仓库内的官方 [`docker-compose.yml`](./docker-compose.yml)，且默认关闭。主应用容器不会挂载 Docker Socket；只有独立、内网隔离并受限运行的 updater 容器拥有 Docker Engine 权限。
+
+```bash
+cp .env.example .env
+printf '\nGLEAN_UPDATER_TOKEN=%s\n' "$(openssl rand -hex 32)" >> .env
+GLEAN_IMAGE_TAG=v1.6.0 docker compose --profile updater up -d
+```
+
+启用后，管理员可在「设置 → 关于 → 版本信息」执行升级前检查、完整备份、升级、健康验证和失败回滚。
+
+完整说明见 [Docker 在线升级与恢复](./docs/docker-online-update.md)。
+
+### 仅运行主应用
+
+```bash
+docker run -d \
+  --name glean \
+  --restart unless-stopped \
+  -p 3001:3001 \
+  -e TZ=Asia/Shanghai \
+  -v /opt/glean/data:/app/data \
+  pipcloud/glean:v1.6.0
+```
+
+## 数据、备份与配置
+
+### 持久化目录
+
+容器内的持久化根目录是 **`/app/data`**，不是 `/data`。默认 Compose 使用名为 `glean-data` 的 Docker Volume。
+
+```text
+/app/data/
+├── glean.db
+├── attachments/
+├── backups/
+├── fonts/
+└── .jwt_secret
+```
+
+- 默认生产数据库为 SQLite，主文件是 `/app/data/glean.db`。
+- 附件默认存储在 `/app/data/attachments`，新文件按 `YYYY/MM` 分目录。
+- 自动备份默认位于 `/app/data/backups`。
+- 生产环境建议把 `BACKUP_DIR` 映射到独立物理磁盘，并遵循 3-2-1 备份原则。
+- PostgreSQL 适配和迁移仍在验证中，当前正式部署与恢复流程继续以 SQLite 为默认基线。
+
+### 常用环境变量
+
+完整模板见 [`.env.example`](./.env.example)。
+
+| 变量 | 默认值 | 用途 |
+| --- | --- | --- |
+| `GLEAN_PORT` | `3001` | Compose 对外暴露端口 |
+| `GLEAN_DOMAIN` | 空 | 可选 Caddy HTTPS 模板的公网域名，仅填写主机名 |
+| `TZ` | `Asia/Shanghai` | 容器时区，会影响任务日期与日记自然日期判断 |
+| `PUBLIC_WEB_ORIGIN` | 空 | 反向代理或公网域名，用于生成正确的分享链接 |
+| `FILE_PUBLIC_ORIGIN` | 继承 `PUBLIC_WEB_ORIGIN` | 文件管理 / 图床复制直链使用的独立公网域名；上传、预览和本人下载仍走当前连接地址 |
+| `JWT_SECRET` | 自动生成并持久化 | 登录、会话与部分加密回退；多实例部署时必须统一配置 |
+| `BACKUP_DIR` | `/app/data/backups` | 自动备份目录 |
+| `BACKUP_WEBDAV_ENCRYPTION_KEY` | 回退到 `JWT_SECRET` | 加密保存 WebDAV 凭据，生产环境建议单独配置 |
+| `CORS_ORIGINS` | 内置原生客户端来源 | 额外允许的网页 Origin，逗号分隔 |
+| `MAX_ATTACHMENT_SIZE_MB` | `100` | 单个附件大小上限 |
+| `ATTACHMENT_STORAGE` | `local` | 设为 `s3` 后可接入 S3 / R2 / MinIO |
+| `GLEAN_UPDATER_TOKEN` | 空 | 启用 Docker 在线升级代理 |
+
+- [附件对象存储](./docs/object-storage.md)
+- [WebDAV 远程备份](./docs/webdav-backup.md)
+- [邮件备份配置](./docs/backup-email-smtp.md)
+
+## 客户端与平台状态
+
+| 平台 | 获取 / 构建方式 | 状态说明 |
+| --- | --- | --- |
+| **Web / Docker** | Docker Hub 或源码构建 | 推荐部署方式；镜像可构建 `amd64`、`arm64` 或多架构版本 |
+| **Windows / macOS / Linux** | [GitHub Releases](https://github.com/PIPCLOUD-GH/glean/releases) 或 `npm run electron:build` | Electron 客户端可连接远程服务，也可使用本地后端 |
+| **Android** | Releases APK 或在 `frontend/` 下使用 Capacitor 构建 | 正式维护；支持系统分享导入、Markdown 导入、沉浸式编辑、移动端知识树、图片手势预览、系统原生任务提醒，以及远程连接 NAS 服务登录 |
+| **iOS** | Capacitor 工程与 GitHub Actions / TestFlight 流程 | 需要 Apple 签名与开发者账号，详见 [iOS 发布指南](./docs/iOS-Release.md) |
+| **HarmonyOS** | 使用 DevEco Studio 打开 [`glean-harmony/`](./glean-harmony/) | ArkTS + ArkWeb MVP；部分原生能力仍在完善 |
+| **fnOS** | Releases 中的 `.fpk` | 支持飞牛 NAS 安装；当前 `.fpk` 主要面向 x86_64，部署后可通过局域网或公网地址远程连接登录 |
+| **绿联 UGOS** | Releases / 构建脚本中的 `.upk` | 支持绿联 NAS 安装，依赖具体设备架构与应用安装能力；部署后可通过局域网或公网地址远程连接登录 |
+| **其他 NAS** | Docker Compose | 群晖、威联通、极空间等可按 Docker 方式部署 |
+
+> 各平台实际发布的安装包以 [GitHub Releases](https://github.com/PIPCLOUD-GH/glean/releases) 为准。
+
+桌面端最低要求 macOS 12（Monterey）；macOS 11 用户不会收到该版本的自动更新。完整升级说明见 [Node 24 迁移说明](./docs/node24-upgrade.md)。
+
+## 本地开发
+
+要求 Node.js 24.22.1+（24.x LTS）、npm、Git。Electron 和原生依赖构建还需要对应平台的编译工具链。
+
+```bash
+git clone https://github.com/PIPCLOUD-GH/glean.git
+cd glean
+npm install
+npm run install:all
+npm run dev
+```
+也可以分别启动：
+
+```bash
+npm run dev:backend
+npm run dev:frontend
+```
+
+访问 `http://localhost:5173`。
+
+常用命令：
+
+```bash
+npm run build:all                 # 构建前端与后端
+npm run electron:dev              # Electron 开发
+npm run electron:build            # Electron 打包
+(cd backend && npm test)          # 后端测试
+(cd frontend && npm run test:run) # 前端测试
+```
+
+Android：
+
+```bash
+cd frontend
+npm run cap:build
+npx cap open android
+```
+
+> Web、Electron 和移动端构建统一使用 Node.js 24.22.1（24.x LTS）；运行 `nvm install && nvm use` 可切换到项目版本。
+
+iOS：
+
+```bash
+npm run cap:sync:ios
+npm run cap:open:ios
+```
+
+## 技术架构
+
+| 层 | 主要技术 |
+| --- | --- |
+| **前端** | React 19、TypeScript、Vite 5、Tailwind CSS、Tiptap 3、CodeMirror 6、Yjs、IndexedDB |
+| **后端** | Node.js 24 LTS、Hono 4、WebSocket、better-sqlite3、FTS5、sqlite-vec、sharp |
+| **桌面端** | Electron 43、electron-builder、electron-updater |
+| **移动端** | Capacitor 8（Android / iOS）、ArkTS + ArkWeb（HarmonyOS） |
+| **存储与备份** | SQLite、本地附件、S3 / Cloudflare R2 / MinIO、邮件与 WebDAV；PostgreSQL 处于适配验证阶段 |
+| **开放能力** | OpenAPI 3.0、TypeScript SDK、CLI、MCP Server、Webhook |
+
+## 项目结构
+
+```text
+glean/
+├── frontend/       # React Web 与 Capacitor 客户端
+├── backend/        # Hono API、数据库、同步与后台任务
+├── electron/       # Electron 主进程与打包配置
+├── packages/       # SDK、CLI、MCP 等开发者包
+├── glean-harmony/  # HarmonyOS ArkTS / ArkWeb 客户端
+├── docs/           # 部署、教程与设计文档
+└── scripts/        # 构建、迁移、打包与发布脚本
+```
+
+## AI Skills：让 AI 理解和操作 Glean
+
+仓库提供两种用途不同的 [Agent Skills](./.agents/skills/)。**Skill 是 AI 助手的工作指引，不是自动连接服务器的插件，也不包含任何私人笔记或 API 密钥。**
+
+- **[glean-development](./.agents/skills/glean-development/SKILL.md)**：面向项目维护者和 AI 编码助手。包含项目定位、模块导航、Issue/PR 分析、UI 设计原则、同步/权限/备份安全边界、开发测试和交付验收规范。
+- **[glean](./.agents/skills/glean/SKILL.md)**：面向知识库使用者。指导 AI 在授权范围内搜索、读取、创建和整理笔记，通过 MCP（优先）或已配置的 CLI 操作。
+
+仓库同时提供 [`.claude/skills/`](./.claude/skills/) 镜像，便于支持该目录的客户端使用。将对应 Skill 放到 AI 客户端支持的 Skills 目录，或让编码助手先阅读对应 `SKILL.md`；**不同客户端的自动发现规则以其文档为准**。
+
+如需 AI **实际读取或写入你的笔记**，还需按 [MCP 安装教程](./docs/tutorials/mcp.md) 连接 Glean，并创建限制笔记本和操作范围的 Personal API Token；仅安装 Skill 不会赋予数据权限。
+
+示例：让 AI “先阅读 `glean-development` Skill，分析 Issue 对应代码、实现最小修复并列出验证结果”。
+
+## 文档导航
+
+- [Glean 官方网站](https://glean.example.com/)
+- [Glean 多平台下载中心](https://glean.example.com/#/note/download)
+- [Glean 官方帮助中心](https://glean.example.com/#/note/tutorials)
+- [仓库内教程索引](./docs/tutorials/README.md)
+- [MCP Server 安装与使用](./docs/tutorials/mcp.md)
+- [编辑器 Agent P0 使用与限制（开发分支）](./docs/user/editor-agent.md)
+- [完整部署指南](./docs/deployment.md)
+- [Docker 在线升级与恢复](./docs/docker-online-update.md)
+- [WebDAV 远程备份](./docs/webdav-backup.md)
+- [附件对象存储](./docs/object-storage.md)
+- [邮件备份配置](./docs/backup-email-smtp.md)
+- [ARM64 部署](./docs/deploy-arm64.md)
+- [iOS 发布指南](./docs/iOS-Release.md)
+- [Release Center 构建与发布职责](./docs/architecture/release-center.md)
+- [历史 GitHub 桌面产物汇总流程（非当前正式发版入口）](./docs/releases/github-release-assets.md)
+- [隐私策略](./docs/PRIVACY.md)
+- [浏览器剪藏扩展](https://chromewebstore.google.com/detail/glean-web-clipper/nglkodhfdbnfielchjpkjhenfaecafpg)
+- OpenAPI：服务启动后访问 `/api/openapi.json`
+
+## 当前边界
+
+- **数据库**：SQLite 是当前默认且完整支持的生产方案；PostgreSQL 已有适配器、Schema 和部分双库测试，但尚未开放正式切换。
+- **格式互转**：Markdown 与富文本互转会尽量保留主要结构，但高度定制的 HTML、复杂扩展节点或第三方语法仍可能需要人工检查。
+- **AI 隐私**：使用在线 Embedding 或在线大模型时，相关文本会发送到用户自行配置的服务商；敏感信息建议使用本地模型或不要存储。
+- **WebDAV**：用于上传已经完成的备份文件，不是实时同步、数据库运行目录或附件在线存储后端。
+- **Docker 在线升级**：只支持官方 Compose 受管部署，不支持任意容器、任意镜像或 NAS 应用包。
+- **macOS**：安装包若未经过 Apple 公证，首次打开可能需要执行 `xattr` 解除隔离，详见 [桌面端教程](./docs/tutorials/desktop.md)。
+- **移动端**：Android 维护最完整；iOS 与 HarmonyOS 的分发、签名和部分原生桥接能力仍受平台工具链限制。
+- **快速迭代**：功能和安装包更新较快，请以 Releases、应用内版本信息和 [CHANGELOG.md](./CHANGELOG.md) 为准。
+
+## 版本与更新
+
+README 维护稳定的产品定位、能力范围、近期版本和部署方式；完整提交历史请查看更新日志。
+
+- [查看最新 Release](https://github.com/PIPCLOUD-GH/glean/releases/latest)
+- [查看完整更新日志](./CHANGELOG.md)
+- [查看 Issues 与开发进度](https://github.com/PIPCLOUD-GH/glean/issues)
+
+## 参与贡献
+
+欢迎提交 Issue、功能建议和 Pull Request。提交代码前建议至少完成：
+
+```bash
+npm run build:all
+(cd backend && npm test)
+(cd frontend && npm run test:run)
+```
+
+反馈入口：
+
+- [GitHub Issues](https://github.com/PIPCLOUD-GH/glean/issues)
+- QQ 群：`1093473044`
+
+## 支持作者
+
+如果 Glean 对你有帮助，欢迎扫码请作者喝杯咖啡。感谢每一份支持，它会帮助项目持续维护和迭代。
+
+<table align="center">
+  <tr>
+    <th>微信赞赏</th>
+    <th>支付宝赞赏</th>
+  </tr>
+  <tr>
+    <td align="center"><img src="./frontend/src/assets/sponsor/weixin.jpg" alt="微信赞赏码" width="260" /></td>
+    <td align="center"><img src="./frontend/src/assets/sponsor/zhifubao.png" alt="支付宝赞赏码" width="260" /></td>
+  </tr>
+</table>
+
+也可以阅读 [作者感言](./AUTHOR_STORY.md)。
+
+## License
+
+Glean 基于 [GNU General Public License v3.0](./LICENSE) 开源。
+
+<!-- CHANGELOG:BEGIN -->
+<!-- 详细版本记录请查看 CHANGELOG.md；README 仅维护稳定能力与近期重点增强。 -->
+<!-- CHANGELOG:END -->

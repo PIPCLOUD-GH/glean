@@ -1,0 +1,40 @@
+# ICP 备案号配置
+
+glean 的 Web 登录页备案号由运行时环境变量驱动，不再在「设置 → 外观」里编辑。
+
+## 环境变量
+
+| 变量名 | 默认值 | 说明 |
+| ------ | ------ | ---- |
+| `GLEAN_ICP_BEIAN` | 空 | Web 登录页底部展示的 ICP 备案号；为空则不展示 |
+| `ICP_BEIAN` | 空 | 兼容别名；优先级低于 `GLEAN_ICP_BEIAN` |
+
+## Docker 示例
+
+```bash
+docker run -d \
+  --name glean \
+  --restart unless-stopped \
+  -p 3001:3001 \
+  -v /opt/glean/data:/app/data \
+  -e DB_PATH=/app/data/glean.db \
+  -e GLEAN_ICP_BEIAN="粤ICP备XXXXXXXX号-X" \
+  glean
+```
+
+## docker-compose 示例
+
+```yaml
+services:
+  glean:
+    image: glean
+    ports:
+      - "3001:3001"
+    volumes:
+      - /opt/glean/data:/app/data
+    environment:
+      DB_PATH: /app/data/glean.db
+      GLEAN_ICP_BEIAN: 粤ICP备XXXXXXXX号-X
+```
+
+修改后需要重启容器生效。

@@ -1,0 +1,22 @@
+{
+  "name": "glean-cli",
+  "version": "1.0.0",
+  "description": "Glean 命令行工具 — 从终端管理你的笔记",
+  "type": "module",
+  "bin": {
+    "glean": "dist/cli.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch"
+  },
+  "dependencies": {
+    "commander": "^12.1.0",
+    "chalk": "^5.3.0",
+    "ora": "^8.0.1",
+    "cli-table3": "^0.6.5"
+  },
+  "keywords": ["glean", "cli", "notes"],
+  "license": "MIT",
+  "engines": { "node": ">=24.22.1 <25" }
+}

@@ -1,0 +1,23 @@
+name: Publish Glean Extension
+on:
+  push:
+    tags: ["v*"]
+permissions:
+  contents: read
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 20, cache: npm }
+      - run: npm ci
+      - run: npx glean-plugin test
+      - run: npx glean-plugin pack
+      - run: printf '%s' "$GLEAN_PUBLISHER_PRIVATE_KEY" > "$RUNNER_TEMP/publisher.pem" && chmod 600 "$RUNNER_TEMP/publisher.pem"
+        env: { GLEAN_PUBLISHER_PRIVATE_KEY: "${{ secrets.GLEAN_PUBLISHER_PRIVATE_KEY }}" }
+      - run: npx glean-plugin sign --key "$RUNNER_TEMP/publisher.pem" --key-id "${{ vars.GLEAN_PUBLISHER_KEY_ID }}"
+      - run: npx glean-plugin publish
+        env:
+          GLEAN_REGISTRY_URL: "${{ vars.GLEAN_REGISTRY_URL }}"
+          GLEAN_REGISTRY_TOKEN: "${{ secrets.GLEAN_REGISTRY_TOKEN }}"
