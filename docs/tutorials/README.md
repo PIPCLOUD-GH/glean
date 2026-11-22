@@ -2,7 +2,7 @@
 
 > 面向普通用户、NAS 用户、团队管理员和开发者的统一文档入口。
 
-[官方网站](http://glean.example.com/) · [在线体验](http://note.glean.example.com/) · [客户端下载](https://github.com/PIPCLOUD-GH/glean/releases) · [MCP 安装](./mcp.md) · [问题反馈](https://github.com/PIPCLOUD-GH/glean/issues)
+[官方网站](http://glean.pipcloud.cn/) · [在线体验](http://note.glean.pipcloud.cn/) · [客户端下载](https://github.com/PIPCLOUD-GH/glean/releases) · [MCP 安装](./mcp.md) · [问题反馈](https://github.com/PIPCLOUD-GH/glean/issues)
 
 ## MCP 快速入口
 
@@ -20,9 +20,9 @@
 
 | 帮助中心 | 地址 | 适合内容 |
 |---|---|---|
-| **功能与使用教程** | [Glean 功能介绍](http://glean.example.com/docs/glean-features) | 笔记、编辑器、任务、AI、知识图谱、协作和多端使用 |
-| **安装与问题解答** | [Glean 安装与问题解答](http://glean.example.com/docs/glean-help) | Docker、NAS、升级、备份、网络和故障排查 |
-| **API 与开发者文档** | [Glean API](http://glean.example.com/docs/glean-api) | OpenAPI、Token、SDK、CLI、MCP 和自动化接入 |
+| **功能与使用教程** | [Glean 功能介绍](http://glean.pipcloud.cn/docs/glean-features) | 笔记、编辑器、任务、AI、知识图谱、协作和多端使用 |
+| **安装与问题解答** | [Glean 安装与问题解答](http://glean.pipcloud.cn/docs/glean-help) | Docker、NAS、升级、备份、网络和故障排查 |
+| **API 与开发者文档** | [Glean API](http://glean.pipcloud.cn/docs/glean-api) | OpenAPI、Token、SDK、CLI、MCP 和自动化接入 |
 
 仓库中的 `docs/` 更适合离线阅读、提交修改和跟随源码审查；官网帮助中心更适合最终用户使用。两边会同步维护。
 
@@ -61,7 +61,7 @@
 | [版本历史](./version-history.md) | 自动保存、版本查看和内容恢复 |
 | [导入与导出](./import-export.md) | Markdown、DOCX、Obsidian、微信收藏和多格式导出 |
 
-近期知识管理能力还包括双向链接、块引用、反向链接和知识图谱，详见[官网功能帮助中心](http://glean.example.com/docs/glean-features/knowledge)。
+近期知识管理能力还包括双向链接、块引用、反向链接和知识图谱，详见[官网功能帮助中心](http://glean.pipcloud.cn/docs/glean-features/knowledge)。
 
 ## 3. 编辑器与内容创作
 
@@ -155,7 +155,7 @@ Personal API Token 支持权限范围和笔记本资源范围。自动化场景�
 | [附件与图片](./faq-attachment.md) | 上传失败、裂图、权限和清理问题 |
 | [性能与存储](./faq-performance.md) | 首屏、数据库、缩略图和磁盘空间 |
 
-更多安装与故障排查请使用[官网安装与问题解答](http://glean.example.com/docs/glean-help)。
+更多安装与故障排查请使用[官网安装与问题解答](http://glean.pipcloud.cn/docs/glean-help)。
 
 ---
 

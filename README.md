@@ -7,10 +7,10 @@
   </p>
   <p>
     <a href="./README.en.md">English</a> ·
-    <a href="https://glean.example.com/">官方网站</a> ·
-    <a href="https://glean.example.com/#/note/download">下载中心</a> ·
-    <a href="https://glean.example.com/#/note/tutorials">帮助中心</a> ·
-    <a href="http://note.glean.example.com/">在线体验</a> ·
+    <a href="https://glean.pipcloud.cn/">官方网站</a> ·
+    <a href="https://glean.pipcloud.cn/#/note/download">下载中心</a> ·
+    <a href="https://glean.pipcloud.cn/#/note/tutorials">帮助中心</a> ·
+    <a href="http://note.glean.pipcloud.cn/">在线体验</a> ·
     <a href="https://github.com/PIPCLOUD-GH/glean/releases/latest">下载客户端</a> ·
     <a href="./docs/tutorials/README.md">教程中心</a> ·
     <a href="./docs/tutorials/mcp.md">MCP 安装</a> ·
@@ -40,7 +40,7 @@
 - **说说附件**。发布或编辑说说时可添加 PDF、Office 文档、压缩包等文件。文件附件独立于图片和视频额度。
 - **AI 写作与 MCP**。写作助手从打开时的选区应用结果，原文变更后仍可复制生成内容。MCP 令牌可访问明确授权的团队笔记本，并按当前成员权限校验。个人任务支持修改和预览后确认删除。
 
-[v1.6.0 发布说明与安装包](https://github.com/PIPCLOUD-GH/glean/releases/tag/v1.6.0) · [官网下载中心](https://glean.example.com/#/note/download) · [Gitee 发布页与下载链接](https://gitee.com/pipcloud/glean/releases/tag/v1.6.0)
+[v1.6.0 发布说明与安装包](https://github.com/PIPCLOUD-GH/glean/releases/tag/v1.6.0) · [官网下载中心](https://glean.pipcloud.cn/#/note/download) · [Gitee 发布页与下载链接](https://gitee.com/pipcloud/glean/releases/tag/v1.6.0)
 
 发布包覆盖 Windows、macOS、Linux、Android、飞牛 fnOS、绿联 UGOS 与浏览器剪藏扩展。Docker 镜像支持 `amd64` 与 `arm64`。
 
@@ -136,11 +136,11 @@ v1.5.1 的任务提醒、AI 任务操作与 Android 同步修复见 [v1.5.1 发�
 
 ## 官网与在线体验
 
-- 官方网站：<https://glean.example.com/>
-- Glean 产品介绍：<https://glean.example.com/#/note>
-- 多平台下载中心：<https://glean.example.com/#/note/download>
-- 使用教程与帮助中心：<https://glean.example.com/#/note/tutorials>
-- 在线体验：<http://note.glean.example.com/>
+- 官方网站：<https://glean.pipcloud.cn/>
+- Glean 产品介绍：<https://glean.pipcloud.cn/#/note>
+- 多平台下载中心：<https://glean.pipcloud.cn/#/note/download>
+- 使用教程与帮助中心：<https://glean.pipcloud.cn/#/note/tutorials>
+- 在线体验：<http://note.glean.pipcloud.cn/>
 - 账号：`demo`
 - 密码：`demo123456`
 
@@ -390,9 +390,9 @@ glean/
 
 ## 文档导航
 
-- [Glean 官方网站](https://glean.example.com/)
-- [Glean 多平台下载中心](https://glean.example.com/#/note/download)
-- [Glean 官方帮助中心](https://glean.example.com/#/note/tutorials)
+- [Glean 官方网站](https://glean.pipcloud.cn/)
+- [Glean 多平台下载中心](https://glean.pipcloud.cn/#/note/download)
+- [Glean 官方帮助中心](https://glean.pipcloud.cn/#/note/tutorials)
 - [仓库内教程索引](./docs/tutorials/README.md)
 - [MCP Server 安装与使用](./docs/tutorials/mcp.md)
 - [编辑器 Agent P0 使用与限制（开发分支）](./docs/user/editor-agent.md)
@@ -443,22 +443,9 @@ npm run build:all
 - [GitHub Issues](https://github.com/PIPCLOUD-GH/glean/issues)
 - QQ 群：`1093473044`
 
-## 支持作者
+## 致谢
 
-如果 Glean 对你有帮助，欢迎扫码请作者喝杯咖啡。感谢每一份支持，它会帮助项目持续维护和迭代。
-
-<table align="center">
-  <tr>
-    <th>微信赞赏</th>
-    <th>支付宝赞赏</th>
-  </tr>
-  <tr>
-    <td align="center"><img src="./frontend/src/assets/sponsor/weixin.jpg" alt="微信赞赏码" width="260" /></td>
-    <td align="center"><img src="./frontend/src/assets/sponsor/zhifubao.png" alt="支付宝赞赏码" width="260" /></td>
-  </tr>
-</table>
-
-也可以阅读 [作者感言](./AUTHOR_STORY.md)。
+Glean 基于 [nowen-note](https://github.com/cropflre/nowen-note)（GPL-3.0）二次开发，感谢原作者的开源贡献。也可以阅读 [作者感言](./AUTHOR_STORY.md)。
 
 ## License
 

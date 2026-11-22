@@ -251,13 +251,13 @@ jobs:
           {
             echo "## R2 Release Downloads — $TAG"
             echo "- Bucket: glean-releases"
-            echo "- Domain: https://download.glean.example.com"
+            echo "- Domain: https://download.glean.pipcloud.cn"
             echo "- Verified installers: 10 + SHA256SUMS + manifest.json"
             echo ""
             echo "| Release asset | Download |"
             echo "| --- | --- |"
             while IFS= read -r name; do
-              echo "| $name | https://download.glean.example.com/$TAG/$name |"
+              echo "| $name | https://download.glean.pipcloud.cn/$TAG/$name |"
             done < upload-names.txt
           } >> "$GITHUB_STEP_SUMMARY"
           echo "[r2] SUCCESS: 10 packages + SHA256SUMS + manifest.json uploaded and verified"

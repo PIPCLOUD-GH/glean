@@ -55,7 +55,7 @@ describe("AI metadata in actual export files", () => {
   });
 
   it("writes TC260 XMP into JPEG without changing the scan data or duplicating the packet", () => {
-    const original = new Uint8Array(readFileSync(path.join(process.cwd(), "src/assets/sponsor/weixin.jpg")));
+    const original = new Uint8Array(readFileSync(path.join(process.cwd(), "src/assets/feedback/qq-group.jpg")));
     const result = addAiJpegMetadata(addAiJpegMetadata(original, provenance), provenance);
     saveEngineeringFixture("fixture-ai.jpg", result);
     const text = new TextDecoder().decode(result);

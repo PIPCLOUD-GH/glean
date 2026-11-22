@@ -40,12 +40,12 @@ test("Gitee lists mirrored installers with GitHub backups and leaves UPK on GitH
   assert.equal(trustedMirrorNames(release,manifest).size,10);
   const md=releaseDownloadLinks(release,manifest);
   for(const name of names) {
-    assert.ok(md.includes("https://download.glean.example.com/"+tag+"/"+name),name);
+    assert.ok(md.includes("https://download.glean.pipcloud.cn/"+tag+"/"+name),name);
     assert.ok(md.includes("https://github.com/PIPCLOUD-GH/glean/releases/download/"+tag+"/"+name),name);
   }
   for(const name of extra) {
     assert.ok(md.includes("https://github.com/PIPCLOUD-GH/glean/releases/download/"+tag+"/"+name));
-    assert.ok(!md.includes("https://download.glean.example.com/"+tag+"/"+name));
+    assert.ok(!md.includes("https://download.glean.pipcloud.cn/"+tag+"/"+name));
   }
 });
 
@@ -60,7 +60,7 @@ test("Missing, invalid, stale or tampered manifest never generates guessed R2 UR
   ];
   for(const invalid of candidates) {
     assert.equal(trustedMirrorNames(release,invalid).size,0);
-    assert.ok(!releaseDownloadLinks(release,invalid).includes("https://download.glean.example.com/"));
+    assert.ok(!releaseDownloadLinks(release,invalid).includes("https://download.glean.pipcloud.cn/"));
   }
 });
 

@@ -213,8 +213,8 @@ describe("buildServerUrl (legacy)", () => {
 
 describe("API endpoint construction", () => {
   it("为外部 HTTP 服务正确拼出 /api/health", () => {
-    const baseUrl = normalizeServerBaseUrl("http://note.glean.example.com");
-    expect(`${baseUrl}/api/health`).toBe("http://note.glean.example.com/api/health");
+    const baseUrl = normalizeServerBaseUrl("http://note.glean.pipcloud.cn");
+    expect(`${baseUrl}/api/health`).toBe("http://note.glean.pipcloud.cn/api/health");
   });
 });
 
@@ -342,7 +342,7 @@ describe("IPv6 server URL support", () => {
     expect(isLanServerHostname("nas.local")).toBe(true);
     expect(isLanServerHostname("glean")).toBe(true);
     expect(isLanServerHostname("[fd12:3456::1]")).toBe(true);
-    expect(isLanServerHostname("note.glean.example.com")).toBe(false);
+    expect(isLanServerHostname("note.glean.pipcloud.cn")).toBe(false);
     expect(isLanServerHostname("8.8.8.8")).toBe(false);
     expect(isLanServerHostname("240e:1234::1")).toBe(false);
   });

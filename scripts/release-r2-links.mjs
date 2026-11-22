@@ -1,6 +1,6 @@
 import fs from "node:fs";
 
-const MIRROR_ORIGIN = "https://download.glean.example.com";
+const MIRROR_ORIGIN = "https://download.glean.pipcloud.cn";
 
 function releaseTag(tag) {
   return /^v\d+\.\d+\.\d+$/.test(tag ?? "");

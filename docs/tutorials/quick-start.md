@@ -2,7 +2,7 @@
 
 > 从选择使用方式开始，完成登录、创建笔记本、写下第一篇笔记，并了解数据备份和 AI 配置。
 
-[官方网站](http://glean.example.com/) · [在线体验](http://note.glean.example.com/) · [客户端下载](https://github.com/PIPCLOUD-GH/glean/releases) · [教程中心](./README.md)
+[官方网站](http://glean.pipcloud.cn/) · [在线体验](http://note.glean.pipcloud.cn/) · [客户端下载](https://github.com/PIPCLOUD-GH/glean/releases) · [教程中心](./README.md)
 
 ## 1. 选择使用方式
 
@@ -46,7 +46,7 @@ http://<服务器或 NAS 的 IP>:3001
 
 不想立即部署时，可以访问：
 
-- 地址：[http://note.glean.example.com/](http://note.glean.example.com/)
+- 地址：[http://note.glean.pipcloud.cn/](http://note.glean.pipcloud.cn/)
 - 账号：`demo`
 - 密码：`demo123456`
 
@@ -274,8 +274,8 @@ Docker 部署的核心数据位于 `/app/data`，包括数据库、附件、备�
 
 在线帮助中心：
 
-- [功能与使用教程](http://glean.example.com/docs/glean-features)
-- [安装与问题解答](http://glean.example.com/docs/glean-help)
-- [API 与开发者文档](http://glean.example.com/docs/glean-api)
+- [功能与使用教程](http://glean.pipcloud.cn/docs/glean-features)
+- [安装与问题解答](http://glean.pipcloud.cn/docs/glean-help)
+- [API 与开发者文档](http://glean.pipcloud.cn/docs/glean-api)
 
 > 本教程跟随 `main` 分支和最新稳定 Release 持续更新，不再绑定过期版本号。

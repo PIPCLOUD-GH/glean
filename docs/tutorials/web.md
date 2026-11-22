@@ -2,7 +2,7 @@
 
 > 在浏览器中直接使用 Glean，无需安装桌面或移动客户端。
 
-[官方网站](http://glean.example.com/) · [在线体验](http://note.glean.example.com/) · [教程中心](./README.md)
+[官方网站](http://glean.pipcloud.cn/) · [在线体验](http://note.glean.pipcloud.cn/) · [教程中心](./README.md)
 
 ## 访问方式
 
@@ -10,7 +10,7 @@
 
 - 局域网自部署：`http://<服务器或 NAS 的 IP>:3001`
 - 反向代理：使用管理员配置的域名
-- 在线体验：[http://note.glean.example.com/](http://note.glean.example.com/)
+- 在线体验：[http://note.glean.pipcloud.cn/](http://note.glean.pipcloud.cn/)
 
 手机或其他电脑访问 NAS 时，不要填写 `localhost` 或 `127.0.0.1`，应使用 NAS 的局域网 IP、内网域名或公网地址。
 

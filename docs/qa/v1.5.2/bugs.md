@@ -72,7 +72,7 @@
 
 源码：[`ServerAddressInput.tsx:66`](https://github.com/PIPCLOUD-GH/glean/blob/99dbdef9fa160ccce0f66aa0489dc964a28bc6cd/frontend/src/components/ServerAddressInput.tsx#L66)、`:210`，[`LoginPage.tsx:856`](https://github.com/PIPCLOUD-GH/glean/blob/99dbdef9fa160ccce0f66aa0489dc964a28bc6cd/frontend/src/components/LoginPage.tsx#L856)。
 
-复现：localStorage 保存 https://note.glean.example.com，mount `<LoginPage isClientMode>`；地址输入自动聚焦。父状态恢复公网 host、局域网发现正确消失，但输入仍为空。原用例三轮失败，补充纯组件在 blank→savedHost 更新也重现。证据：`login-address-dom.json`、`address-autofocus-observation.json`、`address-proof.json`。这是 React/jsdom DOM 复现，真实浏览器、Electron 页面和 Native WebView 本轮未人工验收。
+复现：localStorage 保存 https://note.glean.pipcloud.cn，mount `<LoginPage isClientMode>`；地址输入自动聚焦。父状态恢复公网 host、局域网发现正确消失，但输入仍为空。原用例三轮失败，补充纯组件在 blank→savedHost 更新也重现。证据：`login-address-dom.json`、`address-autofocus-observation.json`、`address-proof.json`。这是 React/jsdom DOM 复现，真实浏览器、Electron 页面和 Native WebView 本轮未人工验收。
 
 根因：onFocus 就把 editingRef 设置为“正在修改”；value 同步 effect 因此不更新 displayText，把焦点存在与用户已经输入混为一谈。
 

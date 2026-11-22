@@ -7,10 +7,10 @@
   </p>
   <p>
     <a href="./README.md">简体中文</a> ·
-    <a href="https://glean.example.com/">Official Website</a> ·
-    <a href="https://glean.example.com/#/note/download">Download Center</a> ·
-    <a href="https://glean.example.com/#/note/tutorials">Help Center</a> ·
-    <a href="http://note.glean.example.com/">Live Demo</a> ·
+    <a href="https://glean.pipcloud.cn/">Official Website</a> ·
+    <a href="https://glean.pipcloud.cn/#/note/download">Download Center</a> ·
+    <a href="https://glean.pipcloud.cn/#/note/tutorials">Help Center</a> ·
+    <a href="http://note.glean.pipcloud.cn/">Live Demo</a> ·
     <a href="https://github.com/PIPCLOUD-GH/glean/releases/latest">Downloads</a> ·
     <a href="./docs/tutorials/README.md">Tutorials</a> ·
     <a href="./docs/tutorials/mcp.en.md">MCP Installation</a> ·
@@ -40,7 +40,7 @@
 - **Attachments in Moments.** Add PDFs, Office documents, archives, and other files when publishing or editing a Moment. File attachments have a separate allowance from images and videos.
 - **AI writing and MCP.** The writing assistant keeps edits anchored to the original selection. If the source text changes, generated text remains available to copy. MCP can access explicitly authorized team notebooks within the member's current permissions. MCP can edit personal tasks and delete them after preview and confirmation.
 
-[v1.6.0 release notes and downloads](https://github.com/PIPCLOUD-GH/glean/releases/tag/v1.6.0) · [Official download center](https://glean.example.com/#/note/download) · [Gitee release and download links](https://gitee.com/pipcloud/glean/releases/tag/v1.6.0)
+[v1.6.0 release notes and downloads](https://github.com/PIPCLOUD-GH/glean/releases/tag/v1.6.0) · [Official download center](https://glean.pipcloud.cn/#/note/download) · [Gitee release and download links](https://gitee.com/pipcloud/glean/releases/tag/v1.6.0)
 
 Release packages cover Windows, macOS, Linux, Android, Feiniu fnOS, UGREEN UGOS, and the browser clipper. Docker images are available for `amd64` and `arm64`.
 
@@ -128,11 +128,11 @@ Captured from a real local Glean instance (demo account, light theme, 2× scale)
 
 ## Website and demo
 
-- Official website: <https://glean.example.com/>
-- Glean product overview: <https://glean.example.com/#/note>
-- Multi-platform download center: <https://glean.example.com/#/note/download>
-- Documentation and help center: <https://glean.example.com/#/note/tutorials>
-- Demo: <http://note.glean.example.com/>
+- Official website: <https://glean.pipcloud.cn/>
+- Glean product overview: <https://glean.pipcloud.cn/#/note>
+- Multi-platform download center: <https://glean.pipcloud.cn/#/note/download>
+- Documentation and help center: <https://glean.pipcloud.cn/#/note/tutorials>
+- Demo: <http://note.glean.pipcloud.cn/>
 - Username: `demo`
 - Password: `demo123456`
 
@@ -389,16 +389,16 @@ Example prompt: "Read the glean-development Skill first, inspect the code behind
 
 ## Documentation
 
-- [Glean official website](https://glean.example.com/)
-- [Glean download center](https://glean.example.com/#/note/download)
-- [Glean official help center](https://glean.example.com/#/note/tutorials)
+- [Glean official website](https://glean.pipcloud.cn/)
+- [Glean download center](https://glean.pipcloud.cn/#/note/download)
+- [Glean official help center](https://glean.pipcloud.cn/#/note/tutorials)
 - [MCP Server installation and usage](./docs/tutorials/mcp.en.md)
 - [Editor Agent P0 usage and limitations (development branch)](./docs/user/editor-agent.md)
 - [MCP Server 中文安装教程](./docs/tutorials/mcp.md)
 - [Tutorial center](./docs/tutorials/README.md)
-- [Feature overview](https://glean.example.com/#/note/features)
-- [Installation and troubleshooting](https://glean.example.com/#/note/faq)
-- [API documentation](https://glean.example.com/#/note/api)
+- [Feature overview](https://glean.pipcloud.cn/#/note/features)
+- [Installation and troubleshooting](https://glean.pipcloud.cn/#/note/faq)
+- [API documentation](https://glean.pipcloud.cn/#/note/api)
 - [Deployment guide](./docs/deployment.md)
 - [Docker update and recovery](./docs/docker-online-update.md)
 - [WebDAV backup](./docs/webdav-backup.md)
@@ -445,22 +445,9 @@ Feedback channels:
 - [GitHub Issues](https://github.com/PIPCLOUD-GH/glean/issues)
 - QQ group: `1093473044`
 
-## Support the project
+## Acknowledgements
 
-If Glean helps you, sponsorship supports continued maintenance and development.
-
-<table align="center">
-  <tr>
-    <th>WeChat</th>
-    <th>Alipay</th>
-  </tr>
-  <tr>
-    <td align="center"><img src="./frontend/src/assets/sponsor/weixin.jpg" alt="WeChat sponsorship QR code" width="260" /></td>
-    <td align="center"><img src="./frontend/src/assets/sponsor/zhifubao.png" alt="Alipay sponsorship QR code" width="260" /></td>
-  </tr>
-</table>
-
-Read the [author's note](./AUTHOR_STORY.md).
+Glean is a derivative of [nowen-note](https://github.com/cropflre/nowen-note) (GPL-3.0). Thanks to the original author for the open-source work. Read the [author's note](./AUTHOR_STORY.en.md).
 
 ## License
 

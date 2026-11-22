@@ -52,7 +52,7 @@ const mirror = {
   available: true, tag,
   assets: names.map(name => ({
     name, size: all.find(a => a.name === name)!.size,
-    downloadUrl: "https://download.glean.example.com/v1.5.5/" + name,
+    downloadUrl: "https://download.glean.pipcloud.cn/v1.5.5/" + name,
   })),
 };
 
@@ -87,11 +87,11 @@ describe("Settings > Download clients R2 verified downloads", () => {
 
   it("defaults to R2 for ten verified files and GitHub for UPK/portable", async () => {
     await renderPanel();
-    expect(links()).toContain("https://download.glean.example.com/v1.5.5/Glean-1.5.5-setup.exe");
+    expect(links()).toContain("https://download.glean.pipcloud.cn/v1.5.5/Glean-1.5.5-setup.exe");
     expect(links()).toContain("https://github.com/PIPCLOUD-GH/glean/releases/download/v1.5.5/Glean-1.5.5-setup.exe");
-    expect(links()).not.toContain("https://download.glean.example.com/v1.5.5/Glean-1.5.5-portable.exe");
-    expect(links()).not.toContain("https://download.glean.example.com/v1.5.5/amd64_io.glean.note_1.5.5.0001.upk");
-    expect(links()).not.toContain("https://download.glean.example.com/v1.5.5/glean-1.5.5.fpk");
+    expect(links()).not.toContain("https://download.glean.pipcloud.cn/v1.5.5/Glean-1.5.5-portable.exe");
+    expect(links()).not.toContain("https://download.glean.pipcloud.cn/v1.5.5/amd64_io.glean.note_1.5.5.0001.upk");
+    expect(links()).not.toContain("https://download.glean.pipcloud.cn/v1.5.5/glean-1.5.5.fpk");
     expect(host.textContent).not.toContain("Gitee 镜像");
     const r2 = [...host.querySelectorAll("button")].find(b => b.textContent?.includes("R2 官方下载"));
     expect(r2).toBeDefined();
@@ -100,7 +100,7 @@ describe("Settings > Download clients R2 verified downloads", () => {
   it("never builds unverified R2 links for stale manifest, even when R2 selected", async () => {
     mock.mirror.mockResolvedValue({ ...mirror, tag: "v1.5.6" });
     await renderPanel();
-    expect(links().filter(url => url.includes("download.glean.example.com"))).toEqual([]);
+    expect(links().filter(url => url.includes("download.glean.pipcloud.cn"))).toEqual([]);
     expect(links()).toContain("https://github.com/PIPCLOUD-GH/glean/releases/download/v1.5.5/Glean-1.5.5-setup.exe");
   });
 
@@ -109,6 +109,6 @@ describe("Settings > Download clients R2 verified downloads", () => {
     const githubButton = [...host.querySelectorAll("button")].find(b => b.textContent === "GitHub");
     expect(githubButton).toBeDefined();
     await act(async () => githubButton!.click());
-    expect(links()).not.toContain("https://download.glean.example.com/v1.5.5/Glean-1.5.5-setup.exe");
+    expect(links()).not.toContain("https://download.glean.pipcloud.cn/v1.5.5/Glean-1.5.5-setup.exe");
   });
 });

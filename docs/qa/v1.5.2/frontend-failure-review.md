@@ -18,7 +18,7 @@
 | F10 | useAttachmentVideoRenderSource：switches to late signed URL… | 同上 | FAIL；保留 late signed URL 与避免整段 blob 下载断言 |
 | F11 | proxyCompatibility：narrowly maps Lucky/Nginx API rewrites… | 测试契约过时：要求精确单元素 exposeHeaders 字符串；526ccc5b 增加 X-Request-Id，兼容头仍在列表 | 三轮均 FAIL，非偶发；验证头集合和实际 CORS 响应，不禁止新增追踪头 |
 | F12 | ShareModalClipboard：uses shared clipboard helper… | 测试契约过时：断言中文 toast 字面量，a1e5e7fe 改为 t("shareUi.copyFailed")，合并资源仍是同一文案 | 三轮均 FAIL，非偶发；保留共享 copyText、失败提示与复制状态隔离要求 |
-| F13 | LoginPageLocalDesktopLogin：远程服务器地址下隐藏局域网发现 | **真实产品缺陷 BUG-07**：自动聚焦触发 editingRef=true，异步恢复 host 时跳过 displayText 更新，显示空地址 | 三轮 FAIL。诊断：localStorage 有 https://note.glean.example.com、LAN 元素已隐藏、三个 input 都为空；独立 autofocused 地址组件亦重现 |
+| F13 | LoginPageLocalDesktopLogin：远程服务器地址下隐藏局域网发现 | **真实产品缺陷 BUG-07**：自动聚焦触发 editingRef=true，异步恢复 host 时跳过 displayText 更新，显示空地址 | 三轮 FAIL。诊断：localStorage 有 https://note.glean.pipcloud.cn、LAN 元素已隐藏、三个 input 都为空；独立 autofocused 地址组件亦重现 |
 | F14 | cryptoV2：历史超时失败的具体用例名 UNKNOWN | 未复现，历史原因未证实；不能直接归“偶发已解决” | 全文件 11 个用例三轮均 PASS（每轮进程约 5.7–6.0 秒）。需旧原始 JSON、用例名和并发负载记录才能定因 |
 
 本轮 13 个可识别失败：12 个属于测试契约/Mock/初始化问题，1 个真实 UI 缺陷。尚没有本轮证据把任何一项归为已确认环境问题；历史 crypto 的“偶发/负载”归因仍未证实。这一分类描述**定向测试诊断**，不证明对应业务域已做全功能验收。

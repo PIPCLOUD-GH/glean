@@ -116,9 +116,9 @@ describe("issue #808: server address field on desktop login", () => {
     await act(async () => root.render(<ServerAddressInput value={blank} onChange={onChange} autoFocus />));
     expect(document.activeElement).toBe(address());
     await act(async () => root.render(<ServerAddressInput
-      value={{ protocol: "https", host: "note.glean.example.com", port: "", path: "" }}
+      value={{ protocol: "https", host: "note.glean.pipcloud.cn", port: "", path: "" }}
       onChange={onChange} autoFocus />));
-    expect(address().value).toBe("note.glean.example.com");
+    expect(address().value).toBe("note.glean.pipcloud.cn");
     expect(onChange).not.toHaveBeenCalled();
   });
 

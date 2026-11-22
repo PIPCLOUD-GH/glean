@@ -1,11 +1,9 @@
 import React, { useState, useRef, useEffect, useCallback } from "react";
 import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { Palette, Shield, Database, X, Settings, Camera, Save, Loader2, Trash2, Upload, Type, Check, ChevronDown, Globe, Bot, Users, Info, ExternalLink, Heart, Sparkles, RefreshCw, ZoomIn, Key, Keyboard, Building2, BookOpen, ToggleLeft, Download, FolderSync, Mail, Workflow, GripVertical, ArrowUp, ArrowDown } from "lucide-react";
+import { Palette, Shield, Database, X, Settings, Camera, Save, Loader2, Trash2, Upload, Type, Check, ChevronDown, Globe, Bot, Users, Info, ExternalLink, Sparkles, RefreshCw, Key, Keyboard, Building2, BookOpen, ToggleLeft, Download, FolderSync, Mail, Workflow, GripVertical, ArrowUp, ArrowDown } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Browser } from "@capacitor/browser";
-import wechatSponsorQr from "@/assets/sponsor/weixin.jpg";
-import alipaySponsorQr from "@/assets/sponsor/zhifubao.png";
 import qqGroupQr from "@/assets/feedback/qq-group.jpg";
 import communityQr from "@/assets/community/glean-lab-wechat.jpg";
 import ThemeToggle from "@/components/ThemeToggle";
@@ -372,7 +370,7 @@ function renderUpdaterStatus(p: UpdaterPayload): string {
  * 简易图片放大 Lightbox
  * - 点击图片打开，Esc/点击蒙层/关闭按钮 关闭
  * - createPortal 到 body，避免被 SettingsModal 的 overflow/transform 截断
- * - 故意做轻：赞赏码场景只需要看清原图，不需要缩放/平移
+ * - 故意做轻：预览场景只需要看清原图，不需要缩放/平移
  */
 function ImageLightbox({ src, alt, onClose }: { src: string; alt?: string; onClose: () => void }) {
   useEffect(() => {
@@ -420,17 +418,9 @@ function AboutPanel() {
   const feedbackEmail = "gleanlab@qq.com";
   const feedbackMailto = `mailto:${feedbackEmail}?subject=${encodeURIComponent("[Glean 反馈]")}`;
   const feedbackQqGroupNumber = "1093473044";
-  const [showSponsor, setShowSponsor] = useState(false);
-  const [sponsorMethod, setSponsorMethod] = useState<"wechat" | "alipay">("wechat");
   const [showWhatsNew, setShowWhatsNew] = useState(false);
   const [showAuthorStory, setShowAuthorStory] = useState(false);
-  // 赞赏码大图预览：点击赞赏码缩略图时弹起 Lightbox
-  const [sponsorPreviewOpen, setSponsorPreviewOpen] = useState(false);
   const [feedbackQqPreviewOpen, setFeedbackQqPreviewOpen] = useState(false);
-  const sponsorImage = sponsorMethod === "wechat" ? wechatSponsorQr : alipaySponsorQr;
-  const sponsorLabel = sponsorMethod === "wechat"
-    ? t('about.sponsorWechat')
-    : t('about.sponsorAlipay');
   return (
     <div className="space-y-6">
       {/* 标题区 */}
@@ -442,7 +432,7 @@ function AboutPanel() {
             {t('about.version')} {__APP_VERSION__}
           </span>
           <a
-            href="https://glean.example.com/"
+            href="https://glean.pipcloud.cn/"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-1 text-xs text-zinc-500 hover:text-accent-primary dark:text-zinc-400 dark:hover:text-accent-primary transition-colors"
@@ -657,108 +647,6 @@ function AboutPanel() {
         </div>
       </div>
 
-      {/* 支持作者 / 打赏 */}
-      <div className="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-800/30 overflow-hidden">
-        <button
-          type="button"
-          onClick={() => setShowSponsor((v) => !v)}
-          className="w-full flex items-center justify-between p-4 hover:bg-zinc-100/60 dark:hover:bg-zinc-800/50 transition-colors"
-        >
-          <div className="flex items-center gap-3">
-            <span className="flex items-center justify-center w-8 h-8 rounded-lg bg-rose-500/10 text-rose-500">
-              <Heart size={16} fill="currentColor" />
-            </span>
-            <div className="text-left">
-              <div className="text-sm font-medium text-zinc-700 dark:text-zinc-300">
-                {t('about.sponsor')}
-              </div>
-              <div className="text-xs text-zinc-500 dark:text-zinc-400 mt-0.5">
-                {t('about.sponsorDesc')}
-              </div>
-            </div>
-          </div>
-          <span className="text-xs text-zinc-500 dark:text-zinc-400 shrink-0">
-            {showSponsor ? t('about.sponsorCollapse') : t('about.sponsorAction')}
-          </span>
-        </button>
-        <AnimatePresence initial={false}>
-          {showSponsor && (
-            <motion.div
-              initial={{ height: 0, opacity: 0 }}
-              animate={{ height: 'auto', opacity: 1 }}
-              exit={{ height: 0, opacity: 0 }}
-              transition={{ duration: 0.2 }}
-              className="overflow-hidden"
-            >
-              <div className="px-4 pb-4 pt-2 flex flex-col items-center gap-3 border-t border-zinc-200/60 dark:border-zinc-800/60">
-                <div
-                  className="grid w-full max-w-xs grid-cols-2 rounded-lg bg-zinc-200/70 p-1 dark:bg-zinc-800"
-                  role="tablist"
-                  aria-label={t('about.sponsorMethod')}
-                >
-                  <button
-                    type="button"
-                    role="tab"
-                    aria-selected={sponsorMethod === "wechat"}
-                    onClick={() => setSponsorMethod("wechat")}
-                    className={cn(
-                      "rounded-md px-3 py-1.5 text-xs font-medium transition-colors",
-                      sponsorMethod === "wechat"
-                        ? "bg-emerald-500 text-white shadow-sm"
-                        : "text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100",
-                    )}
-                  >
-                    {t('about.sponsorWechat')}
-                  </button>
-                  <button
-                    type="button"
-                    role="tab"
-                    aria-selected={sponsorMethod === "alipay"}
-                    onClick={() => setSponsorMethod("alipay")}
-                    className={cn(
-                      "rounded-md px-3 py-1.5 text-xs font-medium transition-colors",
-                      sponsorMethod === "alipay"
-                        ? "bg-blue-500 text-white shadow-sm"
-                        : "text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100",
-                    )}
-                  >
-                    {t('about.sponsorAlipay')}
-                  </button>
-                </div>
-                {/* 点击图片打开 Lightbox 看大图（按钮包裹 → 无障碍/键盘可达） */}
-                <button
-                  type="button"
-                  onClick={() => setSponsorPreviewOpen(true)}
-                  className="group relative rounded-lg overflow-hidden cursor-zoom-in focus:outline-none focus-visible:ring-2 focus-visible:ring-rose-400"
-                  title={sponsorLabel}
-                  aria-label={sponsorLabel}
-                >
-                  <img
-                    src={sponsorImage}
-                    alt={sponsorLabel}
-                    className="w-44 sm:w-52 max-h-72 object-contain rounded-lg bg-white p-2 shadow-sm transition-transform duration-200 group-hover:scale-[1.02]"
-                    loading="lazy"
-                    draggable={false}
-                  />
-                  {/* hover 时浮现的放大图标提示 */}
-                  <span className="absolute inset-0 flex items-center justify-center bg-black/0 group-hover:bg-black/20 transition-colors">
-                    <span className="opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-1 px-2 py-1 rounded-md bg-black/60 text-white text-[11px]">
-                      <ZoomIn size={12} />
-                      点击放大
-                    </span>
-                  </span>
-                </button>
-                <p className="text-xs text-zinc-500 dark:text-zinc-400 text-center">
-                  {sponsorMethod === "wechat"
-                    ? t('about.sponsorWechatTip')
-                    : t('about.sponsorAlipayTip')}
-                </p>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </div>
-
       {/* 底部 */}
       <p className="text-center text-xs text-zinc-400 dark:text-zinc-600">
         {t('about.madeWith')}
@@ -781,15 +669,6 @@ function AboutPanel() {
           src={qqGroupQr}
           alt={t('about.feedbackQqGroupNumber', { number: feedbackQqGroupNumber })}
           onClose={() => setFeedbackQqPreviewOpen(false)}
-        />
-      )}
-
-      {/* 赞赏码大图预览 Lightbox */}
-      {sponsorPreviewOpen && (
-        <ImageLightbox
-          src={sponsorImage}
-          alt={sponsorLabel}
-          onClose={() => setSponsorPreviewOpen(false)}
         />
       )}
     </div>

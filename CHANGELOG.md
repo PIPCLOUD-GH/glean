@@ -450,8 +450,8 @@
 - **release-center**: record real desktop builds and artifact verification (3a22459)
 - align official site, downloads and help navigation (en) (6fe3367)
 - align official site, downloads and help navigation (zh) (2af2f8b)
-- **readme**: publish https://glean.example.com as official site (en) (6ca9b5f)
-- **readme**: set https://glean.example.com as active official website (zh) (af7f68f)
+- **readme**: publish https://glean.pipcloud.cn as official site (en) (6ca9b5f)
+- **readme**: set https://glean.pipcloud.cn as active official website (zh) (af7f68f)
 - **qa**: preserve existing DCC matrix formatting (1e0f801)
 - **files**: record Phase A merge and CI baseline evidence (25c1625)
 - **files**: record authorized A and B integration follow-up (bf1a5d7)
@@ -6424,7 +6424,7 @@ _本版本无可展示的 commit 变更（可能全部是合并 / 工作流修�
 
 ### 📝 文档
 
-- **readme**: 添加在线体验入口（note.glean.example.com） (b626b3e)
+- **readme**: 添加在线体验入口（note.glean.pipcloud.cn） (b626b3e)
 
 ### 🔧 其他
 

@@ -20,7 +20,6 @@ docs
 docs/**
 !docs/releases/
 !docs/releases/in-app-changelog.json
-weixin.jpg
 LICENSE
 
 # --- Node 依赖 / 构建产物（容器里会重新 npm ci + build）---

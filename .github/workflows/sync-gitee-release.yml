@@ -320,7 +320,7 @@ jobs:
           printf '%s' "$source" > "$RUNNER_TEMP/glean-gh-release.json"
           mirror_file="$RUNNER_TEMP/glean-r2-manifest.json"
           if ! curl --http1.1 --connect-timeout 7 --max-time 18 -fsSL \
-            -o "$mirror_file" "https://download.glean.example.com/$TAG/manifest.json"; then
+            -o "$mirror_file" "https://download.glean.pipcloud.cn/$TAG/manifest.json"; then
             echo '[gitee] R2 mirror manifest unavailable; preserving GitHub links'
             printf '%s' '{}' > "$mirror_file"
           fi
@@ -332,7 +332,7 @@ jobs:
           if [ -z "$asset_links" ]; then
             asset_links="本版本没有单独提供可分发的安装包。"
           fi
-          body=$(printf '%s\n\n---\n\n### 官方安装包下载\n\n%s\n\n> 已验证的文件优先使用 download.glean.example.com（R2）并保留 GitHub 备用链接；未镜像的安装包仍由 GitHub 分发，Gitee 不托管大文件。\n\n[GitHub 原版发布页](https://github.com/%s/releases/tag/%s)\n' \
+          body=$(printf '%s\n\n---\n\n### 官方安装包下载\n\n%s\n\n> 已验证的文件优先使用 download.glean.pipcloud.cn（R2）并保留 GitHub 备用链接；未镜像的安装包仍由 GitHub 分发，Gitee 不托管大文件。\n\n[GitHub 原版发布页](https://github.com/%s/releases/tag/%s)\n' \
             "$notes" "$asset_links" "$GITHUB_REPOSITORY" "$TAG")
 
           api="https://gitee.com/api/v5/repos/$GITEE_OWNER/$GITEE_REPO/releases/$RELEASE_ID"

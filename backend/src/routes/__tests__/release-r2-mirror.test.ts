@@ -37,7 +37,7 @@ test("R2 only trusts the ten published installers, fnOS FPK and Clipper",()=>{
  assert.equal(result.assets.length,10);
  for(const asset of result.assets) {
    assert.equal(asset.downloadUrl,
-     "https://download.glean.example.com/v1.5.5/"+asset.name);
+     "https://download.glean.pipcloud.cn/v1.5.5/"+asset.name);
  }
  for(const ignored of ["amd64_io.glean.note_1.5.5.0001.upk","Glean-1.5.5-portable.exe"]) {
    assert.equal(isMirrorEligibleName(ignored,tag),false);
