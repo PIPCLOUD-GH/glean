@@ -2924,10 +2924,8 @@
     "feedbackDesc": "遇到问题或有功能建议，欢迎通过邮件联系我们。",
     "feedbackAction": "发送邮件",
     "feedbackQqGroup": "加入 QQ 群反馈",
-    "feedbackQqGroupDesc": "扫码加入 glean 开发群，也可搜索群号加入。",
-    "feedbackQqGroupNumber": "QQ群：{{number}}",
-    "communityQrTitle": "Glean 开源实验室",
-    "communityQrDesc": "扫码关注公众号，获取 Glean 最新动态。"
+    "feedbackQqGroupDesc": "搜索群号加入 glean 开发群。",
+    "feedbackQqGroupNumber": "QQ群：{{number}}"
   },
   "whatsNew": {
     "title": "更新日志",

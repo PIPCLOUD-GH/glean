@@ -4,8 +4,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Palette, Shield, Database, X, Settings, Camera, Save, Loader2, Trash2, Upload, Type, Check, ChevronDown, Globe, Bot, Users, Info, ExternalLink, Sparkles, RefreshCw, Key, Keyboard, Building2, BookOpen, ToggleLeft, Download, FolderSync, Mail, Workflow, GripVertical, ArrowUp, ArrowDown } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Browser } from "@capacitor/browser";
-import qqGroupQr from "@/assets/feedback/qq-group.jpg";
-import communityQr from "@/assets/community/glean-lab-wechat.jpg";
 import ThemeToggle from "@/components/ThemeToggle";
 import SkinSwitcher from "@/components/SkinSwitcher";
 import ShareBannerEditor from "@/components/settings/ShareBannerEditor";
@@ -366,53 +364,6 @@ function renderUpdaterStatus(p: UpdaterPayload): string {
   }
 }
 
-/**
- * 简易图片放大 Lightbox
- * - 点击图片打开，Esc/点击蒙层/关闭按钮 关闭
- * - createPortal 到 body，避免被 SettingsModal 的 overflow/transform 截断
- * - 故意做轻：预览场景只需要看清原图，不需要缩放/平移
- */
-function ImageLightbox({ src, alt, onClose }: { src: string; alt?: string; onClose: () => void }) {
-  useEffect(() => {
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
-    };
-    window.addEventListener("keydown", onKey);
-    const prev = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-    return () => {
-      window.removeEventListener("keydown", onKey);
-      document.body.style.overflow = prev;
-    };
-  }, [onClose]);
-
-  return createPortal(
-    <div
-      className="fixed inset-0 z-[10000] bg-black/85 backdrop-blur-sm flex items-center justify-center p-4"
-      onClick={(e) => {
-        if (e.target === e.currentTarget) onClose();
-      }}
-    >
-      <button
-        type="button"
-        className="absolute top-3 right-3 p-2 rounded-lg bg-black/60 border border-white/10 text-white/90 hover:bg-white/10 transition-colors"
-        title="关闭 (Esc)"
-        aria-label="关闭"
-        onClick={onClose}
-      >
-        <X size={16} />
-      </button>
-      <img
-        src={src}
-        alt={alt}
-        className="max-w-[92vw] max-h-[88vh] object-contain rounded-lg shadow-2xl bg-white"
-        draggable={false}
-      />
-    </div>,
-    document.body
-  );
-}
-
 function AboutPanel() {
   const { t } = useTranslation();
   const feedbackEmail = "gleanlab@qq.com";
@@ -420,7 +371,6 @@ function AboutPanel() {
   const feedbackQqGroupNumber = "1093473044";
   const [showWhatsNew, setShowWhatsNew] = useState(false);
   const [showAuthorStory, setShowAuthorStory] = useState(false);
-  const [feedbackQqPreviewOpen, setFeedbackQqPreviewOpen] = useState(false);
   return (
     <div className="space-y-6">
       {/* 标题区 */}
@@ -513,25 +463,6 @@ function AboutPanel() {
           <ExternalLink size={12} />
           {t('about.github')}
         </a>
-      </div>
-
-      {/* Glean 开源实验室公众号 */}
-      <div className="flex items-center justify-between gap-4 p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-800/30">
-        <div className="min-w-0">
-          <div className="text-sm font-medium text-zinc-700 dark:text-zinc-300">
-            {t('about.communityQrTitle')}
-          </div>
-          <div className="text-xs text-zinc-500 dark:text-zinc-400 mt-0.5">
-            {t('about.communityQrDesc')}
-          </div>
-        </div>
-        <img
-          src={communityQr}
-          alt={t('about.communityQrTitle')}
-          className="w-28 h-28 object-contain rounded-lg bg-white p-1 shrink-0"
-          loading="lazy"
-          draggable={false}
-        />
       </div>
 
       {/* 更新日志 */}
@@ -629,21 +560,6 @@ function AboutPanel() {
               </div>
             </div>
           </div>
-          <button
-            type="button"
-            onClick={() => setFeedbackQqPreviewOpen(true)}
-            className="shrink-0 rounded-lg overflow-hidden cursor-zoom-in focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-400"
-            title={t('about.feedbackQqGroup')}
-            aria-label={t('about.feedbackQqGroup')}
-          >
-            <img
-              src={qqGroupQr}
-              alt={t('about.feedbackQqGroupNumber', { number: feedbackQqGroupNumber })}
-              className="w-16 h-16 object-cover bg-white p-1"
-              loading="lazy"
-              draggable={false}
-            />
-          </button>
         </div>
       </div>
 
@@ -664,13 +580,6 @@ function AboutPanel() {
         onClose={() => setShowAuthorStory(false)}
       />
 
-      {feedbackQqPreviewOpen && (
-        <ImageLightbox
-          src={qqGroupQr}
-          alt={t('about.feedbackQqGroupNumber', { number: feedbackQqGroupNumber })}
-          onClose={() => setFeedbackQqPreviewOpen(false)}
-        />
-      )}
     </div>
   );
 }
