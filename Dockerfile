@@ -32,10 +32,13 @@ RUN --mount=type=secret,id=github_token,required=false \
 # 版本与 Alpine 3.23 的 ffmpeg 8.0.1 相同；源码 SHA-256 已与 aports 记录的 SHA-512 交叉核对。
 FROM alpine:3.23 AS ffmpeg-build
 WORKDIR /build
+# FFMPEG_URL 可用 build-arg 覆盖为内网镜像（海外源在部分网络下低于 10KB/s 会触发 max-time 超时）；
+# 文件完整性始终由下方 sha256sum 校验，换源不影响安全。
+ARG FFMPEG_URL=https://ffmpeg.org/releases/ffmpeg-8.0.1.tar.xz
 RUN apk add --no-cache build-base curl nasm pkgconf x264-dev zlib-dev
 COPY scripts/ffmpeg/minimal-configure-flags.txt /minimal-configure-flags.txt
 RUN curl -fsSL --retry 5 --retry-all-errors --retry-delay 2 --connect-timeout 15 --max-time 300 \
-      https://ffmpeg.org/releases/ffmpeg-8.0.1.tar.xz -o ffmpeg.tar.xz \
+      "$FFMPEG_URL" -o ffmpeg.tar.xz \
     && echo "05ee0b03119b45c0bdb4df654b96802e909e0a752f72e4fe3794f487229e5a41  ffmpeg.tar.xz" | sha256sum -c - \
     && tar -xJf ffmpeg.tar.xz --strip-components=1 \
     && ./configure $(grep -v -e '^#' -e '^$' /minimal-configure-flags.txt) \
