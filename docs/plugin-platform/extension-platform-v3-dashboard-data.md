@@ -93,4 +93,4 @@ npm run build
 npx playwright test --config playwright.plugin-apps.config.ts --reporter=line
 ```
 
-`GLEAN_EXTENSION_V3_DASHBOARD_WIDGETS=0` 关闭工作台，`GLEAN_EXTENSION_V3_PLUGIN_DATA=0` 关闭集合 API；原有 core/appPages 及显式旧版关闭覆盖仍有效。
+`GLEAN_EXTENSION_V3_DASHBOARD_WIDGETS=0` 关闭工作台中的插件卡片（1.6.0 起内置卡片不受影响，见[工作台](./workbench.md)），`GLEAN_EXTENSION_V3_PLUGIN_DATA=0` 关闭集合 API；原有 core/appPages 及显式旧版关闭覆盖仍有效。

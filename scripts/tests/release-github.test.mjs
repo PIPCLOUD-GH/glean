@@ -82,12 +82,13 @@ test("full inventory rejects a missing platform and unrelated stale assets", () 
   const require = createRequire(import.meta.url);
   const { requiredMacReleaseAssets, requiredDebugReleaseAssets } = require("../lib/release-platform-assets.cjs");
   const names = [...requiredMacReleaseAssets("1.5.3"), ...requiredDebugReleaseAssets("linux", "1.5.3"),
-    ...["Glean", "Glean-Lite"].flatMap(prefix => [`${prefix}-1.5.3-setup.exe`, `${prefix}-1.5.3-portable.exe`, `${prefix}-1.5.3-setup.exe.blockmap`]),
-    "latest.yml", "latest-lite.yml", "Glean-1.5.3.apk"];
+    "Glean-1.5.3-setup.exe", "Glean-1.5.3-portable.exe", "Glean-1.5.3-setup.exe.blockmap",
+    "latest.yml", "Glean-1.5.3.apk"];
   const assets = names.map(name => ({ name }));
   assertFullInventory(assets, source, ["Glean-1.5.3.apk"]);
   assert.throws(() => assertFullInventory(assets.slice(1), source, ["Glean-1.5.3.apk"]));
   assert.throws(() => assertFullInventory([...assets, { name: "old.apk" }], source, ["Glean-1.5.3.apk"]));
+  assert.throws(() => assertFullInventory([...assets, { name: "latest-lite.yml" }], source, ["Glean-1.5.3.apk"]), /unexpected Release asset: latest-lite\.yml/);
 });
 
 test("supplemental packages cannot change while desktop collection is running", () => {

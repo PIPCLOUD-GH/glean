@@ -58,8 +58,11 @@ description: 使用 Glean MCP 或 CLI 搜索、读取、创建、更新和整理
 | 知识库问答 | `glean_ai_ask` |
 | AI 文本处理 | `glean_ai_process` |
 | 知识库统计 | `glean_knowledge_stats` |
+| AI 对话归档：可用来源 | `glean_ai_archive_sources` |
+| AI 对话归档：保存当前对话（仅在用户要求时） | `glean_ai_archive_save` |
+| AI 对话归档：列出、读取 | `glean_ai_archive_list`、`glean_ai_archive_read` |
 
-具体参数以客户端当前暴露的 MCP schema 为准，不要猜测不存在的参数。**目前 MCP 文档没有列出任务管理工具；任务操作应使用已安装 CLI 或其他明确授权的接口，不得杜撰 `glean_task_*` 工具。**
+具体参数以客户端当前暴露的 MCP schema 为准，不要猜测不存在的参数。**个人任务工具（如 `glean_list_tasks`、`glean_create_task`、`glean_update_task`、`glean_complete_task`、`glean_delete_task`）以客户端实际列出的为准；没有列出时改用已安装 CLI 或其他明确授权的接口，不得杜撰任务工具。**
 
 ## 4. CLI 兜底
 
@@ -185,6 +188,8 @@ GLEAN_PASSWORD
 - 用户说“看看任务” → 只读；
 - 用户说“创建任务” → 可以创建；
 - 用户说“完成这个任务” → 先定位唯一任务，再切换状态；
+- 用户说“改一下这个任务” → 先定位唯一任务，只修改用户提到的标题、日期、优先级、描述或状态；
+- 用户说“删掉这个任务” → 先用 `glean_delete_task` 预览，把将被删除的任务（含子任务、循环系列）告诉用户，得到明确同意后再传预览的 `expectedRevision` 和 `confirmation=DELETE_TASK` 执行。任务没有回收站；已完成的任务可以建议改用 `glean_archive_task` 归档；
 - 同名任务存在多个时，不要随便选择。
 
 创建任务时，用户给了日期、优先级就保留；没有给则不要虚构。

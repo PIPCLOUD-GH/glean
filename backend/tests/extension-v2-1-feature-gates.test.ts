@@ -11,6 +11,7 @@ const KEYS = [
   "GLEAN_SANDBOXED_PLUGIN_UI",
   "GLEAN_FILE_PROCESSING_EXTENSIONS",
   "GLEAN_EXPERIMENTAL_DOCUMENT_TYPES",
+  "GLEAN_EDITOR_ACTIONS",
 ] as const;
 
 function withEnv(values: Partial<Record<typeof KEYS[number], string>>, run: () => void): void {
@@ -37,6 +38,7 @@ test("V2.1 feature gates fail closed by default", () => {
     sandboxedPluginUi: false,
     fileProcessingExtensions: false,
     experimentalDocumentTypes: false,
+    editorActions: false,
   }));
 });
 
@@ -50,6 +52,7 @@ test("dependent V2.1 gates cannot bypass their parent capability", () => {
       sandboxedPluginUi: false,
       fileProcessingExtensions: false,
       experimentalDocumentTypes: false,
+      editorActions: false,
     });
   });
   withEnv({ GLEAN_EXTENSIONS_V21: "1", GLEAN_PLUGIN_STUDIO: "yes", GLEAN_UI_EXTENSIONS: "true", GLEAN_UI_LAYOUT_EDITOR: "on", GLEAN_SANDBOXED_PLUGIN_UI: "enabled", GLEAN_FILE_PROCESSING_EXTENSIONS: "on", GLEAN_EXPERIMENTAL_DOCUMENT_TYPES: "enabled" }, () => {
@@ -61,11 +64,12 @@ test("dependent V2.1 gates cannot bypass their parent capability", () => {
       sandboxedPluginUi: true,
       fileProcessingExtensions: true,
       experimentalDocumentTypes: true,
+      editorActions: false,
     });
   });
 });
 
-test("1.5.3 host keeps the independent V2.1 compatibility target", () => {
-  assert.equal(GLEAN_VERSION, "1.5.3");
+test("1.6.0 host meets the V2.1 compatibility target", () => {
+  assert.equal(GLEAN_VERSION, "1.6.0");
   assert.equal(EXTENSION_V21_TARGET_GLEAN_VERSION, "1.6.0");
 });

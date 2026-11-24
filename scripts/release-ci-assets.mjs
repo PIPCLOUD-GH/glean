@@ -79,8 +79,6 @@ export function selectPlatformFiles(directory, platform, version) {
   const required = platform === "mac" ? requiredMacReleaseAssets(version) : platform === "linux" ? requiredDebugReleaseAssets("linux", version) : [
     `Glean-${version}-setup.exe`, `Glean-${version}-portable.exe`,
     `Glean-${version}-setup.exe.blockmap`, "latest.yml",
-    `Glean-Lite-${version}-setup.exe`, `Glean-Lite-${version}-portable.exe`,
-    `Glean-Lite-${version}-setup.exe.blockmap`, "latest-lite.yml",
   ];
   const allowed = new Set([...required, ...(platform === "mac" || platform === "linux" ? required.filter((name) => /\.(dmg|zip|AppImage)$/.test(name)).map((name) => `${name}.blockmap`) : [])]);
   const entries = fs.readdirSync(directory, { withFileTypes: true });
