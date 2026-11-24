@@ -2,6 +2,7 @@
   "name": "glean",
   "version": "1.0.0",
   "description": "Glean - A modern note-taking application",
+  "homepage": "https://glean.pipcloud.cn",
   "author": "Glean",
   "private": true,
   "main": "electron/main-bootstrap.js",
