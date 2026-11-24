@@ -2,9 +2,9 @@
   "schema": 1,
   "keys": [
     {
-      "id": "b990fb1fbb5232c1",
-      "createdAt": "2026-11-23",
-      "pem": "-----BEGIN PUBLIC KEY-----\nMIIBojANBgkqhkiG9w0BAQEFAAOCAY8AMIIBigKCAYEAo54hB0dr1RnT10lLkHJB\n+5QQPrlKWw184llEKnYgVi4Ap/ps8zSS0VuASPpk0/Kx7ABTHO3e6fexBr9JBLL3\nAJRkABhYGv+FneBMJ1mgNYxxYKzFp61NKxHPAQKDVvNMmXzugqx2AZLR4spJnZnk\niNkuSpKh6iDlzYcQOPeCQbJN6kaCO+YFcUSS4Mmge+u6chztipy6X+wHZts/9EQ/\nsfUgHV4mzTuJWrpKLzLmAnrdBwHR4e2zwIipENTbOuzi5xbSCoZ0W01I/5WHO+xJ\nSUiwjtNpr4znNMtxQ4dVFIE3/J928COO8xJD3rzaMwoE6t6Liqs525y9qfV6AxAL\nNLz1v9MWso6mwQ1gGBuHXdthv1u5SYBEykKLiLkcIfcue7+eFQli2WCH0KlHV609\nAIooDX5JZnMl3rvF6jRIpcXOzbrm8AZqbc2AYP3Ty/DGlyLiOKlnnz0yzhLac6pb\nstytYsNHEdjEGfUs3L/jpyvvRe0lBKO6uF9r/IuAkekZAgMBAAE=\n-----END PUBLIC KEY-----\n"
+      "id": "ff4afafd4505ac45",
+      "createdAt": "2026-11-24",
+      "pem": "-----BEGIN PUBLIC KEY-----\nMIIBojANBgkqhkiG9w0BAQEFAAOCAY8AMIIBigKCAYEA8xSqO9/YU1kVaRi1CtM5\ngjpwE+uhBZ0TJghyCi3/2g4pgJI+rQQ/qEyg5JZWKDdWJqpED33b2JTKIIstdoXi\n2rlmC2cD8AwQFkphCTvGM27UaM3q9ltCYD2tfqiJNo8rI+l5SSZn4cqS9svWAbKW\n/hSGA3C8nx6+rgnjLXkLAZEAWz5SF1JUcfmCSt3Mf/c7PvOkol5BDugHbKmDJjZr\n0BAsKM7oC92zD3mn6aPUxVWdtGV68oVbff3V1oeP+jUST/O6MZpUcIBhd0XzOdj0\nEFwpir37KbYmTiJAfaCquNQojaLXL0AHxe1c0+xZDoYzOpQnb5RGY4mvQx6Xbw12\n3i7FMGX/dbMg7YapgsT3fxv0IGQcf+czu4itnfs4zewEoarNvVBENpNAmYK2cOOi\npiDIja94IEWRlvCbPlIjrBnw+5oXIIHcyc6PBXN+PJXAUuFd7Eue3zgAWqvJekh/\nMPypHHyWrYFgMH/WrgOZ+z9fsqWXE5+aXmV3p8Zh1OwNAgMBAAE=\n-----END PUBLIC KEY-----\n"
     }
   ]
 }
