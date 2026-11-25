@@ -452,7 +452,7 @@ npm run build:all
 Feedback channels:
 
 - [GitHub Issues](https://github.com/PIPCLOUD-GH/glean/issues)
-- QQ group: `1093473044`
+- QQ group: `325372004`
 
 ## Acknowledgements
 

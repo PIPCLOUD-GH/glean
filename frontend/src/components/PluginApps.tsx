@@ -1,5 +1,5 @@
 import React, { lazy, Suspense, useEffect, useRef, useState } from "react";
-import { Puzzle } from "lucide-react";
+import { Grid3x3 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { useAppActions } from "@/store/AppContext";
 import { usePluginApps } from "@/hooks/usePluginApps";
@@ -28,7 +28,7 @@ export function PluginAppNavigation({ showLabel }: { showLabel: boolean }) {
   return <>
     {[{ runtimeId: "apps", title: t("pluginApps.title"), route: "/apps" }, ...(enabled ? pages.filter(pinned) : [])].map(page => (
       <button key={page.runtimeId} data-mobile-drawer-rail-item="" type="button" title={page.title} aria-label={page.title} onClick={() => open(page.route)} className="flex w-10 min-h-10 flex-col items-center justify-center rounded-lg text-tx-secondary hover:bg-app-hover">
-        <Puzzle size={17} />{showLabel && <span className="max-w-full truncate text-[10px]">{page.title}</span>}
+        <Grid3x3 size={17} />{showLabel && <span className="max-w-full truncate text-[10px]">{page.title}</span>}
       </button>
     ))}
   </>;

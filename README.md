@@ -451,7 +451,7 @@ npm run build:all
 反馈入口：
 
 - [GitHub Issues](https://github.com/PIPCLOUD-GH/glean/issues)
-- QQ 群：`1093473044`
+- QQ 群：`325372004`
 
 ## 致谢
 

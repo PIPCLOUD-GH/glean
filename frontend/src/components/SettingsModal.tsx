@@ -29,6 +29,7 @@ import PreferencesPanel from "@/components/settings/preferences/PreferencesPanel
 import { revealSettingsTarget } from "@/components/settings/preferences/revealSettingsTarget";
 import type { RelatedSettingsTab } from "@/components/settings/preferences/preferenceSearch";
 import AIMemoryArchiveSetting from "@/components/settings/AIMemoryArchiveSetting";
+import QRCode from "@/components/ui/QRCode";
 import { useSiteSettings, BUILTIN_FONTS, getBuiltinFontName } from "@/hooks/useSiteSettings";
 import { useUserPreferences } from "@/hooks/useUserPreferences";
 import { useSidebarTextStyle } from "@/hooks/useSidebarTextStyle";
@@ -347,9 +348,11 @@ function renderUpdaterStatus(p: UpdaterPayload): string {
 
 function AboutPanel() {
   const { t } = useTranslation();
-  const contactEmail = "gleanlab@qq.com";
+  const contactEmail = "pipcloud@qq.com";
   const feedbackMailto = `mailto:${contactEmail}?subject=${encodeURIComponent("[Glean 反馈]")}`;
-  const feedbackQqGroupNumber = "1093473044";
+  const feedbackQqGroupNumber = "325372004";
+  // QQ 官方入群链接（由群二维码解码得到），用于生成扫码入群二维码
+  const feedbackQqGroupUrl = "https://qm.qq.com/q/Swg7GVeoCa";
   const [showWhatsNew, setShowWhatsNew] = useState(false);
   const [showAuthorStory, setShowAuthorStory] = useState(false);
   return (
@@ -554,6 +557,9 @@ function AboutPanel() {
                 {t('about.feedbackQqGroupNumber', { number: feedbackQqGroupNumber })}
               </div>
             </div>
+          </div>
+          <div className="shrink-0 rounded-lg bg-white p-1.5" aria-hidden>
+            <QRCode value={feedbackQqGroupUrl} size={88} className="rounded-md" />
           </div>
         </div>
       </div>
