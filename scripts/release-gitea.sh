@@ -2,7 +2,7 @@
 # Glean 一键发版（Linux 主打包机）：整包（NSIS setup + portable）+ 热更新包 → Gitea Release
 #
 # 用法：
-#   bash scripts/release-gitea.sh [--tag v01.01.01] [--skip-upload]
+#   bash scripts/release-gitea.sh [--tag v01.01.01] [--skip-upload] [--skip-github]
 #
 # 前置（一次性准备，2026-11-24 已在打包机就位）：
 #   1. Node 24+，根/backend/frontend 依赖已装（backend 用 npm install --ignore-scripts）
@@ -12,6 +12,8 @@
 #      better_sqlite3.node、.electron-abi.json、sharp-win32-x64/、ffmpeg-win32-x64.exe
 #   4. 热更新私钥 GLEAN_HOT_UPDATE_PRIVATE_KEY_FILE（默认 $HOME/glean-secrets/glean-hot-update-private.pem，600）
 #   5. Gitea token：环境变量 GITEA_TOKEN 或文件 GITEA_TOKEN_FILE（默认 $HOME/glean-secrets/glean-gitea-token）
+#   6. GitHub token：文件 GH_TOKEN_FILE（默认 $HOME/glean-secrets/github-token，须含 repo+workflow），
+#      用于 Gitea 上传后自动同步 Release 资产到 GitHub（scripts/gh-release-sync.sh）
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
@@ -25,11 +27,13 @@ GITEA_REPO="${GITEA_REPO:-pipcloud/glean}"
 TAG=""
 SKIP_UPLOAD=0
 UPLOAD_ONLY=0
+SKIP_GITHUB=0
 while [ $# -gt 0 ]; do
   case "$1" in
     --tag) TAG="$2"; shift 2 ;;
     --skip-upload) SKIP_UPLOAD=1; shift ;;
     --upload-only) UPLOAD_ONLY=1; shift ;;
+    --skip-github) SKIP_GITHUB=1; shift ;;
     *) echo "未知参数：$1" >&2; exit 1 ;;
   esac
 done
@@ -52,6 +56,12 @@ done
 GITEA_TOKEN="${GITEA_TOKEN:-$(cat "$GITEA_TOKEN_FILE" 2>/dev/null || true)}"
 if [ "$SKIP_UPLOAD" -eq 0 ] && [ -z "$GITEA_TOKEN" ]; then
   echo "缺少 GITEA_TOKEN（环境变量或 $GITEA_TOKEN_FILE）" >&2
+  exit 1
+fi
+# GitHub 同步预检：缺 token 在构建前就拦住，不要等 20 分钟构建完才失败
+GH_TOKEN_FILE="${GH_TOKEN_FILE:-$HOME/glean-secrets/github-token}"
+if [ "$SKIP_UPLOAD" -eq 0 ] && [ "$SKIP_GITHUB" -eq 0 ] && [ ! -s "$GH_TOKEN_FILE" ]; then
+  echo "缺少 GH_TOKEN 文件：$GH_TOKEN_FILE（须含 repo+workflow scope；或用 --skip-github 跳过）" >&2
   exit 1
 fi
 echo '[release] 预检通过'
@@ -159,4 +169,12 @@ for dir in dist-electron release-hot; do
 done
 
 echo "[upload] done -> $GITEA_URL/$GITEA_REPO/releases/tag/$TAG"
+
+echo '=== GitHub Release 同步：资产对齐（幂等，可重跑） ==='
+if [ "$SKIP_GITHUB" -eq 1 ]; then
+  echo '[upload] --skip-github，跳过 GitHub 同步'
+else
+  bash scripts/gh-release-sync.sh --tag "$TAG"
+fi
+
 echo '[release] 全部完成'
