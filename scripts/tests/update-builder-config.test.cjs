@@ -24,6 +24,13 @@ test("full desktop updater uses stable no-space artifact names", () => {
   );
 });
 
+test("desktop updater feed points at the public PIPCLOUD-GH repository", () => {
+  // 仓库已迁移到 PIPCLOUD-GH；owner 写错会让 app-update.yml 指向 404 的 pipcloud/glean。
+  assert.deepEqual(full.publish, [
+    { provider: "github", owner: "PIPCLOUD-GH", repo: "glean", releaseType: "release" },
+  ]);
+});
+
 test("Lite installers are no longer packaged or published", () => {
   for (const file of ["electron/builder.lite.config.js", "electron/builder.lite.base.config.js",
     "scripts/build-lite.mjs", "scripts/build-lite-legacy.mjs"]) {

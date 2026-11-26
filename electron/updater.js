@@ -5,7 +5,8 @@
 //   macOS:         idle -> checking -> available -> browser manual download
 //
 // 设计原则：
-//   - 仅使用 electron-builder 固定的官方 GitHub Release provider；renderer 无法传入 URL。
+//   - 更新源由 settings.json 的 updateChannel 决定（默认 GitHub Release，可切自建 generic 源）；
+//     renderer 只能在两个固定通道间切换，无法传入任意 URL；主通道失败自动回退另一通道。
 //   - 禁止预发布版与降级，版本比较、平台/架构选择、SHA-512 校验交给 electron-updater。
 //   - 检测到版本后先由应用内 UI 征得用户同意，再开始下载（autoDownload=false）。
 //   - macOS 暂停应用内下载和静默安装：用户确认更新后，由系统浏览器打开对应 Release。
@@ -14,10 +15,13 @@
 const { app, BrowserWindow, dialog, ipcMain, shell } = require("electron");
 const path = require("path");
 const {
+  buildChannelFallbackError,
+  buildDesktopFeed,
   buildReleaseDownloadUrl,
   isManualDownloadPlatform,
   withManualDownloadNotice,
 } = require("./updaterPolicy");
+const { readSettings, writeSettings } = require("./settings");
 const {
   STORE_UPDATES_URI,
   isMicrosoftStorePackage,
@@ -40,6 +44,8 @@ let installPromise = null;
 let availableInfo = null;
 let lastErrorStage = "check";
 let backupPrepared = false;
+let activeChannel = null; // feed 当前实际生效的通道（回退成功后可能与设置不同）
+let suppressErrorBroadcast = false; // 通道回退重试期间抑制 error 事件的过早广播
 
 let state = {
   status: "idle",
@@ -110,6 +116,27 @@ function sanitizeError(error) {
   return message.slice(0, 500) || "更新失败";
 }
 
+/** 读取用户选择的更新通道；缺失/非法一律回退默认 GitHub。 */
+function readUpdateChannel() {
+  try {
+    const channel = readSettings().updateChannel;
+    return channel === "selfhosted" ? "selfhosted" : "github";
+  } catch {
+    return "github";
+  }
+}
+
+/** 按通道设置 electron-updater 的 feed；启动、切换通道与回退重试时调用。 */
+function applyUpdateFeed(channel) {
+  if (!autoUpdater) return;
+  activeChannel = channel === "selfhosted" ? "selfhosted" : "github";
+  try {
+    autoUpdater.setFeedURL(buildDesktopFeed(activeChannel));
+  } catch (error) {
+    console.warn("[updater] setFeedURL failed:", sanitizeError(error));
+  }
+}
+
 function normalizeReleaseNotes(value) {
   if (typeof value === "string") return value.trim().slice(0, 5000);
   if (!Array.isArray(value)) return "";
@@ -176,7 +203,7 @@ function delay(ms) {
 }
 
 function currentDownloadUrl() {
-  return buildReleaseDownloadUrl(state.version || availableInfo?.version);
+  return buildReleaseDownloadUrl(state.version || availableInfo?.version, activeChannel || readUpdateChannel());
 }
 
 async function openManualDownloadPage() {
@@ -236,6 +263,33 @@ function backupDatabaseBeforeUpdate() {
   }
 }
 
+/**
+ * 按「用户选择的通道 → 另一通道」顺序检查更新：主通道失败自动回退，
+ * 两个通道都失败时抛出带明确网络提示的合并错误。
+ */
+async function checkWithChannelFallback() {
+  const userChannel = readUpdateChannel();
+  applyUpdateFeed(userChannel);
+  let firstError = null;
+  try {
+    return await autoUpdater.checkForUpdates();
+  } catch (error) {
+    firstError = error;
+  }
+  const fallback = userChannel === "github" ? "selfhosted" : "github";
+  suppressErrorBroadcast = true;
+  applyUpdateFeed(fallback);
+  try {
+    return await autoUpdater.checkForUpdates();
+  } catch (secondError) {
+    // 两个通道都不可用：恢复用户选择的通道，让下次检查仍从它的偏好开始。
+    applyUpdateFeed(userChannel);
+    throw new Error(buildChannelFallbackError(firstError, secondError));
+  } finally {
+    suppressErrorBroadcast = false;
+  }
+}
+
 async function checkNow({ manual = false } = {}) {
   const disabled = updaterDisabledReason();
   if (disabled) {
@@ -264,8 +318,7 @@ async function checkNow({ manual = false } = {}) {
     checkedAt: new Date().toISOString(),
   });
 
-  checkPromise = autoUpdater
-    .checkForUpdates()
+  checkPromise = checkWithChannelFallback()
     .then((result) => ({
       ok: true,
       version: result?.updateInfo?.version,
@@ -430,6 +483,39 @@ function registerIpc(opts, disabled) {
       ? { ok: false, reason: "microsoft-store-managed", state: publicState() }
       : installNow(opts));
 
+  // 更新通道：只接受 github / selfhosted 两个固定值，renderer 不能传入任意 URL。
+  ipcMain.removeHandler("updater:get-channel");
+  ipcMain.removeHandler("updater:set-channel");
+  ipcMain.handle("updater:get-channel", () => ({ ok: true, channel: readUpdateChannel() }));
+  ipcMain.handle("updater:set-channel", (_event, channel) => {
+    if (channel !== "github" && channel !== "selfhosted") return { ok: false, reason: "invalid-channel" };
+    // 下载/安装进行中换 feed 会打乱进行中的任务，直接拒绝。
+    if (["checking", "downloading", "downloaded", "preparing-install", "installing"].includes(state.status)) {
+      return { ok: false, reason: "busy", state: publicState() };
+    }
+    writeSettings({ updateChannel: channel });
+    applyUpdateFeed(channel);
+    availableInfo = null;
+    broadcast("idle", {
+      phase: "idle",
+      version: null,
+      releaseName: "",
+      releaseNotes: "",
+      releaseDate: "",
+      fileSize: null,
+      percent: 0,
+      transferred: 0,
+      total: 0,
+      bytesPerSecond: 0,
+      installOnQuit: false,
+      manualDownload: isManualDownloadPlatform(),
+      downloadUrl: "",
+      message: "已切换更新通道，下次检查将使用新通道",
+      errorStage: null,
+    });
+    return { ok: true, channel, state: publicState() };
+  });
+
   // Fixed, allowlisted URI: the renderer cannot substitute an arbitrary external URL.
   ipcMain.removeHandler("updater:open-store");
   ipcMain.handle("updater:open-store", async () => {
@@ -464,6 +550,9 @@ function initAutoUpdater(opts = {}) {
   autoUpdater.allowPrerelease = false;
   autoUpdater.allowDowngrade = false;
   autoUpdater.autoRunAppAfterInstall = true;
+
+  // 按用户选择的更新通道设置 feed（默认 GitHub，可切自建 generic 源）。
+  applyUpdateFeed(readUpdateChannel());
 
   autoUpdater.on("checking-for-update", () => {
     if (state.status !== "checking") {
@@ -504,7 +593,7 @@ function initAutoUpdater(opts = {}) {
     availableInfo = info;
     backupPrepared = false;
     const manualDownload = isManualDownloadPlatform();
-    const downloadUrl = manualDownload ? buildReleaseDownloadUrl(info.version) : "";
+    const downloadUrl = manualDownload ? buildReleaseDownloadUrl(info.version, activeChannel || readUpdateChannel()) : "";
     broadcast("available", {
       phase: "update-available",
       ...infoPayload(info),
@@ -586,7 +675,8 @@ function initAutoUpdater(opts = {}) {
 
   autoUpdater.on("error", (error) => {
     // checkNow/downloadUpdate 自己会输出更准确的阶段；事件仅兜底未知异步错误。
-    if (state.status === "error") return;
+    // 通道回退重试期间的半截错误不广播，最终结果由 checkNow 统一给出。
+    if (state.status === "error" || suppressErrorBroadcast) return;
     const message = sanitizeError(error);
     broadcast("error", {
       phase: "error",

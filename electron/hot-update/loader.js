@@ -9,19 +9,46 @@ const path = require("node:path");
 const Module = require("node:module");
 const { createHotUpdateRuntime } = require("./runtime");
 
-const PRODUCTION_CHANNEL = {
-  urls: (runtimeVersion) => [
-    `https://download.glean.pipcloud.cn/hot/stable/desktop/${runtimeVersion}.json`,
-    `https://github.com/PIPCLOUD-GH/glean/releases/latest/download/glean-hot-desktop-${runtimeVersion}.json`,
-  ],
-  allowedOrigins: ["https://download.glean.pipcloud.cn", "https://github.com"],
-};
+const SELFHOSTED_HOT_URL = (runtimeVersion) =>
+  `https://download.glean.pipcloud.cn/hot/stable/desktop/${runtimeVersion}.json`;
+const GITHUB_HOT_URL = (runtimeVersion) =>
+  `https://github.com/PIPCLOUD-GH/glean/releases/latest/download/glean-hot-desktop-${runtimeVersion}.json`;
+const HOT_ALLOWED_ORIGINS = ["https://download.glean.pipcloud.cn", "https://github.com"];
+
+/**
+ * 按更新通道生成热更新 channel：所选通道的地址排在前面作首选，
+ * 另一通道保留为回退（两通道都不可用时由 runtime 给出网络提示）。
+ * @param {"github"|"selfhosted"} updateChannel 更新通道，默认 GitHub
+ */
+function buildProductionChannel(updateChannel) {
+  const ordered = updateChannel === "selfhosted"
+    ? [SELFHOSTED_HOT_URL, GITHUB_HOT_URL]
+    : [GITHUB_HOT_URL, SELFHOSTED_HOT_URL];
+  return { urls: (runtimeVersion) => ordered.map((build) => build(runtimeVersion)), allowedOrigins: HOT_ALLOWED_ORIGINS };
+}
+
+const PRODUCTION_CHANNEL = buildProductionChannel("github");
+
+/**
+ * 读取 settings.json 里的更新通道（壳代码启动时读一次）。
+ * 路径解析失败、文件缺失或取值非法一律回退默认 GitHub，绝不阻断启动。
+ */
+function readUpdateChannel({ app, shellDir }) {
+  try {
+    const { getUserDataPathFromRoot } = require(path.join(shellDir, "dataDir"));
+    const file = path.join(getUserDataPathFromRoot(app.getPath("userData")), "settings.json");
+    const raw = JSON.parse(fs.readFileSync(file, "utf8"));
+    return raw?.updateChannel === "selfhosted" ? "selfhosted" : "github";
+  } catch {
+    return "github";
+  }
+}
 
 function readConfig({ app, shellDir }) {
   const { isMicrosoftStorePackage } = require(path.join(shellDir, "storeChannel"));
   if (isMicrosoftStorePackage({ packaged: app.isPackaged })) return { disabledReason: "microsoft-store-managed" };
   let source = null;
-  let channel = PRODUCTION_CHANNEL;
+  let channel = buildProductionChannel(readUpdateChannel({ app, shellDir }));
   let readyTimeoutMs;
   if (app.isPackaged) {
     source = JSON.parse(fs.readFileSync(path.join(shellDir, "..", "package.json"), "utf8")).gleanHotUpdate || null;
@@ -110,4 +137,4 @@ function bootstrapHotUpdate({ electron, shellDir }) {
   return runtime;
 }
 
-module.exports = { PRODUCTION_CHANNEL, addBundleModulePaths, bootstrapHotUpdate, readConfig };
+module.exports = { PRODUCTION_CHANNEL, addBundleModulePaths, bootstrapHotUpdate, buildProductionChannel, readConfig };

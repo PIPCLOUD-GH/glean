@@ -65,6 +65,18 @@ contextBridge.exposeInMainWorld("gleanDesktop", {
     return ipcRenderer.invoke("updater:quit-and-install");
   },
 
+  /** 更新通道：只允许 github / selfhosted 两个固定值（自建源尚未配置时保持默认 GitHub） */
+  getUpdateChannel() {
+    return ipcRenderer.invoke("updater:get-channel");
+  },
+
+  setUpdateChannel(channel) {
+    if (channel !== "github" && channel !== "selfhosted") {
+      return Promise.resolve({ ok: false, reason: "invalid-channel" });
+    }
+    return ipcRenderer.invoke("updater:set-channel", channel);
+  },
+
   /** 热更新：只能查询状态、触发检查、确认就绪、请求重启，地址和公钥都由主进程固定 */
   hotUpdate: {
     status: () => ipcRenderer.invoke("hot-update:status"),

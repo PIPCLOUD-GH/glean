@@ -200,3 +200,30 @@ test("settings.json 损坏时回退默认值而不是抛错", () => {
     fs.rmSync(dir, { recursive: true, force: true });
   }
 });
+
+test("更新通道默认 GitHub，可切自建源并持久化，非法取值回退默认", () => {
+  withTempSettings(undefined, (dir) => {
+    assert.equal(settings.readSettings().updateChannel, "github");
+    settings.writeSettings({ updateChannel: "selfhosted" });
+    settings.setSettingsPath(dir);
+    assert.equal(settings.readSettings().updateChannel, "selfhosted");
+
+    // 非法取值（含尝试注入 URL）→ 归一化回默认 GitHub
+    fs.writeFileSync(
+      path.join(dir, "settings.json"),
+      JSON.stringify({ updateChannel: "http://evil.example" }),
+      "utf8",
+    );
+    settings.setSettingsPath(dir);
+    assert.equal(settings.readSettings().updateChannel, "github");
+
+    // legacy 文件没有该字段 → 默认 GitHub
+    fs.writeFileSync(
+      path.join(dir, "settings.json"),
+      JSON.stringify({ mode: "full", remoteUrl: "" }),
+      "utf8",
+    );
+    settings.setSettingsPath(dir);
+    assert.equal(settings.readSettings().updateChannel, "github");
+  });
+});

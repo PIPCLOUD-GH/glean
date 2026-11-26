@@ -392,7 +392,9 @@ function createHotUpdateRuntime(options) {
       }
     }
     if (notFound === urls.length) return null;
-    throw lastError || new Error("无法获取更新信息");
+    // 非 404 失败（网络不通、DNS 不存在、5xx 等）：给出明确的更新源不可达提示。
+    if (lastError) throw new Error(`所有更新源均无法访问，请检查网络或稍后重试（${lastError.message}）`);
+    throw new Error("无法获取更新信息");
   };
 
   const downloadZip = async (manifest) => {

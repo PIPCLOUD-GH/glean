@@ -45,6 +45,11 @@ function createRuntime({ windowsStore, portable = false }) {
       if (name === "./storeChannel") return channelModule.exports;
       if (name === "./updaterPolicy") return require(path.join(root, "electron/updaterPolicy.js"));
       if (name === "./db-backup") return require(path.join(root, "electron/db-backup.js"));
+      // 更新通道持久化：桩返回默认 GitHub，避免测试写真实 settings.json
+      if (name === "./settings") return {
+        readSettings: () => ({ updateChannel: "github" }),
+        writeSettings: (patch) => ({ updateChannel: patch?.updateChannel ?? "github" }),
+      };
       return require(name);
     },
     console: { warn() {}, log() {}, error() {} },

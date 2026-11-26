@@ -133,11 +133,11 @@ Tag 触发的 `release.yml` 只打安装包，不生成热更新包。这个整�
 
 构建时会核对安装包里的锚点：安卓在 `android-stage`，桌面在候选构建打包之后（`verify-desktop-anchors.mjs`）。和源码不一致就失败。没有公钥时核对照样通过，但会写明这批安装包不接受热更新。
 
-客户端轮询以下两个地址：
+客户端按「设置 → 更新通道」轮询以下两个地址（所选通道在前、另一个作回退，默认 GitHub 在前）：
 
 ```
-https://download.glean.pipcloud.cn/hot/stable/<target>/<runtimeVersion>.json     # 优先
-https://github.com/PIPCLOUD-GH/glean/releases/latest/download/glean-hot-<target>-<runtimeVersion>.json   # 备用
+https://github.com/PIPCLOUD-GH/glean/releases/latest/download/glean-hot-<target>-<runtimeVersion>.json   # GitHub 通道首选
+https://download.glean.pipcloud.cn/hot/stable/<target>/<runtimeVersion>.json     # 自建源通道首选（未配置时自动回退前者）
 ```
 
 改了壳的版本，旧客户端在这两个地址都找不到自己 runtime 的新清单，会继续走现有的整包更新提示。

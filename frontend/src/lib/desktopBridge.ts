@@ -367,6 +367,9 @@ export interface DesktopHotUpdateAPI {
   setAutoDownload: (enabled: boolean) => Promise<DesktopHotUpdateStatus | null>;
 }
 
+/** 更新通道：桌面安装包与热更新的更新源（settings.json 的 updateChannel）。 */
+export type DesktopUpdateChannel = "github" | "selfhosted";
+
 export interface GleanDesktopAPI {
   on: (channel: string, listener: (payload: unknown) => void) => () => void;
   checkForUpdates: () => Promise<{ ok: boolean; reason?: string; version?: string }>;
@@ -430,6 +433,11 @@ export interface GleanDesktopAPI {
   http?: DesktopHttpAPI;
   /** 桌面热更新。旧版本 preload 没有此字段。 */
   hotUpdate?: DesktopHotUpdateAPI;
+  /** 更新通道读取/切换（只允许 github / selfhosted 两个固定值）。旧版本 preload 没有此字段。 */
+  getUpdateChannel?: () => Promise<{ ok: boolean; channel?: DesktopUpdateChannel; reason?: string }>;
+  setUpdateChannel?: (
+    channel: DesktopUpdateChannel,
+  ) => Promise<{ ok: boolean; channel?: DesktopUpdateChannel; reason?: string }>;
 }
 
 function getBridge(): GleanDesktopAPI | null {
@@ -482,6 +490,37 @@ export function getReleaseChannel(): "lite" | "latest" | null {
 export function isPortableDesktop(): boolean {
   const bridge = getBridge();
   return bridge?.isPortable === true;
+}
+
+/** 是否支持更新通道切换（旧版本 preload 未暴露通道 API 时隐藏入口）。 */
+export function supportsUpdateChannelSwitch(): boolean {
+  return typeof getBridge()?.getUpdateChannel === "function";
+}
+
+/** 读取当前更新通道；不支持或失败返回 null（按默认 GitHub 处理）。 */
+export async function readUpdateChannel(): Promise<DesktopUpdateChannel | null> {
+  const bridge = getBridge();
+  if (!bridge?.getUpdateChannel) return null;
+  try {
+    const result = await bridge.getUpdateChannel();
+    return result?.ok && (result.channel === "github" || result.channel === "selfhosted")
+      ? result.channel
+      : null;
+  } catch {
+    return null;
+  }
+}
+
+/** 切换更新通道；成功返回 true。 */
+export async function writeUpdateChannel(channel: DesktopUpdateChannel): Promise<boolean> {
+  const bridge = getBridge();
+  if (!bridge?.setUpdateChannel) return false;
+  try {
+    const result = await bridge.setUpdateChannel(channel);
+    return result?.ok === true;
+  } catch {
+    return false;
+  }
 }
 
 /** 订阅菜单事件，返回反注册函数。非 Electron 环境返回 no-op。 */

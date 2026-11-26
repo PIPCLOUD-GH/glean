@@ -473,7 +473,7 @@ module.exports = {
   publish: [
     {
       provider: "github",
-      owner: "pipcloud",
+      owner: "PIPCLOUD-GH",
       repo: "glean",
       releaseType: "release",
       // channel 省略 = "latest"（保留 electron-builder 默认行为）

@@ -20,6 +20,10 @@ import {
   onUpdaterStatus,
   openMicrosoftStoreUpdates,
   quitAndInstall,
+  readUpdateChannel,
+  supportsUpdateChannelSwitch,
+  writeUpdateChannel,
+  type DesktopUpdateChannel,
 } from "@/lib/desktopBridge";
 import {
   UPDATE_AUTO_CHECK_KEY,
@@ -99,19 +103,29 @@ function UpdateSettingsAddon({
   lastCheck,
   snapshot,
   storeManaged,
+  updateChannel,
+  channelSupported,
   onOpenStoreUpdates,
   onAutoCheckChange,
   onInstallOnQuitChange,
+  onUpdateChannelChange,
 }: {
   autoCheck: boolean;
   installOnQuit: boolean;
   lastCheck: string;
   snapshot: DesktopUpdateSnapshot | null;
   storeManaged: boolean;
+  updateChannel: DesktopUpdateChannel;
+  channelSupported: boolean;
   onOpenStoreUpdates: () => void;
   onAutoCheckChange: (next: boolean) => void;
   onInstallOnQuitChange: (next: boolean) => void;
+  onUpdateChannelChange: (next: DesktopUpdateChannel) => void;
 }) {
+  // 检查/下载/安装进行中不允许换 feed，按钮置灰（与主进程 busy 校验一致）。
+  const channelBusy = ["checking", "downloading", "downloaded", "preparing-install", "installing"].includes(
+    snapshot?.status ?? "",
+  );
   if (storeManaged) return (
     <div data-glean-update-settings="true" data-update-provider="microsoft-store"
       className="mt-3 border-t border-zinc-200/60 pt-3 dark:border-zinc-800/60">
@@ -149,6 +163,33 @@ function UpdateSettingsAddon({
         title="下载完成后退出时安装"
         description="更新下载完成后，可继续使用当前版本，正常退出应用时再安装。"
       />
+      {channelSupported && (
+        <div className="flex items-start justify-between gap-4 py-2">
+          <span className="min-w-0">
+            <span className="block text-xs font-medium text-zinc-800 dark:text-zinc-200">更新通道</span>
+            <span className="mt-0.5 block text-[11px] leading-relaxed text-zinc-400 dark:text-zinc-500">
+              默认 GitHub Releases；自建源为 download.glean.pipcloud.cn（需已配置）。切换后下次检查更新生效。
+            </span>
+          </span>
+          <span className="mt-0.5 flex shrink-0 overflow-hidden rounded-lg border border-app-border">
+            {([["github", "GitHub"], ["selfhosted", "自建源"]] as const).map(([value, label]) => (
+              <button
+                key={value}
+                type="button"
+                disabled={channelBusy}
+                onClick={() => onUpdateChannelChange(value)}
+                className={`px-2.5 py-1 text-[11px] font-medium transition-colors disabled:opacity-60 ${
+                  updateChannel === value
+                    ? "bg-accent-primary text-white"
+                    : "text-tx-secondary hover:bg-app-hover"
+                }`}
+              >
+                {label}
+              </button>
+            ))}
+          </span>
+        </div>
+      )}
       <div className="mt-1 grid grid-cols-[auto_1fr] gap-x-3 gap-y-1 text-[11px] text-zinc-400 dark:text-zinc-500">
         <span>最近检查</span>
         <span className="text-right">{formatCheckTime(lastCheck)}</span>
@@ -211,6 +252,8 @@ export default function DesktopUpdateCenter() {
   const [installOnQuit, setInstallOnQuit] = useState(() =>
     readBooleanPreference(UPDATE_INSTALL_ON_QUIT_KEY, false),
   );
+  const [updateChannel, setUpdateChannelState] = useState<DesktopUpdateChannel>("github");
+  const channelSupported = supportsUpdateChannelSwitch();
   const [settingsHost, setSettingsHost] = useState<HTMLElement | null>(null);
   const dismissedVersionsRef = useRef(new Set<string>());
   const userActionRef = useRef(false);
@@ -325,6 +368,22 @@ export default function DesktopUpdateCenter() {
     }
   }, []);
 
+  // 启动时读一次持久化的更新通道（settings.json，由主进程保管）。
+  useEffect(() => {
+    if (!channelSupported) return;
+    let cancelled = false;
+    void readUpdateChannel().then((channel) => {
+      if (!cancelled && channel) setUpdateChannelState(channel);
+    });
+    return () => { cancelled = true; };
+  }, [channelSupported]);
+
+  const changeUpdateChannel = useCallback((next: DesktopUpdateChannel) => {
+    void writeUpdateChannel(next).then((ok) => {
+      if (ok) setUpdateChannelState(next);
+    });
+  }, []);
+
   const invokeStateAction = useCallback(async () => {
     userActionRef.current = true;
     setBusy(true);
@@ -394,8 +453,11 @@ export default function DesktopUpdateCenter() {
       installOnQuit={installOnQuit}
       lastCheck={lastCheck}
       snapshot={snapshot}
+      updateChannel={updateChannel}
+      channelSupported={channelSupported}
       onAutoCheckChange={changeAutoCheck}
       onInstallOnQuitChange={changeInstallOnQuit}
+      onUpdateChannelChange={changeUpdateChannel}
     />,
     settingsHost,
   ) : null;

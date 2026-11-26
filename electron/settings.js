@@ -14,6 +14,7 @@
 //   offlineCacheDir: string                // 自定义 renderer 离线缓存目录；空字符串表示默认目录
 //   offlineCacheMigrationSource: string    // 更换目录后，仅供下一次启动迁移使用
 //   windowState: object | null              // 主窗口正常坐标、尺寸和最大化状态
+//   updateChannel: "github" | "selfhosted"  // 更新通道：GitHub Releases（默认）或自建源 download.glean.pipcloud.cn
 //
 // Local-first 演进字段（Phase 1 引入，尚未接管启动逻辑）：
 //   runtime:              "local" | "remote"   // 数据运行时；桌面端最终恒为 local
@@ -40,11 +41,13 @@ const DEFAULT_SETTINGS = Object.freeze({
   offlineCacheDir: "",
   offlineCacheMigrationSource: "",
   windowState: null,
+  updateChannel: "github",
   // Local-first 字段不设默认值常量，而是每次由 mode/remoteUrl 派生，
   // 保证旧 settings.json 升级后语义与 legacy 模式严格一致。
 });
 
 const VALID_MODES = new Set(["full", "lite"]);
+const VALID_UPDATE_CHANNELS = new Set(["github", "selfhosted"]);
 const VALID_RUNTIMES = new Set(["local", "remote"]);
 const VALID_LITE_MIGRATION_STATUSES = new Set([
   "none",
@@ -151,6 +154,9 @@ function normalize(raw) {
     }
     if (typeof raw.offlineCacheMigrationSource === "string" && path.isAbsolute(raw.offlineCacheMigrationSource)) {
       out.offlineCacheMigrationSource = path.resolve(raw.offlineCacheMigrationSource);
+    }
+    if (typeof raw.updateChannel === "string" && VALID_UPDATE_CHANNELS.has(raw.updateChannel)) {
+      out.updateChannel = raw.updateChannel;
     }
     out.windowState = normalizeStoredWindowState(raw.windowState);
   }

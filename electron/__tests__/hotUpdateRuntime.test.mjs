@@ -297,7 +297,24 @@ test("加载器配置：正式包读 package.json 的锚点；商店版、开发
   fs.writeFileSync(path.join(root, "package.json"), JSON.stringify({ gleanHotUpdate: { runtimeVersion: RUNTIME, publicKey: anchors.publicKeyPem, keyId } }));
   const packaged = readConfig({ app: { isPackaged: true }, shellDir });
   assert.deepEqual(packaged.anchors, anchors);
-  assert.equal(packaged.channel.urls(RUNTIME)[0], `https://download.glean.pipcloud.cn/hot/stable/desktop/${RUNTIME}.json`);
+  // 默认 GitHub 通道：GitHub 地址在前，自建源作回退
+  assert.equal(packaged.channel.urls(RUNTIME)[0], `https://github.com/PIPCLOUD-GH/glean/releases/latest/download/glean-hot-desktop-${RUNTIME}.json`);
+  assert.equal(packaged.channel.urls(RUNTIME)[1], `https://download.glean.pipcloud.cn/hot/stable/desktop/${RUNTIME}.json`);
+  // settings.json 选了自建源：热更新首选自建地址，GitHub 降为回退
+  fs.copyFileSync(new URL("../dataDir.js", import.meta.url), path.join(shellDir, "dataDir.js"));
+  const userData = path.join(root, "user-data");
+  fs.mkdirSync(path.join(userData, "glean-data"), { recursive: true });
+  const settingsFile = path.join(userData, "glean-data", "settings.json");
+  fs.writeFileSync(settingsFile, JSON.stringify({ updateChannel: "selfhosted" }));
+  const selfhosted = readConfig({ app: { isPackaged: true, getPath: () => userData }, shellDir });
+  assert.equal(selfhosted.channel.urls(RUNTIME)[0], `https://download.glean.pipcloud.cn/hot/stable/desktop/${RUNTIME}.json`);
+  assert.equal(selfhosted.channel.urls(RUNTIME)[1], `https://github.com/PIPCLOUD-GH/glean/releases/latest/download/glean-hot-desktop-${RUNTIME}.json`);
+  // 非法通道取值 → 回退默认 GitHub
+  fs.writeFileSync(settingsFile, JSON.stringify({ updateChannel: "bogus" }));
+  assert.equal(
+    readConfig({ app: { isPackaged: true, getPath: () => userData }, shellDir }).channel.urls(RUNTIME)[0],
+    `https://github.com/PIPCLOUD-GH/glean/releases/latest/download/glean-hot-desktop-${RUNTIME}.json`,
+  );
   assert.equal(readConfig({ app: { isPackaged: false }, shellDir }).disabledReason, "development-build");
   const testAnchors = path.join(root, "anchors.json");
   fs.writeFileSync(testAnchors, JSON.stringify({ runtimeVersion: RUNTIME, publicKey: anchors.publicKeyPem, keyId, channelOrigin: "http://127.0.0.1:8787", readyTimeoutMs: 20000 }));
