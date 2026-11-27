@@ -2,7 +2,7 @@
 
 - 日期：2026-10-28
 - 基线：`release/v1.5.4` / `a0ecc4d7`，加本次未提交修改。
-- 来源：[PR #883](https://github.com/PIPCLOUD-GH/glean/pull/883)，作者 `umbrellax`，提交 `e7918ae03b9560f6a633762536445ef7b60516e7`。
+- 来源：[PR #883](https://github.com/pipcloudlab/glean/pull/883)，作者 `umbrellax`，提交 `e7918ae03b9560f6a633762536445ef7b60516e7`。
 - 采用其 DNR session 规则补充页面 origin Referer 的方案；重新实现规则隔离、生命周期和失败提示，没有直接合并原提交。
 
 ## 行为与边界

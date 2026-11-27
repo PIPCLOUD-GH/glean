@@ -2,7 +2,7 @@
 
 Date: 2026-10-15. Branch: `codex/files-assets-phase-e`.
 Base: `6ba628f3`, the current release branch after the user merged CI repair PR #855.
-Target: `release/v1.5.2`. PR [#856](https://github.com/PIPCLOUD-GH/glean/pull/856) was subsequently merged as `36da7ddf`; no release is implied.
+Target: `release/v1.5.2`. PR [#856](https://github.com/pipcloudlab/glean/pull/856) was subsequently merged as `36da7ddf`; no release is implied.
 
 ## Delivered scope
 

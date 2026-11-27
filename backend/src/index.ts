@@ -932,7 +932,7 @@ if (process.env.NODE_ENV === "production") {
           "style-src 'self' 'unsafe-inline'",
           "img-src 'self' data: blob: https:",
           "font-src 'self' data:",
-          "connect-src 'self' ws: wss: https://raw.githubusercontent.com/pipcloud/glean/main/frontend/public/holidays/",
+          "connect-src 'self' ws: wss: https://raw.githubusercontent.com/pipcloudlab/glean/main/frontend/public/holidays/",
           "media-src 'self' blob: https:",
           `frame-src ${getApplicationV3FeatureFlags().appPages ? "'self' " : ""}https://www.youtube.com https://www.youtube-nocookie.com https://player.bilibili.com https://v.qq.com https://player.vimeo.com`,
           "object-src 'none'",

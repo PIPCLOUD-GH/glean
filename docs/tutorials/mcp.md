@@ -54,7 +54,7 @@ git --version
 #### Windows PowerShell
 
 ```powershell
-git clone https://github.com/PIPCLOUD-GH/glean.git
+git clone https://github.com/pipcloudlab/glean.git
 cd glean\packages\glean-mcp
 npm install
 npm run build
@@ -79,7 +79,7 @@ Test-Path .\dist\scoped-entry.js
 #### macOS / Linux / WSL
 
 ```bash
-git clone https://github.com/PIPCLOUD-GH/glean.git
+git clone https://github.com/pipcloudlab/glean.git
 cd glean/packages/glean-mcp
 npm install
 npm run build

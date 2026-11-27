@@ -1,6 +1,6 @@
 # Encrypted Notes M2：整篇文本编辑与密文持久化
 
-状态：Web/桌面实验入口已接入，SQLite/Sync/完整 ZIP 恢复及 PostgreSQL 16 迁移已通过自动化验收；真实产品双设备、安装包与账号切换验收仍待完成，M2 保持实验性，不能据此关闭 #749 第 9 项。M0 移动端参数冻结、M3 完整验收、M4 旧笔记转换与 M5 跨端安全验收仍未完成；M5 的 Web/桌面闲置/后台自动锁定已接入。[用户说明](../user/encrypted-notes.md)、[Epic #796](https://github.com/PIPCLOUD-GH/glean/issues/796)、[envelope v1](./encrypted-notes-envelope-v1.md)。
+状态：Web/桌面实验入口已接入，SQLite/Sync/完整 ZIP 恢复及 PostgreSQL 16 迁移已通过自动化验收；真实产品双设备、安装包与账号切换验收仍待完成，M2 保持实验性，不能据此关闭 #749 第 9 项。M0 移动端参数冻结、M3 完整验收、M4 旧笔记转换与 M5 跨端安全验收仍未完成；M5 的 Web/桌面闲置/后台自动锁定已接入。[用户说明](../user/encrypted-notes.md)、[Epic #796](https://github.com/pipcloudlab/glean/issues/796)、[envelope v1](./encrypted-notes-envelope-v1.md)。
 
 ## 已接入的路径
 

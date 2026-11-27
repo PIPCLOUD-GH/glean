@@ -2,7 +2,7 @@
 
 日期：2026-10-28。状态：已按本方案实现本地代码，未提交、发布；真实服务与各平台真机验收仍待完成。
 
-需求来源：https://github.com/PIPCLOUD-GH/glean/issues/889 。分析时 Issue 为 open，无评论。代码基线为本地 `release/v1.5.4`，不代表已经发布的行为。
+需求来源：https://github.com/pipcloudlab/glean/issues/889 。分析时 Issue 为 open，无评论。代码基线为本地 `release/v1.5.4`，不代表已经发布的行为。
 
 ## 1. 需求理解与建议决策
 

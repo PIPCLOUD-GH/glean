@@ -8,7 +8,7 @@ import { spawnSync } from "node:child_process";
 import { identity, stageFiles, verifyFiles, publishRelease, assertDockerManifest, assertFullInventory, assertUploadedFiles, prepareSigning, registryDigest } from "../release-github.mjs";
 
 const source = { tag: "v1.5.3", sha: "a".repeat(40), runId: "100", attempt: 1 };
-const env = { GITHUB_REPOSITORY: "pipcloud/glean", GITHUB_REF: "refs/tags/v1.5.3",
+const env = { GITHUB_REPOSITORY: "pipcloudlab/glean", GITHUB_REF: "refs/tags/v1.5.3",
   GITHUB_SHA: source.sha, GITHUB_RUN_ID: "100", GITHUB_RUN_ATTEMPT: "1" };
 
 test("only an immutable stable tag from the release repository is accepted", () => {

@@ -115,7 +115,7 @@ test("打包、签名、校验全流程通过，产物只有 2 个 zip 和 2 个
   assert.equal(manifest.sequence, Math.floor(Date.parse("2026-11-20T08:00:00Z") / 1000));
   assert.deepEqual(manifest.urls, [
     "https://download.glean.pipcloud.cn/hot/v1.6.2/glean-hot-desktop-1.6.2.zip",
-    "https://github.com/PIPCLOUD-GH/glean/releases/download/v1.6.2/glean-hot-desktop-1.6.2.zip",
+    "https://github.com/pipcloudlab/glean/releases/download/v1.6.2/glean-hot-desktop-1.6.2.zip",
   ]);
 });
 

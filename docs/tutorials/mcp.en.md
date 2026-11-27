@@ -40,7 +40,7 @@ Node.js must be version 20 or newer.
 #### Windows PowerShell
 
 ```powershell
-git clone https://github.com/PIPCLOUD-GH/glean.git
+git clone https://github.com/pipcloudlab/glean.git
 cd glean\packages\glean-mcp
 npm install
 npm run build
@@ -52,7 +52,7 @@ The final command must return `True`. This file is the launcher's internal build
 #### macOS / Linux / WSL
 
 ```bash
-git clone https://github.com/PIPCLOUD-GH/glean.git
+git clone https://github.com/pipcloudlab/glean.git
 cd glean/packages/glean-mcp
 npm install
 npm run build

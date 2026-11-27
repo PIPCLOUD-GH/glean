@@ -4,7 +4,7 @@
 
 ## 需求与范围
 
-[Issue #853](https://github.com/PIPCLOUD-GH/glean/issues/853) 希望在 Markdown 编辑时输入 `/` 显示可搜索的命令菜单，支持 `/H1`、`/code`、`/tab`，用于各平台。
+[Issue #853](https://github.com/pipcloudlab/glean/issues/853) 希望在 Markdown 编辑时输入 `/` 显示可搜索的命令菜单，支持 `/H1`、`/code`、`/tab`，用于各平台。
 
 现有 `MarkdownEditorImpl` 已接入 `MarkdownSlashMenu`、Markdown 原子命令及日期命令。复用这些入口，修复可用性问题，无新增笔记格式、API、数据库迁移或同步协议。
 

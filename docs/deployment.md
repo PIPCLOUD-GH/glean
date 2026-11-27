@@ -26,7 +26,7 @@
 
 ```bash
 # 1. 克隆项目
-git clone https://github.com/PIPCLOUD-GH/glean.git
+git clone https://github.com/pipcloudlab/glean.git
 cd glean
 
 # 2. 安装所有依赖
@@ -53,7 +53,7 @@ npm run dev:frontend
 
 ```bash
 # 1. 克隆项目
-git clone https://github.com/PIPCLOUD-GH/glean.git
+git clone https://github.com/pipcloudlab/glean.git
 cd glean
 
 # 2. 一键构建并启动
@@ -64,7 +64,7 @@ docker-compose up -d
 
 ```bash
 # 1. 克隆并构建镜像
-git clone https://github.com/PIPCLOUD-GH/glean.git
+git clone https://github.com/pipcloudlab/glean.git
 cd glean
 docker build -t glean .
 
@@ -139,7 +139,7 @@ npm run electron:build
 
 ### 方法 A：使用预编译 APK（推荐）
 
-直接从 [GitHub Releases](https://github.com/PIPCLOUD-GH/glean/releases) 下载最新的 APK 安装包，传输到手机安装即可。
+直接从 [GitHub Releases](https://github.com/pipcloudlab/glean/releases) 下载最新的 APK 安装包，传输到手机安装即可。
 
 ### 方法 B：自行编译
 
@@ -241,7 +241,7 @@ storeFile=你的keystore路径
 **步骤：**
 
 1. **下载 .fpk**
-   - 从 [GitHub Releases](https://github.com/PIPCLOUD-GH/glean/releases) 下载最新的 `glean-<version>.fpk`
+   - 从 [GitHub Releases](https://github.com/pipcloudlab/glean/releases) 下载最新的 `glean-<version>.fpk`
 
 2. **手动安装**
    - 把 `.fpk` 文件上传到飞牛 NAS 任意目录
@@ -249,7 +249,7 @@ storeFile=你的keystore路径
    - 选中刚才上传的 `.fpk` 文件，确认安装
 
 3. **使用**
-   - 桌面出现「拾记笔记」图标，点击在浏览器中打开
+   - 桌面出现「拾记」图标，点击在浏览器中打开
    - 数据卷由飞牛自动管理在 `${TRIM_PKGVAR}/data`，升级覆盖安装不会丢数据
 
 > 限制：当前仅支持 **x86_64** 飞牛设备。

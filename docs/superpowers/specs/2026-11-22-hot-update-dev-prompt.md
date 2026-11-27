@@ -146,7 +146,7 @@
   "commit": "<git sha>",
   "urls": [
     "https://download.glean.pipcloud.cn/hot/<tag>/glean-hot-android-1.6.3.zip",
-    "https://github.com/PIPCLOUD-GH/glean/releases/download/<tag>/glean-hot-android-1.6.3.zip"
+    "https://github.com/pipcloudlab/glean/releases/download/<tag>/glean-hot-android-1.6.3.zip"
   ],
   "size": 8455158,
   "sha256": "<zip 的 sha256>",
@@ -175,7 +175,7 @@
 **托管**（全部用现有的免费渠道）
 
 - zip 和签名信封作为 GitHub Release 资产上传，再由 `sync-r2-hot-update.yml` 复制到 `https://download.glean.pipcloud.cn/hot/<tag>/`。
-- 另外在 R2 写一个固定的渠道地址 `https://download.glean.pipcloud.cn/hot/stable/<target>/<runtimeVersion>.json`，内容就是签名信封，每次发版覆盖，而且只向前移动。客户端先读它，读不到再读 `https://github.com/PIPCLOUD-GH/glean/releases/latest/download/glean-hot-<target>-<runtimeVersion>.json`。
+- 另外在 R2 写一个固定的渠道地址 `https://download.glean.pipcloud.cn/hot/stable/<target>/<runtimeVersion>.json`，内容就是签名信封，每次发版覆盖，而且只向前移动。客户端先读它，读不到再读 `https://github.com/pipcloudlab/glean/releases/latest/download/glean-hot-<target>-<runtimeVersion>.json`。
 - 请求里不得带用户标识、服务器地址、token 等信息。
 
 **出问题时**

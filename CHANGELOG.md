@@ -47,7 +47,7 @@
 - Docker AMD64 / ARM64 已发布版本镜像；macOS GitHub 包未做 Apple Developer ID 签名或公证，Windows 直装 EXE 未签名。
 - 升级前备份数据库、附件和配置；镜像回退不回滚数据库。Workspace、个人应用 Studio、扩展平台 V3 留在 v1.6.0 规划。
 
-[完整 v1.5.5 更新说明](./docs/releases/v1.5.5.md) · [正式下载](https://github.com/PIPCLOUD-GH/glean/releases/tag/v1.5.5)
+[完整 v1.5.5 更新说明](./docs/releases/v1.5.5.md) · [正式下载](https://github.com/pipcloudlab/glean/releases/tag/v1.5.5)
 
 ## v1.5.4 - 2026-11-02
 

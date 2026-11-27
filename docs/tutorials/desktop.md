@@ -6,7 +6,7 @@
 
 ## 下载安装
 
-从 [Releases 页面](https://github.com/PIPCLOUD-GH/glean/releases) 下载对应系统的安装包：
+从 [Releases 页面](https://github.com/pipcloudlab/glean/releases) 下载对应系统的安装包：
 
 | 系统 | 格式 |
 |---|---|

@@ -13,7 +13,7 @@ permissions:
 jobs:
   edit-release-description:
     if: >-
-      github.repository == 'pipcloud/glean' &&
+      github.repository == 'pipcloudlab/glean' &&
       github.event.head_commit.message == 'docs(release): refresh published v1.5.5 GitHub Release description'
     runs-on: ubuntu-latest
     timeout-minutes: 10

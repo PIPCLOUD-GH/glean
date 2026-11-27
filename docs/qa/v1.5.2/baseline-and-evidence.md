@@ -1,6 +1,6 @@
 # 基线与证据可信度
 
-本轮目标是远端 `release/v1.5.2`，开始及收尾 `git ls-remote` 均得到 `99dbdef9fa160ccce0f66aa0489dc964a28bc6cd`。GitHub 上的 [aa49e2fb 提交](https://github.com/PIPCLOUD-GH/glean/commit/aa49e2fbac85d2d4477275b6a44bec6f336db2b9) 也能访问。
+本轮目标是远端 `release/v1.5.2`，开始及收尾 `git ls-remote` 均得到 `99dbdef9fa160ccce0f66aa0489dc964a28bc6cd`。GitHub 上的 [aa49e2fb 提交](https://github.com/pipcloudlab/glean/commit/aa49e2fbac85d2d4477275b6a44bec6f336db2b9) 也能访问。
 
 主工作区位于 `C:/Users/cropf/Desktop/UGits/glean`，HEAD 是 `bf1052992d5b2a8f11cfe4ad82bd054bf72e7b6e`，是目标的祖先，并非比远端新的候选版本。开始已有六个跟踪文件修改和四个未跟踪测试文件，均未纳入本轮检出或修改。报告仅新增在主工作区的 `docs/qa/v1.5.2/`，未提交到 GitHub。
 

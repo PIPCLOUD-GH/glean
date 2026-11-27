@@ -4,7 +4,7 @@
 
 ## Issue #834 完整反馈核对
 
-来源：[手机 H5 端体验适配问题，以及一些 AI 协作的建议](https://github.com/PIPCLOUD-GH/glean/issues/834)。2026-10-16 读取正文与评论；当时 Issue 为 OPEN，评论为空，未提供版本、截图或具体设备型号。
+来源：[手机 H5 端体验适配问题，以及一些 AI 协作的建议](https://github.com/pipcloudlab/glean/issues/834)。2026-10-16 读取正文与评论；当时 Issue 为 OPEN，评论为空，未提供版本、截图或具体设备型号。
 
 完整反馈包含移动端体验及 AI 协作两部分。本地实现已覆盖以下路径；尚不能据此认定整个 Issue 已完成设备或发布验收。
 

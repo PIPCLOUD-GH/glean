@@ -1,6 +1,6 @@
 # Release Center · P0 真实三平台候选构建验收
 
-日期：2026-10-19。修复及验收 PR：[ #872 ](https://github.com/PIPCLOUD-GH/glean/pull/872)，目标分支 `release/v1.5.3`。
+日期：2026-10-19。修复及验收 PR：[ #872 ](https://github.com/pipcloudlab/glean/pull/872)，目标分支 `release/v1.5.3`。
 
 ## 结论与固定来源
 
@@ -8,7 +8,7 @@
 
 - 应用源码 SHA：`6283de3791a4e02975a37b6c72b1f63c35d7a7e1`，版本 `1.5.3`。
 - 请求 UUID：`ea064266-0713-4795-8489-1c2811ad8810`。
-- [Candidate Run #39188437154](https://github.com/PIPCLOUD-GH/glean/actions/runs/39188437154)，attempt **1**，5 个 Job 全部 `success`。
+- [Candidate Run #39188437154](https://github.com/pipcloudlab/glean/actions/runs/39188437154)，attempt **1**，5 个 Job 全部 `success`。
 - 控制工作流来自 `main`，SHA 为 `ab2e2941b9c922e86a7c2a1a873f5400f787761d`；Actions `head_sha` 指向控制工作流，不能替代候选应用源码 SHA。实际 checkout 与各平台独立证据均绑定上述应用源码。
 - 6 个 artifacts、20 个文件全部下载核对。构建包和独立证据分别保存；Actions 保留期 7 天，准确到期时间见证据清单。
 - 此验收文档及证据在构建完成后追加，不改变本次已验收的应用源码 SHA。
@@ -37,7 +37,7 @@
 1. Android versionName 原为 1.5.2，与 root/backend 1.5.3 不一致，Candidate contracts 会直接拒绝。同步为 1.5.3，并按现有规则将 versionCode 从 10508 递增到 10509；版本一致性测试增加 Android 断言，修复前已复现失败。
 2. Windows/macOS 连续两次 npm ci 遇到 ECONNRESET。将 root/backend/frontend 锁文件中的 616 个镜像 tarball URL 规范为官方 registry；逐字段比较确认版本、integrity、依赖图及其他字段未变化，并增加锁文件来源回归。新提交的三平台 npm ci 均通过。
 3. sharp 打包夹具只有伪造的原生头，没有 JS 入口，宿主架构真实加载检查会失败。补全明确标注为 fixture 的入口，并新增加载失败拒绝用例；没有关闭生产检查。
-4. [旧 Run #39187727685](https://github.com/PIPCLOUD-GH/glean/actions/runs/39187727685) 虽然全部成功，实际 Intel ZIP 中的 FFmpeg 却为 arm64，故拒绝将该候选计为验收通过。现在复用锁定的 ffmpeg-static 安装器，在隔离目录下载目标架构文件，通过 Mach-O 检查后再替换，失败保留原文件；打包前与实际 app Resources 打包后均检查 FFmpeg 架构。新门禁已确认拒绝旧包中的实际错误文件，新候选两种架构均正确。参见[旧候选拒绝证据](release-center-candidate-20261019-evidence/rejected-prior-candidate.json)。
+4. [旧 Run #39187727685](https://github.com/pipcloudlab/glean/actions/runs/39187727685) 虽然全部成功，实际 Intel ZIP 中的 FFmpeg 却为 arm64，故拒绝将该候选计为验收通过。现在复用锁定的 ffmpeg-static 安装器，在隔离目录下载目标架构文件，通过 Mach-O 检查后再替换，失败保留原文件；打包前与实际 app Resources 打包后均检查 FFmpeg 架构。新门禁已确认拒绝旧包中的实际错误文件，新候选两种架构均正确。参见[旧候选拒绝证据](release-center-candidate-20261019-evidence/rejected-prior-candidate.json)。
 
 回归结果：
 
@@ -51,8 +51,8 @@
 
 候选构建成功不等于仓库全部 CI 通过。源码提交仍有以下未解决门禁：
 
-- [Repository CI frontend](https://github.com/PIPCLOUD-GH/glean/actions/runs/39188431646)：lint 相对既有基线报告 19 条错误，涉及本次未修改的前端源码与测试文件。
-- [Appearance release gate](https://github.com/PIPCLOUD-GH/glean/actions/runs/39188431784)：MarkdownPreview.interactions.test.tsx 的 react-i18next mock 缺少 initReactI18next。本次未修改相关前端源码、测试或 lint 文件；锁文件只改下载地址，未改依赖版本。
+- [Repository CI frontend](https://github.com/pipcloudlab/glean/actions/runs/39188431646)：lint 相对既有基线报告 19 条错误，涉及本次未修改的前端源码与测试文件。
+- [Appearance release gate](https://github.com/pipcloudlab/glean/actions/runs/39188431784)：MarkdownPreview.interactions.test.tsx 的 react-i18next mock 缺少 initReactI18next。本次未修改相关前端源码、测试或 lint 文件；锁文件只改下载地址，未改依赖版本。
 
 本 PR 不涉及业务数据写入、同步、迁移、删除或账号切换，DCC 行为验收不适用。原工作区的 packages/glean-mcp/package-lock.json 修改保持不变。
 

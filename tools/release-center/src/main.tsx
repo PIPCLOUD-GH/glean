@@ -138,7 +138,7 @@ function GitHubLink({
   url: string;
   children: React.ReactNode;
 }) {
-  return url.startsWith("https://github.com/PIPCLOUD-GH/glean/") ? (
+  return url.startsWith("https://github.com/pipcloudlab/glean/") ? (
     <a
       href={url}
       target="_blank"
@@ -1087,7 +1087,7 @@ function App() {
                           )}
                           {focused.runId && (
                             <GitHubLink
-                              url={`https://github.com/PIPCLOUD-GH/glean/actions/runs/${focused.runId}`}
+                              url={`https://github.com/pipcloudlab/glean/actions/runs/${focused.runId}`}
                             >
                               查看 GitHub Run
                             </GitHubLink>
@@ -1313,7 +1313,7 @@ function App() {
                               {t.runId && (
                                 <div className="mt-3 text-xs">
                                   <GitHubLink
-                                    url={`https://github.com/PIPCLOUD-GH/glean/actions/runs/${t.runId}`}
+                                    url={`https://github.com/pipcloudlab/glean/actions/runs/${t.runId}`}
                                   >
                                     查看 artifact 与 manifest
                                   </GitHubLink>

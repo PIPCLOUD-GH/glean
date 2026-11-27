@@ -134,7 +134,7 @@ test("expected capture failures do not roll back a probationary plugin", async (
   db.prepare("UPDATE plugin_registry SET lifecycleState='probation',probationVersion=version,probationRemaining=5 WHERE id=?").run(WECHAT_PLUGIN_ID);
   test.mock.method(dns, "lookup", async () => [{ address: "198.18.0.87", family: 4 }] as any);
   try {
-    await assert.rejects(getPluginService().execute(WECHAT_PLUGIN_ID, "capture-article", "alice", null, { url: "https://github.com/PIPCLOUD-GH/glean", itemId: "probation-fetch", notebookId: assistantStatus("alice").notebookId }), { code: "CAPTURE_URL_DENIED" });
+    await assert.rejects(getPluginService().execute(WECHAT_PLUGIN_ID, "capture-article", "alice", null, { url: "https://github.com/pipcloudlab/glean", itemId: "probation-fetch", notebookId: assistantStatus("alice").notebookId }), { code: "CAPTURE_URL_DENIED" });
     const record = getPluginService().registry.get(WECHAT_PLUGIN_ID)!;
     assert.equal(record.version, "1.1.0"); assert.equal(record.status, "enabled"); assert.equal(record.lifecycleState, "probation");
   } finally { db.prepare("UPDATE plugin_registry SET lifecycleState='stable',probationVersion=NULL,probationRemaining=0 WHERE id=?").run(WECHAT_PLUGIN_ID); }

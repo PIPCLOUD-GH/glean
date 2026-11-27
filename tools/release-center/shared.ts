@@ -1,4 +1,4 @@
-export const REPO = "pipcloud/glean";
+export const REPO = "pipcloudlab/glean";
 export const WORKFLOW = "release-center-debug.yml";
 export const PLATFORMS = ["windows", "macos", "linux"] as const;
 export type Platform = (typeof PLATFORMS)[number];

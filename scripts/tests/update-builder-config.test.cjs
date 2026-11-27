@@ -24,10 +24,10 @@ test("full desktop updater uses stable no-space artifact names", () => {
   );
 });
 
-test("desktop updater feed points at the public PIPCLOUD-GH repository", () => {
-  // 仓库已迁移到 PIPCLOUD-GH；owner 写错会让 app-update.yml 指向 404 的 pipcloud/glean。
+test("desktop updater feed points at the public pipcloudlab repository", () => {
+  // 仓库已迁移到 pipcloudlab；owner 写错会让 app-update.yml 指向 404 的 pipcloud/glean。
   assert.deepEqual(full.publish, [
-    { provider: "github", owner: "PIPCLOUD-GH", repo: "glean", releaseType: "release" },
+    { provider: "github", owner: "pipcloudlab", repo: "glean", releaseType: "release" },
   ]);
 });
 

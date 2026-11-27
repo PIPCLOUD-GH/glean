@@ -23,7 +23,7 @@ GitHub Release 发布说明模板（发版中心「正式发布说明」）。�
 
 支持 **Windows、macOS、Linux、Android、飞牛 fnOS、绿联 UGOS、Docker** 及浏览器剪藏插件。
 
-[**官网下载中心**](https://glean.pipcloud.cn/#/note/download) · [**完整更新日志**](https://github.com/PIPCLOUD-GH/glean/blob/main/docs/releases/v〈版本〉.md) · [**问题反馈**](https://github.com/PIPCLOUD-GH/glean/issues)
+[**官网下载中心**](https://glean.pipcloud.cn/#/note/download) · [**完整更新日志**](https://github.com/pipcloudlab/glean/blob/main/docs/releases/v〈版本〉.md) · [**问题反馈**](https://github.com/pipcloudlab/glean/issues)
 
 > **更新方式：** 〈用上面的命令生成，整段替换〉
 >
@@ -36,7 +36,7 @@ GitHub Release 发布说明模板（发版中心「正式发布说明」）。�
 
 - 发布日期：〈YYYY-MM-DD〉
 - 源码提交：`〈完整 SHA〉`
-- [正式构建记录](https://github.com/PIPCLOUD-GH/glean/actions/runs/〈Run ID〉)
+- [正式构建记录](https://github.com/pipcloudlab/glean/actions/runs/〈Run ID〉)
 - 壳版本号：安卓 `〈…〉`，电脑客户端 `〈…〉`（`node scripts/hot-update/runtime-fingerprint.mjs --revision v〈版本〉`）
 
 </details>

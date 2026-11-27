@@ -1,6 +1,6 @@
 # Native 个人文件夹离线创建验收
 
-2026-10-11，`codex/native-knowledge-tree-offline`，继续 Draft PR [#831](https://github.com/PIPCLOUD-GH/glean/pull/831)，目标 `release/v1.5.2`。创建代码 `61ca1f03`，Snapshot 竞态修复 `c3d9b9ff`，基准 `8119a34c`；[上一批移动/冲突验收](sync-v2-native-tree-writes-validation.md)、[English](sync-v2-native-folder-create-validation.en.md)。
+2026-10-11，`codex/native-knowledge-tree-offline`，继续 Draft PR [#831](https://github.com/pipcloudlab/glean/pull/831)，目标 `release/v1.5.2`。创建代码 `61ca1f03`，Snapshot 竞态修复 `c3d9b9ff`，基准 `8119a34c`；[上一批移动/冲突验收](sync-v2-native-tree-writes-validation.md)、[English](sync-v2-native-folder-create-validation.en.md)。
 
 ## 本批闭环
 
@@ -17,7 +17,7 @@
 - 最终相关后端回归 323 项、前端去重回归 257 项（39 文件）通过，均无跳过。新增覆盖嵌套资源和第二个独立 SQLite 客户端、文档父节点、重启和 mutationId、全量重建期间创建、完整/仅结构 ACK 丢失、Push 中继续创建与移动、100 条分页依赖、整事务回滚、未订阅/缺父/异用户/密码父链拒绝、在线证明接管和工作区回退。
 - 契约矩阵全部 8 个后端映射文件另跑 125 项通过，无跳过，与上一项重叠；门禁 12 不变量、97 引用、8 后端文件、20 前端文件。
 - 后端生产 build/build:tsc、前端 TypeScript/正常生产 build 通过；lint 基线 1447 历史错误、0 新错误。Node 24 执行前端 SQLite 用例；better-sqlite3 使用项目 Electron RunAsNode。
-- 另核查 [I18n CI](https://github.com/PIPCLOUD-GH/glean/actions/runs/38139639518)：覆盖套件 39 项中 1 项失败，与[改动前的 8119a34c](https://github.com/PIPCLOUD-GH/glean/actions/runs/38137818852)同样缺少 16 个 encryptedConversion 键。生产 index 已合并该翻译模块，既有测试装配漏合并；相关组件与 i18n 目录相对 release 基准均未改动。本地复现同一失败，该套件不计入上面的 257 项；保留 Draft，不宣称全部 CI 通过。
+- 另核查 [I18n CI](https://github.com/pipcloudlab/glean/actions/runs/38139639518)：覆盖套件 39 项中 1 项失败，与[改动前的 8119a34c](https://github.com/pipcloudlab/glean/actions/runs/38137818852)同样缺少 16 个 encryptedConversion 键。生产 index 已合并该翻译模块，既有测试装配漏合并；相关组件与 i18n 目录相对 release 基准均未改动。本地复现同一失败，该套件不计入上面的 257 项；保留 Draft，不宣称全部 CI 通过。
 
 ## Android 验收
 

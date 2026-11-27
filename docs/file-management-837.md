@@ -1,6 +1,6 @@
 # 文件管理：移动、中文文件名与公开外链（#837）
 
-需求来源：[Issue #837](https://github.com/PIPCLOUD-GH/glean/issues/837)。实现位于开发分支，尚未正式发布。
+需求来源：[Issue #837](https://github.com/pipcloudlab/glean/issues/837)。实现位于开发分支，尚未正式发布。
 
 ## 需求分析与使用方式
 

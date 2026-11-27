@@ -49,7 +49,7 @@ export function releaseDownloadLinks(release, mirror) {
       /\.(exe|msi|dmg|zip|AppImage|deb|rpm|apk|aab|fpk|upk|tar|gz)$/i.test(asset.name) &&
       Number.isSafeInteger(asset.size) && asset.size > 0 &&
       asset.browser_download_url ===
-        "https://github.com/PIPCLOUD-GH/glean/releases/download/" +
+        "https://github.com/pipcloudlab/glean/releases/download/" +
         tag + "/" + encodeURIComponent(asset.name))
     .sort((a, b) => a.name.localeCompare(b.name));
 

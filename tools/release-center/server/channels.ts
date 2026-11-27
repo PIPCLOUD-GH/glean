@@ -138,7 +138,7 @@ export class Channels {
       throw new AppError(502, "无效的 Release 产物清单");
     return {
       releaseId: release.id, tag, sha: object.sha,
-      url: `https://github.com/PIPCLOUD-GH/glean/releases/tag/${tag}`, publishedAt: release.published_at,
+      url: `https://github.com/pipcloudlab/glean/releases/tag/${tag}`, publishedAt: release.published_at,
       assets: release.assets.filter((a: any) => typeof a.name === "string" && /^[A-Za-z0-9][A-Za-z0-9._-]{0,199}$/.test(a.name) &&
         Number.isSafeInteger(a.id) && Number.isSafeInteger(a.size) && a.size > 0)
         .map((a: any) => ({ id: a.id, name: a.name, size: a.size, digest: sha256(a.digest), contentVerified: false })),
@@ -207,7 +207,7 @@ export class Channels {
     } catch (error) {
       if (error instanceof AppError && [404, 409].includes(error.status))
         return this.observation("nas", version, "not_found", "没有可用于渠道分发的正式 Release", [],
-          "https://github.com/PIPCLOUD-GH/glean/releases");
+          "https://github.com/pipcloudlab/glean/releases");
       throw error;
     }
   }

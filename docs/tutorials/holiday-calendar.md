@@ -7,7 +7,7 @@
 ## 年度数据与更新
 
 - 随包内置 2026 年数据，覆盖全部 33 天放假安排及 6 天调休上班，依据[国务院办公厅年度通知](https://www.beijing.gov.cn/zhengce/zhengcefagui/202511/t20251104_4258873.html)。未提供年度数据时明确提示，不推算未来调休安排。
-- 启用后，浏览器直接从固定的 Glean 项目地址读取年度文件：`https://raw.githubusercontent.com/pipcloud/glean/main/frontend/public/holidays/cn-{year}.json`。自动检查每年最多每天一次，重新打开页面也保留检查间隔；保持页面打开或恢复网络时同样检查间隔。「检查更新」允许手动重试。
+- 启用后，浏览器直接从固定的 Glean 项目地址读取年度文件：`https://raw.githubusercontent.com/pipcloudlab/glean/main/frontend/public/holidays/cn-{year}.json`。自动检查每年最多每天一次，重新打开页面也保留检查间隔；保持页面打开或恢复网络时同样检查间隔。「检查更新」允许手动重试。
 - Docker / 自建服务端不需要访问外网。客户端无法访问 GitHub、404、超时或数据校验失败时，继续使用内置或已缓存数据。开关关闭时不发起更新请求，并取消进行中的请求。
 - 更新不携带应用凭据，不跟随重定向；8 秒超时，流式读取最多 64 KiB。格式、地区、年份、版本、真实日期、已知节日及政府来源链接校验通过后才应用。每次完整替换一个年度，支持修订与删除，不接受降级版本。
 - 缓存保存在浏览器 localStorage；不可持久化时明确提示，仍可在本次页面中使用。该公共参考数据不参与笔记、任务、Outbox 或备份协议。

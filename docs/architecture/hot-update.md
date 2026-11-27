@@ -136,7 +136,7 @@ Tag 触发的 `release.yml` 只打安装包，不生成热更新包。这个整�
 客户端按「设置 → 更新通道」轮询以下两个地址（所选通道在前、另一个作回退，默认 GitHub 在前）：
 
 ```
-https://github.com/PIPCLOUD-GH/glean/releases/latest/download/glean-hot-<target>-<runtimeVersion>.json   # GitHub 通道首选
+https://github.com/pipcloudlab/glean/releases/latest/download/glean-hot-<target>-<runtimeVersion>.json   # GitHub 通道首选
 https://download.glean.pipcloud.cn/hot/stable/<target>/<runtimeVersion>.json     # 自建源通道首选（未配置时自动回退前者）
 ```
 

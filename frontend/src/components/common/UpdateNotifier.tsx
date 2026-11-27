@@ -121,7 +121,7 @@ function writeDismissed(key: string) {
 }
 
 // Android native 壳的 APK 下载页（落在 GitHub release 页，最稳）
-const APK_DOWNLOAD_URL = "https://github.com/PIPCLOUD-GH/glean/releases/latest";
+const APK_DOWNLOAD_URL = "https://github.com/pipcloudlab/glean/releases/latest";
 
 /**
  * 简单的 semver 比较：a < b 返回 -1；a > b 返回 1；相等返回 0。

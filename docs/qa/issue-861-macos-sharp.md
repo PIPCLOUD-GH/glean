@@ -19,11 +19,11 @@
 ## GitHub 构建与 1.5.2 资产替换（2026-10-17）
 
 - 热修复源码从原始 `v1.5.2`（`c6f4778c95775bb233209879d01dd0d5b3173fac`）仅带入 #861 修复，提交 `e6b7afa221222ef6c33fb65d20ac631403213437`，已推送 `codex/issue-861-macos-1.5.2`。原始标签保持不变。开发分支的完整本地提交为 `ae71c5db`，包含新增 CI 测试步骤；工作流变更未推送。
-- [GitHub Actions run 38993996075](https://github.com/PIPCLOUD-GH/glean/actions/runs/38993996075)：契约检查与 macOS 双架构构建均成功。源码信任根与仓库发布变量一致；仓库无 macOS 签名凭据，继续采用未签名分发。
+- [GitHub Actions run 38993996075](https://github.com/pipcloudlab/glean/actions/runs/38993996075)：契约检查与 macOS 双架构构建均成功。源码信任根与仓库发布变量一致；仓库无 macOS 签名凭据，继续采用未签名分发。
 - Actions artifact `12086034774`，整包 SHA-256：`5ee7c297b894121fdb660d6f5e9d1632e706b15ce7be4bf5aa6b816bc2211efb`。下载后验证整包摘要、9 个文件各自的摘要，以及 `latest-mac.yml` 引用文件的 SHA-512/大小。
 - 分别从两份 ZIP 解压应用，使用包内 Electron 33.0.0：SQLite 内存库查询成功，sharp 生成 PNG 并重新读取尺寸成功；完整后端以隔离的临时数据目录启动，`/api/health` 返回 200、`status: ok`、`version: 1.5.2`。x64 经 Rosetta 运行，arm64 原生运行。
 - 分别只读挂载 DMG，比对 DMG 与 ZIP 中的后端 bundle、对应架构 sharp `.node` 与 libvips `.dylib`，SHA-256 均一致。
-- 已替换 [v1.5.2 Release](https://github.com/PIPCLOUD-GH/glean/releases/tag/v1.5.2) 的 x64/arm64 DMG、ZIP、四份 blockmap 与 `latest-mac.yml`，共 9 个文件。新文件先暂存上传、核对服务端 SHA-256/大小后切换同名下载，最后清理旧文件。替换后远端摘要全部匹配，更新元数据下载内容与本地一致；其余 13 个资产的 ID 与摘要未变，资产总数仍为 22，无临时资产残留。发布说明已记录修复源码与构建链接。
+- 已替换 [v1.5.2 Release](https://github.com/pipcloudlab/glean/releases/tag/v1.5.2) 的 x64/arm64 DMG、ZIP、四份 blockmap 与 `latest-mac.yml`，共 9 个文件。新文件先暂存上传、核对服务端 SHA-256/大小后切换同名下载，最后清理旧文件。替换后远端摘要全部匹配，更新元数据下载内容与本地一致；其余 13 个资产的 ID 与摘要未变，资产总数仍为 22，无临时资产残留。发布说明已记录修复源码与构建链接。
 
 ## 尚未验收
 

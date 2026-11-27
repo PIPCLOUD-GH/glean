@@ -8,7 +8,7 @@
 
 ### 方式一：APK 安装（推荐）
 
-1. 从 [Releases](https://github.com/PIPCLOUD-GH/glean/releases) 下载最新 APK
+1. 从 [Releases](https://github.com/pipcloudlab/glean/releases) 下载最新 APK
 2. 在手机上打开安装（需允许安装未知来源应用）
 
 ### 方式二：浏览器访问

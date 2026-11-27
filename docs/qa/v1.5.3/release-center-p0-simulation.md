@@ -3,8 +3,8 @@
 日期：2026-10-17  
 开发分支：`codex/release-center-phase2b-lifecycle-20261017`  
 目标：`release/v1.5.3`  
-PR：[ #863 ](https://github.com/PIPCLOUD-GH/glean/pull/863)  
-GitHub Actions：[ Release Center CI #39038677240 ](https://github.com/PIPCLOUD-GH/glean/actions/runs/39038677240)
+PR：[ #863 ](https://github.com/pipcloudlab/glean/pull/863)  
+GitHub Actions：[ Release Center CI #39038677240 ](https://github.com/pipcloudlab/glean/actions/runs/39038677240)
 
 ## 实施内容
 
@@ -37,7 +37,7 @@ GitHub Actions：[ Release Center CI #39038677240 ](https://github.com/PIPCLOUD-
 - 控制台 `npm test`：**122/122 通过，失败 0**。
 - TypeScript 检查和 Vite 生产构建：**通过**。
 - Chromium 浏览器：**9/9 通过**，包含新增正式候选页面安全及窄屏暗色检查。
-- 两个 CI Job `console-contracts` 与 `formal-safety`：**均 success**。以上均为 [Run #39038677240](https://github.com/PIPCLOUD-GH/glean/actions/runs/39038677240) 的真实执行结果。
+- 两个 CI Job `console-contracts` 与 `formal-safety`：**均 success**。以上均为 [Run #39038677240](https://github.com/pipcloudlab/glean/actions/runs/39038677240) 的真实执行结果。
 
 ## 浏览器竞态测试稳定性修复
 

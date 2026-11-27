@@ -1,6 +1,6 @@
 <div align="center">
   <img src="./electron/icon.png" alt="Glean" width="104" />
-  <h1>Glean（拾记笔记）</h1>
+  <h1>Glean（拾记）</h1>
   <p><strong>开源、自托管的知识库、每日记录与任务协作平台</strong></p>
   <p>
     统一知识树 · 富文本 / Markdown 双编辑器 · 离线工作区 · AI RAG 问答 · 每日记录 · 任务中心 · 多端协作
@@ -11,7 +11,7 @@
     <a href="https://glean.pipcloud.cn/#/note/download">下载中心</a> ·
     <a href="https://glean.pipcloud.cn/#/note/tutorials">帮助中心</a> ·
     <a href="http://note.glean.pipcloud.cn/">在线体验</a> ·
-    <a href="https://github.com/PIPCLOUD-GH/glean/releases">下载客户端</a> ·
+    <a href="https://github.com/pipcloudlab/glean/releases">下载客户端</a> ·
     <a href="./docs/tutorials/README.md">教程中心</a> ·
     <a href="./docs/tutorials/mcp.md">MCP 安装</a> ·
     <a href="./.agents/skills/glean-development/SKILL.md">AI 开发 Skill</a> ·
@@ -21,7 +21,7 @@
 
 <div align="center">
 
-[![GitHub Release](https://img.shields.io/github/v/release/pipcloud/glean?display_name=tag&sort=semver)](https://github.com/PIPCLOUD-GH/glean/releases)
+[![GitHub Release](https://img.shields.io/github/v/release/pipcloudlab/glean?display_name=tag&sort=semver)](https://github.com/pipcloudlab/glean/releases)
 [![Docker Pulls](https://img.shields.io/docker/pulls/pipcloud/glean?logo=docker&logoColor=white)](https://hub.docker.com/r/pipcloud/glean)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](./LICENSE)
 [![Node.js 24.22.1+（24.x LTS）](https://img.shields.io/badge/Node.js-24.22.1%2B-339933?logo=node.js&logoColor=white)](https://nodejs.org/)
@@ -35,7 +35,7 @@
 
 ## v1.5.5 更新亮点 · 2026-11-09
 
-**Web、桌面和 Android 双向同步加强，桌面启动恢复与交互体验升级。** [完整更新说明](./docs/releases/v1.5.5.md) · [v1.5.5 正式 Release](https://github.com/PIPCLOUD-GH/glean/releases/tag/v1.5.5)。
+**Web、桌面和 Android 双向同步加强，桌面启动恢复与交互体验升级。** [完整更新说明](./docs/releases/v1.5.5.md) · [v1.5.5 正式 Release](https://github.com/pipcloudlab/glean/releases/tag/v1.5.5)。
 
 > [!IMPORTANT]
 > 升级前备份数据库、附件和部署配置，并确认可以恢复。**回滚程序或 Docker 镜像不会回滚持久化数据库。** macOS 官方 GitHub 包未签名或公证，Windows GitHub EXE 也未提供代码签名。实时同步需要在线连接同一服务端和账号；弱网、离线和并发冲突仍需正确处理。
@@ -56,7 +56,7 @@ v1.5.4 于 2026-11-02 发布，包含 AI 修改审核、Markdown 章节折叠、
 
 ## 历史正式版 · v1.5.3
 
-v1.5.3 于 2026-10-23 公开发布，改进笔记编辑、图片管理、加密操作、日历提醒和多平台稳定性。详情见 [v1.5.3 Release](https://github.com/PIPCLOUD-GH/glean/releases/tag/v1.5.3)。
+v1.5.3 于 2026-10-23 公开发布，改进笔记编辑、图片管理、加密操作、日历提醒和多平台稳定性。详情见 [v1.5.3 Release](https://github.com/pipcloudlab/glean/releases/tag/v1.5.3)。
 
 ## 为什么选择 Glean
 
@@ -109,7 +109,7 @@ Glean 的 MCP Server 可连接 Claude Code、Cursor、VS Code 等客户端。在
 
 ## 更早版本
 
-v1.5.1 的任务提醒、AI 任务操作与 Android 同步修复见 [v1.5.1 发布说明](https://github.com/PIPCLOUD-GH/glean/releases/tag/v1.5.1)；历史内容见 [更新日志](./CHANGELOG.md)。
+v1.5.1 的任务提醒、AI 任务操作与 Android 同步修复见 [v1.5.1 发布说明](https://github.com/pipcloudlab/glean/releases/tag/v1.5.1)；历史内容见 [更新日志](./CHANGELOG.md)。
 
 ## 截图
 
@@ -158,7 +158,7 @@ v1.5.1 的任务提醒、AI 任务操作与 Android 同步修复见 [v1.5.1 发�
 要求已安装 Docker Engine 与 Docker Compose v2。
 
 ```bash
-git clone https://github.com/PIPCLOUD-GH/glean.git
+git clone https://github.com/pipcloudlab/glean.git
 cd glean
 docker compose up -d
 ```
@@ -199,7 +199,7 @@ Glean 支持部署在 **绿联 NAS（UGOS / UGOS Pro）** 与 **飞牛 NAS（fnO
 - 远程访问：在 Web、桌面端或 Android 客户端中填写 NAS 的公网域名、IPv4 或 IPv6 服务地址并登录。
 - 公网使用建议配置 HTTPS 反向代理，不建议直接暴露未加密的 HTTP 服务。
 
-查看各平台安装包：[GitHub Releases](https://github.com/PIPCLOUD-GH/glean/releases)。
+查看各平台安装包：[GitHub Releases](https://github.com/pipcloudlab/glean/releases)。
 
 查看运行状态和日志：
 
@@ -225,7 +225,7 @@ GLEAN_IMAGE_TAG=v1.5.1 docker compose up -d
 ```
 
 > [!IMPORTANT]
-> **升级前请先完成完整备份，确认数据库与附件已持久化。** Docker / NAS 用户建议保留独立备份；镜像回滚不会还原数据库。版本详情见 [更新日志](./CHANGELOG.md) 与 [公开 Releases](https://github.com/PIPCLOUD-GH/glean/releases)。
+> **升级前请先完成完整备份，确认数据库与附件已持久化。** Docker / NAS 用户建议保留独立备份；镜像回滚不会还原数据库。版本详情见 [更新日志](./CHANGELOG.md) 与 [公开 Releases](https://github.com/pipcloudlab/glean/releases)。
 
 ### Docker 在线升级（可选）
 
@@ -302,7 +302,7 @@ docker run -d \
 | 平台 | 获取 / 构建方式 | 状态说明 |
 | --- | --- | --- |
 | **Web / Docker** | Docker Hub 或源码构建 | 推荐部署方式；镜像可构建 `amd64`、`arm64` 或多架构版本 |
-| **Windows / macOS / Linux** | [GitHub Releases](https://github.com/PIPCLOUD-GH/glean/releases) 或 `npm run electron:build` | Electron 客户端可连接远程服务，也可使用本地后端 |
+| **Windows / macOS / Linux** | [GitHub Releases](https://github.com/pipcloudlab/glean/releases) 或 `npm run electron:build` | Electron 客户端可连接远程服务，也可使用本地后端 |
 | **Android** | Releases APK 或在 `frontend/` 下使用 Capacitor 构建 | 正式维护；支持系统分享导入、Markdown 导入、沉浸式编辑、移动端知识树、图片手势预览、系统原生任务提醒，以及远程连接 NAS 服务登录 |
 | **iOS** | Capacitor 工程与 GitHub Actions / TestFlight 流程 | 需要 Apple 签名与开发者账号，详见 [iOS 发布指南](./docs/iOS-Release.md) |
 | **HarmonyOS** | 使用 DevEco Studio 打开 [`glean-harmony/`](./glean-harmony/) | ArkTS + ArkWeb MVP；部分原生能力仍在完善 |
@@ -310,7 +310,7 @@ docker run -d \
 | **绿联 UGOS** | Releases / 构建脚本中的 `.upk` | 支持绿联 NAS 安装，依赖具体设备架构与应用安装能力；部署后可通过局域网或公网地址远程连接登录 |
 | **其他 NAS** | Docker Compose | 群晖、威联通、极空间等可按 Docker 方式部署 |
 
-> 各平台实际发布的安装包以 [GitHub Releases](https://github.com/PIPCLOUD-GH/glean/releases) 为准。
+> 各平台实际发布的安装包以 [GitHub Releases](https://github.com/pipcloudlab/glean/releases) 为准。
 
 桌面端最低要求 macOS 12（Monterey）；macOS 11 用户不会收到该版本的自动更新。完整升级说明见 [Node 24 迁移说明](./docs/node24-upgrade.md)。
 
@@ -319,7 +319,7 @@ docker run -d \
 要求 Node.js 24.22.1+（24.x LTS）、npm、Git。Electron 和原生依赖构建还需要对应平台的编译工具链。
 
 ```bash
-git clone https://github.com/PIPCLOUD-GH/glean.git
+git clone https://github.com/pipcloudlab/glean.git
 cd glean
 npm install
 npm run install:all
@@ -434,9 +434,9 @@ glean/
 
 README 维护稳定的产品定位、能力范围、近期版本和部署方式；完整提交历史请查看更新日志。
 
-- [查看最新 Release](https://github.com/PIPCLOUD-GH/glean/releases)
+- [查看最新 Release](https://github.com/pipcloudlab/glean/releases)
 - [查看完整更新日志](./CHANGELOG.md)
-- [查看 Issues 与开发进度](https://github.com/PIPCLOUD-GH/glean/issues)
+- [查看 Issues 与开发进度](https://github.com/pipcloudlab/glean/issues)
 
 ## 参与贡献
 
@@ -450,7 +450,7 @@ npm run build:all
 
 反馈入口：
 
-- [GitHub Issues](https://github.com/PIPCLOUD-GH/glean/issues)
+- [GitHub Issues](https://github.com/pipcloudlab/glean/issues)
 - QQ 群：`325372004`
 
 ## 致谢

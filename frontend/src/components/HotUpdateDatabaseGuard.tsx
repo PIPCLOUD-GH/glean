@@ -2,7 +2,7 @@ import { useState } from "react";
 import { DatabaseZap, Download, RefreshCw } from "lucide-react";
 import { getHotUpdateController, useHotUpdateSnapshot } from "@/lib/hotUpdate";
 
-const APK_DOWNLOAD_URL = "https://github.com/PIPCLOUD-GH/glean/releases/latest";
+const APK_DOWNLOAD_URL = "https://github.com/pipcloudlab/glean/releases/latest";
 
 /**
  * 本地库的版本比当前代码新时显示的保护页（DCC-013）。

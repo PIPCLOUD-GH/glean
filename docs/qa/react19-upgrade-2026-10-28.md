@@ -84,11 +84,11 @@
 
 已在线核实起点提交 `fc0b6eed` 触发的以下 6 项 Actions 均已完成且成功：
 
-- [Editor UX](https://github.com/PIPCLOUD-GH/glean/actions/runs/40664918100)
-- [Extension Ecosystem V2 RC1](https://github.com/PIPCLOUD-GH/glean/actions/runs/40664917969)
-- [Extension Platform V2.1](https://github.com/PIPCLOUD-GH/glean/actions/runs/40664917995)
-- [Voice Memo](https://github.com/PIPCLOUD-GH/glean/actions/runs/40664917963)
-- [Editor Agent P0](https://github.com/PIPCLOUD-GH/glean/actions/runs/40664917953)
-- [Encrypted Notes](https://github.com/PIPCLOUD-GH/glean/actions/runs/40664918060)
+- [Editor UX](https://github.com/pipcloudlab/glean/actions/runs/40664918100)
+- [Extension Ecosystem V2 RC1](https://github.com/pipcloudlab/glean/actions/runs/40664917969)
+- [Extension Platform V2.1](https://github.com/pipcloudlab/glean/actions/runs/40664917995)
+- [Voice Memo](https://github.com/pipcloudlab/glean/actions/runs/40664917963)
+- [Editor Agent P0](https://github.com/pipcloudlab/glean/actions/runs/40664917953)
+- [Encrypted Notes](https://github.com/pipcloudlab/glean/actions/runs/40664918060)
 
 这些 CI 结果仅覆盖起点提交，不覆盖本节修复，也不代表正式发布验收。仍需本轮修复对应的 CI、签名安装包与旧版覆盖升级验证、移动端真机和真实 NAS / 生产环境验收。

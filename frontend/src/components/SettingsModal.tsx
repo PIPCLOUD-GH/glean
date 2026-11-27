@@ -282,7 +282,7 @@ function VersionCompareCard() {
           {portable ? (
             <>
               <a
-                href="https://github.com/PIPCLOUD-GH/glean/releases/latest"
+                href="https://github.com/pipcloudlab/glean/releases/latest"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-full flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-lg bg-accent-primary text-white text-xs font-medium hover:opacity-90"
@@ -440,7 +440,7 @@ function AboutPanel() {
           <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-0.5">{t('about.license')}</p>
         </div>
         <a
-          href="https://github.com/PIPCLOUD-GH/glean"
+          href="https://github.com/pipcloudlab/glean"
           target="_blank"
           rel="noopener noreferrer"
           className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 text-xs font-medium hover:opacity-80 transition-opacity"

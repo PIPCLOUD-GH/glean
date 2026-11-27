@@ -1,7 +1,7 @@
 # Issue #892 图片预览修复与验收
 
 - 记录日期：2026-11-02。
-- 范围：[Issue #892](https://github.com/PIPCLOUD-GH/glean/issues/892)，从 `release/v1.5.4` 切出的 `codex/issue-892-image-preview`。
+- 范围：[Issue #892](https://github.com/pipcloudlab/glean/issues/892)，从 `release/v1.5.4` 切出的 `codex/issue-892-image-preview`。
 - 当前证据是本地源码、Vitest、Chromium 桌面/移动模拟；未取得反馈者原图、机型或录屏，不能认定已重现其全部 Android/PC 问题。没有修改或关闭远端 Issue，也未推送、发版。
 
 ## 确认的缺陷与修复

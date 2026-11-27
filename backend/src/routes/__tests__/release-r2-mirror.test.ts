@@ -23,7 +23,7 @@ const release={tag,draft:false,prerelease:false,assets:[
  ...all, "Glean-1.5.5-portable.exe", "amd64_io.glean.note_1.5.5.0001.upk"
 ].map((name,i)=>({
 name,size:1000+i,browserDownloadUrl:
-  "https://github.com/PIPCLOUD-GH/glean/releases/download/"+tag+"/"+name
+  "https://github.com/pipcloudlab/glean/releases/download/"+tag+"/"+name
 }))};
 const manifest={schema:1,version:tag,assets:all.map(name=>{
  const asset=release.assets.find(a=>a.name===name)!;

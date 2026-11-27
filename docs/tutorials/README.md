@@ -2,7 +2,7 @@
 
 > 面向普通用户、NAS 用户、团队管理员和开发者的统一文档入口。
 
-[官方网站](http://glean.pipcloud.cn/) · [在线体验](http://note.glean.pipcloud.cn/) · [客户端下载](https://github.com/PIPCLOUD-GH/glean/releases) · [MCP 安装](./mcp.md) · [问题反馈](https://github.com/PIPCLOUD-GH/glean/issues)
+[官方网站](http://glean.pipcloud.cn/) · [在线体验](http://note.glean.pipcloud.cn/) · [客户端下载](https://github.com/pipcloudlab/glean/releases) · [MCP 安装](./mcp.md) · [问题反馈](https://github.com/pipcloudlab/glean/issues)
 
 ## MCP 快速入口
 
@@ -112,7 +112,7 @@ Glean 还支持把笔记本发布为公开知识空间，并按目录继承或�
 | 平台 | 教程 / 状态 |
 |---|---|
 | **Web** | [Web 端指南](./web.md)，无需安装客户端 |
-| **Windows / macOS / Linux** | [桌面端指南](./desktop.md)，安装包以 [Releases](https://github.com/PIPCLOUD-GH/glean/releases) 为准 |
+| **Windows / macOS / Linux** | [桌面端指南](./desktop.md)，安装包以 [Releases](https://github.com/pipcloudlab/glean/releases) 为准 |
 | **Android** | [Android 指南](./android.md)，正式维护的移动端 |
 | **iOS** | Capacitor 工程与 TestFlight 流程，参见 [iOS 发布指南](../iOS-Release.md) |
 | **HarmonyOS** | [鸿蒙端指南](./harmony.md)，ArkTS + ArkWeb 客户端仍在逐步完善原生能力 |
@@ -164,5 +164,5 @@ Personal API Token 支持权限范围和笔记本资源范围。自动化场景�
 - 教程内容以 `main` 分支当前实现和最新稳定 Release 为准，不再绑定某个过期版本号。
 - 新功能应同时更新仓库教程入口和 `glean-blog` 官网帮助中心。
 - MCP 的安装路径、客户端配置格式和 Token 安全要求发生变化时，应同步更新 `mcp.md`、`mcp.en.md`、根 README 和 `packages/glean-mcp/README.md`。
-- 安装包、平台支持范围和版本号以 [GitHub Releases](https://github.com/PIPCLOUD-GH/glean/releases) 为准。
-- 发现过期步骤或错误链接，请直接提交 [Issue](https://github.com/PIPCLOUD-GH/glean/issues)。
+- 安装包、平台支持范围和版本号以 [GitHub Releases](https://github.com/pipcloudlab/glean/releases) 为准。
+- 发现过期步骤或错误链接，请直接提交 [Issue](https://github.com/pipcloudlab/glean/issues)。

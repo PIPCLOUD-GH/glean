@@ -3,7 +3,7 @@
 ## Why this snapshot changed
 
 The original `frontend/eslint-baseline.json` came from commit `fd17d980ff3c206c53d114594a84cd8c559d050a`.
-On the pristine `release/v1.5.2` code at commit `040c4289567d1bb120253677ab8ae0466694b63e`, the original exact-fingerprint checker reported **1,319 existing matches and 132 unrecognized diagnostics**. This was independently visible on #823 and #824 and blocked unrelated features (#821, #823, #824). The audit used CI run [38087050293](https://github.com/PIPCLOUD-GH/glean/actions/runs/38087050293), before any business source changes in this branch.
+On the pristine `release/v1.5.2` code at commit `040c4289567d1bb120253677ab8ae0466694b63e`, the original exact-fingerprint checker reported **1,319 existing matches and 132 unrecognized diagnostics**. This was independently visible on #823 and #824 and blocked unrelated features (#821, #823, #824). The audit used CI run [38087050293](https://github.com/pipcloudlab/glean/actions/runs/38087050293), before any business source changes in this branch.
 
 ### Exact fingerprint changes
 

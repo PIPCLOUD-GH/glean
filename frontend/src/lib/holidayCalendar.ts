@@ -16,7 +16,7 @@ export interface HolidayYear {
 
 export const HOLIDAY_MAX_BYTES = 64 * 1024;
 // Public data only. Never send the application's API token or accept arbitrary URLs.
-export const HOLIDAY_UPDATE_BASE = "https://raw.githubusercontent.com/pipcloud/glean/main/frontend/public/holidays/";
+export const HOLIDAY_UPDATE_BASE = "https://raw.githubusercontent.com/pipcloudlab/glean/main/frontend/public/holidays/";
 
 export function isHolidayYear(year: number): boolean {
   return Number.isInteger(year) && year >= 2000 && year <= 2199;

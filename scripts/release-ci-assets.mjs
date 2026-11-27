@@ -11,7 +11,7 @@ import { createRequire } from "node:module";
 const require = createRequire(import.meta.url);
 const { requiredMacReleaseAssets, requiredDebugReleaseAssets } = require("./lib/release-platform-assets.cjs");
 const { verifyLocalDirectory } = require("./lib/update-metadata-validator.cjs");
-export const REPO = "pipcloud/glean";
+export const REPO = "pipcloudlab/glean";
 export const RECEIPT = "glean-release-verification.json";
 
 function command(executable, args, capture = false, timeout = 90 * 60_000) {

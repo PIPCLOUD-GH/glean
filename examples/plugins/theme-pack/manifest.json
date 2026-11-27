@@ -9,7 +9,7 @@
   "runtime": "declarative",
   "categories": ["appearance"],
   "keywords": ["theme", "note", "reading"],
-  "repository": "https://github.com/PIPCLOUD-GH/glean-plugin-theme-pack",
+  "repository": "https://github.com/pipcloudlab/glean-plugin-theme-pack",
   "license": "MIT",
   "permissions": [],
   "contributes": {

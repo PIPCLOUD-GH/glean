@@ -166,7 +166,7 @@ const PLATFORM_ORDER: Array<{
   { category: "other", icon: HardDrive },
 ];
 
-const GITHUB_RELEASE_URL = "https://github.com/PIPCLOUD-GH/glean/releases/latest";
+const GITHUB_RELEASE_URL = "https://github.com/pipcloudlab/glean/releases/latest";
 
 const DOCKER_RUN_COMMAND =
   "docker run -d --name glean -p 3001:3001 -v ~/glean-data:/app/data pipcloud/glean:latest";

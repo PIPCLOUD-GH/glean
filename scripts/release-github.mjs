@@ -37,7 +37,7 @@ function assertTag(source) {
 }
 
 function readRelease(source) {
-  const query = 'query($tag:String!){repository(owner:"pipcloud",name:"glean"){release(tagName:$tag){databaseId}}}';
+  const query = 'query($tag:String!){repository(owner:"pipcloudlab",name:"glean"){release(tagName:$tag){databaseId}}}';
   const result = JSON.parse(gh(["api", "graphql", "-f", `query=${query}`, "-f", `tag=${source.tag}`]));
   assert.ok(!result.errors, "cannot read Release");
   const release = result.data.repository.release;

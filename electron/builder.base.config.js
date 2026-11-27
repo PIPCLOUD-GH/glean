@@ -306,7 +306,7 @@ const LINUX_MAINTAINER =
   process.env.GLEAN_LINUX_MAINTAINER || "Glean <noreply@glean.local>";
 const LINUX_VENDOR = process.env.GLEAN_LINUX_VENDOR || "Glean";
 const LINUX_HOMEPAGE =
-  process.env.GLEAN_LINUX_HOMEPAGE || "https://github.com/PIPCLOUD-GH/glean";
+  process.env.GLEAN_LINUX_HOMEPAGE || "https://github.com/pipcloudlab/glean";
 
 // ===== 体积优化：精简后端 node_modules =====
 // 后端通过 esbuild bundle 成单文件（backend/dist/index.js），
@@ -473,7 +473,7 @@ module.exports = {
   publish: [
     {
       provider: "github",
-      owner: "PIPCLOUD-GH",
+      owner: "pipcloudlab",
       repo: "glean",
       releaseType: "release",
       // channel 省略 = "latest"（保留 electron-builder 默认行为）

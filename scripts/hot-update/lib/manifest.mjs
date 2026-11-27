@@ -9,7 +9,7 @@ import { SIGNATURE_ALGORITHM, verifyBytes } from "./keys.mjs";
 
 export const TARGETS = ["android", "desktop"];
 export const CHANNEL = "stable";
-export const REPOSITORY = "PIPCLOUD-GH/glean";
+export const REPOSITORY = "pipcloudlab/glean";
 export const DOWNLOAD_ORIGIN = "https://download.glean.pipcloud.cn";
 export const ALLOWED_URL_HOSTS = ["download.glean.pipcloud.cn", "github.com"];
 export const MAX_BUNDLE_BYTES = 200 * 1024 * 1024;

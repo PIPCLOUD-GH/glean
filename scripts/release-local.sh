@@ -20,7 +20,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
 LEGACY_SCRIPT="${SCRIPT_DIR}/release-legacy.sh"
 CI_ASSETS_SCRIPT="${SCRIPT_DIR}/release-ci-assets.mjs"
-GITHUB_REPO_SLUG="pipcloud/glean"
+GITHUB_REPO_SLUG="pipcloudlab/glean"
 ANDROID_NODE24_IMAGE="glean-android:node24.22.1"
 
 [ -f "$LEGACY_SCRIPT" ] || { echo "[release-guard] missing $LEGACY_SCRIPT" >&2; exit 1; }

@@ -1,6 +1,6 @@
 # Issue #210：Windows Electron 与 Web 性能签收
 
-本文档用于签收 [#210](https://github.com/PIPCLOUD-GH/glean/issues/210)。目标不是用模拟数字证明“性能很好”，而是在真实 Web 与 Windows Electron 环境中生成可复核的 JSON 证据。
+本文档用于签收 [#210](https://github.com/pipcloudlab/glean/issues/210)。目标不是用模拟数字证明“性能很好”，而是在真实 Web 与 Windows Electron 环境中生成可复核的 JSON 证据。
 
 ## 一、签收范围
 

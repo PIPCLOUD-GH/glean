@@ -12,7 +12,7 @@
   "categories": [
     "productivity"
   ],
-  "repository": "https://github.com/PIPCLOUD-GH/glean",
+  "repository": "https://github.com/pipcloudlab/glean",
   "license": "MIT",
   "permissions": [],
   "contributes": {

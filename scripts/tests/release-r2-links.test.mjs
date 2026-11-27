@@ -28,7 +28,7 @@ const release = {
   prerelease: false,
   assets: [...names,...extra].map((name,i)=>({
     name, size: 1000+i, browser_download_url:
-      "https://github.com/PIPCLOUD-GH/glean/releases/download/" + tag + "/" + encodeURIComponent(name)
+      "https://github.com/pipcloudlab/glean/releases/download/" + tag + "/" + encodeURIComponent(name)
   }))
 };
 const manifest = {schema:1,version:tag,assets:names.map(name=>{
@@ -41,10 +41,10 @@ test("Gitee lists mirrored installers with GitHub backups and leaves UPK on GitH
   const md=releaseDownloadLinks(release,manifest);
   for(const name of names) {
     assert.ok(md.includes("https://download.glean.pipcloud.cn/"+tag+"/"+name),name);
-    assert.ok(md.includes("https://github.com/PIPCLOUD-GH/glean/releases/download/"+tag+"/"+name),name);
+    assert.ok(md.includes("https://github.com/pipcloudlab/glean/releases/download/"+tag+"/"+name),name);
   }
   for(const name of extra) {
-    assert.ok(md.includes("https://github.com/PIPCLOUD-GH/glean/releases/download/"+tag+"/"+name));
+    assert.ok(md.includes("https://github.com/pipcloudlab/glean/releases/download/"+tag+"/"+name));
     assert.ok(!md.includes("https://download.glean.pipcloud.cn/"+tag+"/"+name));
   }
 });

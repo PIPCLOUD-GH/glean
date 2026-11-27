@@ -1,6 +1,6 @@
 # Encrypted Notes Epic：整篇笔记与局部内容加密
 
-状态：M1 核心已实现，M2 已接入实验性整篇文本编辑与 SQLite/离线密文保存，同步/完整 ZIP 恢复与 PostgreSQL 16 迁移自动化验收已通过，真实产品双设备与安装包验收仍待完成；M3 新增局部加密文本实验入口，完整验收未完成。M0 参数冻结仍待移动端实测。来源：[Issue #749 第 9 项](https://github.com/PIPCLOUD-GH/glean/issues/749)。跟踪：[Epic #796](https://github.com/PIPCLOUD-GH/glean/issues/796)。协议与验收：[内部 envelope v1](./encrypted-notes-envelope-v1.md)。
+状态：M1 核心已实现，M2 已接入实验性整篇文本编辑与 SQLite/离线密文保存，同步/完整 ZIP 恢复与 PostgreSQL 16 迁移自动化验收已通过，真实产品双设备与安装包验收仍待完成；M3 新增局部加密文本实验入口，完整验收未完成。M0 参数冻结仍待移动端实测。来源：[Issue #749 第 9 项](https://github.com/pipcloudlab/glean/issues/749)。跟踪：[Epic #796](https://github.com/pipcloudlab/glean/issues/796)。协议与验收：[内部 envelope v1](./encrypted-notes-envelope-v1.md)。
 
 ## 用户目标与验收边界
 

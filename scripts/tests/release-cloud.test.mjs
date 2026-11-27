@@ -21,7 +21,7 @@ test("publishing requires explicit version confirmation and source attempt", () 
   assert.equal(normalizePublish({...input,confirmation:"1.5.3"}).source_run_id, 101);
 });
 test("only completed successful unified builds from this repo and exact attempt can be published", () => {
-  const run = {id:101,run_attempt:1,event:"workflow_dispatch",path:".github/workflows/release-build.yml",status:"completed",conclusion:"success",head_sha:sha,display_title:`Release build ${id}`,repository:{full_name:"pipcloud/glean"}};
+  const run = {id:101,run_attempt:1,event:"workflow_dispatch",path:".github/workflows/release-build.yml",status:"completed",conclusion:"success",head_sha:sha,display_title:`Release build ${id}`,repository:{full_name:"pipcloudlab/glean"}};
   assert.doesNotThrow(() => assertBuildRun(run,101,1));
   for (const extra of [{conclusion:"failure"},{path:".github/workflows/release-center-candidate.yml"},{run_attempt:2},{event:"pull_request"},{repository:{full_name:"attacker/fork"}}])
     assert.throws(() => assertBuildRun({...run,...extra},101,1));
@@ -38,7 +38,7 @@ test('artifact verification rejects changed bytes, missing targets and foreign s
   await mkdir(join(directory,'release-clipper'));
   await writeFile(join(directory,'release-clipper','clipper.zip'),'fixture package');
   const input = normalizeBuild({version:'1.5.3',request_id:id,commit_sha:sha,targets:'clipper'});
-  const source = {id:101,run_attempt:1,event:'workflow_dispatch',path:'.github/workflows/release-build.yml',status:'completed',conclusion:'success',head_sha:sha,display_title:`Release build ${id}`,repository:{full_name:'pipcloud/glean'}};
+  const source = {id:101,run_attempt:1,event:'workflow_dispatch',path:'.github/workflows/release-build.yml',status:'completed',conclusion:'success',head_sha:sha,display_title:`Release build ${id}`,repository:{full_name:'pipcloudlab/glean'}};
   const publish = normalizePublish({version:'1.5.3',request_id:id,source_run_id:101,source_attempt:1,channels:'github',confirmation:'1.5.3'});
   const manifest = await makeManifest(input,directory,{run_id:101,run_attempt:1});
   await mkdir(join(directory,'release-manifest'));
@@ -120,7 +120,7 @@ test('CLI persists an uncertain dispatch, then finds it once even after the bran
   await writeFile(join(directory,'bin','gh'),`#!${process.execPath}
 const fs=require('node:fs');const args=process.argv.slice(2);fs.appendFileSync(process.env.CLOUD_CALLS,JSON.stringify(args)+'\\n');
 if(args[0]==='api') console.log('a'.repeat(40));
-else if(args[0]==='run'&&args[1]==='list') console.log(fs.existsSync(process.env.CLOUD_ACCEPTED)?JSON.stringify([{databaseId:101,displayTitle:'Release build ${id}',headSha:'a'.repeat(40),url:'https://github.com/PIPCLOUD-GH/glean/actions/runs/101'}]):'[]');
+else if(args[0]==='run'&&args[1]==='list') console.log(fs.existsSync(process.env.CLOUD_ACCEPTED)?JSON.stringify([{databaseId:101,displayTitle:'Release build ${id}',headSha:'a'.repeat(40),url:'https://github.com/pipcloudlab/glean/actions/runs/101'}]):'[]');
 else if(args[0]==='workflow'){fs.writeFileSync(process.env.CLOUD_ACCEPTED,'accepted');process.exit(1);}
 else process.exit(2);
 `,{mode:0o755});

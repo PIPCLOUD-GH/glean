@@ -15,7 +15,7 @@ Baseline verified on 2026-10-21: `release/v1.5.3` and remote at `9f134f4f1c56656
 | MCP `index.ts`, `p1-tools.ts`, `p2-tools.ts` | External authenticated REST protocol adapters, not an internal business-service dependency. No MCP process or self-HTTP loop is introduced. |
 | `docs/plugin-platform/README.md` | Plugins have different trust levels. P0 does not run plugin actions, arbitrary URLs, SQL or shell. |
 
-Issue linkage: [#179](https://github.com/PIPCLOUD-GH/glean/issues/179) requests editor-side document editing and remained open during audit. [#91](https://github.com/PIPCLOUD-GH/glean/issues/91) was closed with MCP delivery. [#578](https://github.com/PIPCLOUD-GH/glean/issues/578) was closed after directing users to external MCP/API automation; its status does not prove built-in scheduling exists or is accepted. No Issue comments or status changes were made for this work.
+Issue linkage: [#179](https://github.com/pipcloudlab/glean/issues/179) requests editor-side document editing and remained open during audit. [#91](https://github.com/pipcloudlab/glean/issues/91) was closed with MCP delivery. [#578](https://github.com/pipcloudlab/glean/issues/578) was closed after directing users to external MCP/API automation; its status does not prove built-in scheduling exists or is accepted. No Issue comments or status changes were made for this work.
 
 ## Execution and ownership
 

@@ -329,11 +329,11 @@ function buildMenu({
         { type: "separator" },
         {
           label: "项目主页",
-          click: () => shell.openExternal("https://github.com/PIPCLOUD-GH/glean"),
+          click: () => shell.openExternal("https://github.com/pipcloudlab/glean"),
         },
         {
           label: "报告问题",
-          click: () => shell.openExternal("https://github.com/PIPCLOUD-GH/glean/issues"),
+          click: () => shell.openExternal("https://github.com/pipcloudlab/glean/issues"),
         },
         { type: "separator" },
         {

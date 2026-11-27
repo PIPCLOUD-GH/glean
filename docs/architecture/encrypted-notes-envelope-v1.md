@@ -1,6 +1,6 @@
 # Encrypted Notes：内部 envelope v1
 
-状态：M1 内部核心实现，M2 已接入实验性整篇文本编辑与密文持久化，见 [接入及验收记录](./encrypted-notes-m2.md)。跟踪 [Epic #796](https://github.com/PIPCLOUD-GH/glean/issues/796)，范围见 [Epic 设计](./encrypted-notes-epic.md)。本阶段不能宣称 #749 第 9 项完成。协议和参数为实验性内部格式，移动端实测前不冻结为对外格式。
+状态：M1 内部核心实现，M2 已接入实验性整篇文本编辑与密文持久化，见 [接入及验收记录](./encrypted-notes-m2.md)。跟踪 [Epic #796](https://github.com/pipcloudlab/glean/issues/796)，范围见 [Epic 设计](./encrypted-notes-epic.md)。本阶段不能宣称 #749 第 9 项完成。协议和参数为实验性内部格式，移动端实测前不冻结为对外格式。
 
 ## 密文格式
 

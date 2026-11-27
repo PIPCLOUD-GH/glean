@@ -1,6 +1,6 @@
 # Native personal folder creation validation
 
-2026-10-11, `codex/native-knowledge-tree-offline`, continuing Draft PR [#831](https://github.com/PIPCLOUD-GH/glean/pull/831) into `release/v1.5.2`. Creation `61ca1f03`, Snapshot race fix `c3d9b9ff`, baseline `8119a34c`; [previous move/conflict validation](sync-v2-native-tree-writes-validation.en.md), [中文](sync-v2-native-folder-create-validation.md).
+2026-10-11, `codex/native-knowledge-tree-offline`, continuing Draft PR [#831](https://github.com/pipcloudlab/glean/pull/831) into `release/v1.5.2`. Creation `61ca1f03`, Snapshot race fix `c3d9b9ff`, baseline `8119a34c`; [previous move/conflict validation](sync-v2-native-tree-writes-validation.en.md), [中文](sync-v2-native-folder-create-validation.md).
 
 ## Implemented path
 
@@ -17,7 +17,7 @@ Folders, nested folders and bodies created while the final Snapshot page returns
 - Final related backend tests: 323; unique frontend tests: 257 across 39 files. All pass without skips. New cases cover nested resources and a second independent SQLite client, document parents, reopen/stable mutation identities, creation during full rebuild, complete and structure-only lost ACKs, new writes during Push, 100-row dependency boundaries, atomic rollback, unbound/missing/foreign/protected ancestors, live proof handover and workspace fallback.
 - All eight backend files mapped by the consistency contract separately pass 125 tests without skips; these overlap the first count. Contract gate: 12 invariants, 97 references, eight backend and 20 frontend files.
 - Backend production build/build:tsc and frontend TypeScript/normal production build pass. Lint: 1447 historical errors, zero new errors. Frontend SQLite tests use Node 24; better-sqlite3 uses the repository Electron RunAsNode runtime.
-- Separately inspected [I18n CI](https://github.com/PIPCLOUD-GH/glean/actions/runs/38139639518): one of 39 tests fails on the same 16 encryptedConversion keys as [pre-change 8119a34c](https://github.com/PIPCLOUD-GH/glean/actions/runs/38137818852). Production index merges the translation module; the existing test fixture omits it. The relevant components and i18n directory are unchanged from the release baseline. Local execution reproduces the failure; this suite is excluded from the 257 count. Keep Draft and do not claim all CI passes.
+- Separately inspected [I18n CI](https://github.com/pipcloudlab/glean/actions/runs/38139639518): one of 39 tests fails on the same 16 encryptedConversion keys as [pre-change 8119a34c](https://github.com/pipcloudlab/glean/actions/runs/38137818852). Production index merges the translation module; the existing test fixture omits it. The relevant components and i18n directory are unchanged from the release baseline. Local execution reproduces the failure; this suite is excluded from the 257 count. Keep Draft and do not claim all CI passes.
 
 ## Android acceptance
 

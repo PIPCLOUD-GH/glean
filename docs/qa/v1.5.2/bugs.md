@@ -6,7 +6,7 @@
 
 ## BUG-02 · P1 数据安全契约风险，已复现
 
-源码：[`routes/notes.ts:1763`](https://github.com/PIPCLOUD-GH/glean/blob/99dbdef9fa160ccce0f66aa0489dc964a28bc6cd/backend/src/routes/notes.ts#L1763)、[`noteTrashAdapter.ts:13`](https://github.com/PIPCLOUD-GH/glean/blob/99dbdef9fa160ccce0f66aa0489dc964a28bc6cd/backend/src/services/trash/noteTrashAdapter.ts#L13)、[`acl.ts:147`](https://github.com/PIPCLOUD-GH/glean/blob/99dbdef9fa160ccce0f66aa0489dc964a28bc6cd/backend/src/middleware/acl.ts#L147)。适用条件是有 manage 权限的未锁定笔记；不是已证明的匿名或跨用户越权。
+源码：[`routes/notes.ts:1763`](https://github.com/pipcloudlab/glean/blob/99dbdef9fa160ccce0f66aa0489dc964a28bc6cd/backend/src/routes/notes.ts#L1763)、[`noteTrashAdapter.ts:13`](https://github.com/pipcloudlab/glean/blob/99dbdef9fa160ccce0f66aa0489dc964a28bc6cd/backend/src/services/trash/noteTrashAdapter.ts#L13)、[`acl.ts:147`](https://github.com/pipcloudlab/glean/blob/99dbdef9fa160ccce0f66aa0489dc964a28bc6cd/backend/src/middleware/acl.ts#L147)。适用条件是有 manage 权限的未锁定笔记；不是已证明的匿名或跨用户越权。
 
 复现：在新临时数据库建 owner/other、笔记本、`isTrashed=0/version=4` 笔记、一条历史和独占附件；启用 ready SyncProfile 和本机 identity，先确认 Outbox gate=1。以 other DELETE 返回 403，锁定笔记 DELETE 返回 NOTE_LOCKED/403。以 owner DELETE 普通笔记返回 200。查 notes/history/attachments/tree 均为 0，物理附件不存在；Outbox 为 `note/delete/baseVersion=4/pending`。回收站为空；restore 返回 failures 内的 `TRASH_ITEM_NOT_FOUND`，HTTP 本身为 200，不能把它当恢复成功。重开数据库仍没有正文/历史。
 
@@ -26,7 +26,7 @@
 
 ## BUG-06 · P2 文件隔离缺口；攻击前提未完全收敛
 
-源码：[`projectPaths.ts:84`](https://github.com/PIPCLOUD-GH/glean/blob/99dbdef9fa160ccce0f66aa0489dc964a28bc6cd/backend/src/plugins/studio/projectPaths.ts#L84)、[`projectService.ts:155`](https://github.com/PIPCLOUD-GH/glean/blob/99dbdef9fa160ccce0f66aa0489dc964a28bc6cd/backend/src/plugins/studio/projectService.ts#L155) 及 `:239` 导出读取。
+源码：[`projectPaths.ts:84`](https://github.com/pipcloudlab/glean/blob/99dbdef9fa160ccce0f66aa0489dc964a28bc6cd/backend/src/plugins/studio/projectPaths.ts#L84)、[`projectService.ts:155`](https://github.com/pipcloudlab/glean/blob/99dbdef9fa160ccce0f66aa0489dc964a28bc6cd/backend/src/plugins/studio/projectService.ts#L155) 及 `:239` 导出读取。
 
 复现：只在隔离目录建立外部 JSON canary 文件；`fs.linkSync(external, project/hard.json)` 后 lstat.nlink=2。owner 的 Studio 文件读取 HTTP 200 返回外部 canary，项目导出 ZIP 也包含这些字节；另一个用户 403。默认/显式 file symlink 的 lstat 均为 true，访问返回 `PLUGIN_STUDIO_SYMLINK_REJECTED`/400；目录 junction 同样拒绝。路径遍历、禁止 .env 负例通过。证据：`boundary-audit.json.studio`。
 
@@ -56,7 +56,7 @@
 
 ## BUG-03 · P2 创建错误码误报，已确认原始 SQLite 类型
 
-源码：[`notes.ts:768`](https://github.com/PIPCLOUD-GH/glean/blob/99dbdef9fa160ccce0f66aa0489dc964a28bc6cd/backend/src/routes/notes.ts#L768)。
+源码：[`notes.ts:768`](https://github.com/pipcloudlab/glean/blob/99dbdef9fa160ccce0f66aa0489dc964a28bc6cd/backend/src/routes/notes.ts#L768)。
 
 复现：owner POST 普通笔记，给一个从未出现过的有效 UUID，但省略 notebookId；原始异常 `SQLITE_CONSTRAINT_NOTNULL / NOT NULL constraint failed: notes.notebookId`，返回却是 409 NOTE_ID_CONFLICT。带合法笔记本第一次 201，重复 ID 的真实异常 `SQLITE_CONSTRAINT_PRIMARYKEY / UNIQUE constraint failed: notes.id`，亦返回 409 NOTE_ID_CONFLICT。伪造 notebookId 在本轮裸 notes router 是 404“笔记本不存在”；全应用能力 guard 可在进入路由前返回 403，因此不能泛化为固定一个响应。
 
@@ -70,7 +70,7 @@
 
 ## BUG-07 · P2 登录地址恢复显示为空，新增真实 UI 缺陷
 
-源码：[`ServerAddressInput.tsx:66`](https://github.com/PIPCLOUD-GH/glean/blob/99dbdef9fa160ccce0f66aa0489dc964a28bc6cd/frontend/src/components/ServerAddressInput.tsx#L66)、`:210`，[`LoginPage.tsx:856`](https://github.com/PIPCLOUD-GH/glean/blob/99dbdef9fa160ccce0f66aa0489dc964a28bc6cd/frontend/src/components/LoginPage.tsx#L856)。
+源码：[`ServerAddressInput.tsx:66`](https://github.com/pipcloudlab/glean/blob/99dbdef9fa160ccce0f66aa0489dc964a28bc6cd/frontend/src/components/ServerAddressInput.tsx#L66)、`:210`，[`LoginPage.tsx:856`](https://github.com/pipcloudlab/glean/blob/99dbdef9fa160ccce0f66aa0489dc964a28bc6cd/frontend/src/components/LoginPage.tsx#L856)。
 
 复现：localStorage 保存 https://note.glean.pipcloud.cn，mount `<LoginPage isClientMode>`；地址输入自动聚焦。父状态恢复公网 host、局域网发现正确消失，但输入仍为空。原用例三轮失败，补充纯组件在 blank→savedHost 更新也重现。证据：`login-address-dom.json`、`address-autofocus-observation.json`、`address-proof.json`。这是 React/jsdom DOM 复现，真实浏览器、Electron 页面和 Native WebView 本轮未人工验收。
 

@@ -53,7 +53,7 @@ export function PublicationPanel({ revision, tasks, request }: { revision: numbe
         输入固定 Commit SHA、稳定版本 X.Y.Z 和新 UUID；不会推 Tag，也不会创建 Draft、正式 Release、TestFlight 或商店上传。
         生成的候选 ZIP 与证据分开保存，未签名、未审批，不能冒充下方允许接管的 Tag 正式构建。</p>
       <a className="inline-flex rounded-lg border border-slate-200 px-3 py-2 text-sm font-medium text-primary hover:bg-slate-50 dark:border-slate-700 dark:hover:bg-slate-800"
-        href="https://github.com/PIPCLOUD-GH/glean/actions/workflows/release-center-candidate.yml"
+        href="https://github.com/pipcloudlab/glean/actions/workflows/release-center-candidate.yml"
         target="_blank" rel="noreferrer">在 GitHub Actions 打开独立候选构建 ↗</a>
       <p className="text-xs text-amber-700 dark:text-amber-300">工作流需先登记到默认分支且在目标 Commit 中包含脚本；当前控制台不提供远端派发和生产晋升入口。完成真实调试验收前不应打开正式发布开关。</p>
     </Card>
@@ -95,7 +95,7 @@ function CandidateCard({ candidate, view, disabled, submit }: { candidate: Relea
   return <Card className="min-w-0 space-y-4 p-5">
     <div className="flex flex-wrap items-center justify-between gap-3"><h2 className="font-semibold">{candidate.tag} · 正式候选</h2><span className="text-xs text-slate-500">{states[candidate.state]}</span></div>
     <p className="break-all font-mono text-xs text-slate-500">Commit {candidate.sha}<br />证据 {candidate.digest || "所有平台复核前无证据摘要"}</p>
-    <p className="text-xs text-primary"><a href={`https://github.com/PIPCLOUD-GH/glean/actions/runs/${candidate.runId}`} target="_blank" rel="noreferrer">来源 Run {candidate.runId} · attempt {candidate.runAttempt}</a></p>
+    <p className="text-xs text-primary"><a href={`https://github.com/pipcloudlab/glean/actions/runs/${candidate.runId}`} target="_blank" rel="noreferrer">来源 Run {candidate.runId} · attempt {candidate.runAttempt}</a></p>
     {candidate.draftId && <p className="text-xs text-slate-500">绑定 Release ID {candidate.draftId} · 仅维护本工具创建的 Draft，不接管其他 Draft，不覆盖同名文件。</p>}
     {candidate.error && <p className="break-words text-xs text-red-600 dark:text-red-300">{candidate.error}</p>}
     {candidate.verifications.map((v) => <details key={v.platform} className="text-xs text-slate-500"><summary className="cursor-pointer">{v.platform} · {v.files.length} 个文件完成内容校验</summary>

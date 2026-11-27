@@ -72,4 +72,4 @@ Glean Web Clipper（以下简称"本扩展"）是一款浏览器扩展，用于�
 
 如您对本隐私政策有任何疑问，请通过以下方式联系：
 
-- GitHub Issues：[https://github.com/PIPCLOUD-GH/glean/issues](https://github.com/PIPCLOUD-GH/glean/issues)
+- GitHub Issues：[https://github.com/pipcloudlab/glean/issues](https://github.com/pipcloudlab/glean/issues)

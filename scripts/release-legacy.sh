@@ -50,8 +50,8 @@ set -euo pipefail
 # -------------------- 配置 --------------------
 DEFAULT_IMAGE_NAME="pipcloud/glean"
 DEFAULT_BRANCH="main"
-GITHUB_REPO_URL="https://github.com/PIPCLOUD-GH/glean"
-GITHUB_REPO_SLUG="pipcloud/glean"   # gh release create 需要的 "owner/repo"
+GITHUB_REPO_URL="https://github.com/pipcloudlab/glean"
+GITHUB_REPO_SLUG="pipcloudlab/glean"   # gh release create 需要的 "owner/repo"
 BUILDX_BUILDER="glean-builder"
 DEFAULT_TAR_OUT="glean-arm64.tar"
 

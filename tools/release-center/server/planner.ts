@@ -119,7 +119,7 @@ export class Planner {
   async overview(): Promise<Omit<Overview, "tasks">> {
     const result: Omit<Overview, "tasks"> = {
       ...this.local(),
-      repo: "pipcloud/glean",
+      repo: "pipcloudlab/glean",
       tokenConfigured: !!this.github.token,
       debugEnabled: this.debugEnabled,
       releases: [],

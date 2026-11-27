@@ -25,7 +25,7 @@ Glean MCP Server，让支持 Model Context Protocol 的 AI 客户端在授权范
 ## 从仓库安装
 
 ```bash
-git clone https://github.com/PIPCLOUD-GH/glean.git
+git clone https://github.com/pipcloudlab/glean.git
 cd glean/packages/glean-mcp
 npm install
 npm run build

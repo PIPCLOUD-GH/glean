@@ -8,7 +8,7 @@
 #   1. Gitea token 文件：GITEA_TOKEN_FILE（默认 $HOME/glean-secrets/glean-gitea-token）
 #   2. GitHub token 文件：GH_TOKEN_FILE（默认 $HOME/glean-secrets/github-token），
 #      须含 repo + workflow scope（仓库含 .github/workflows/，缺 workflow 会被 GitHub 拒推）
-#   3. 同步目标：GH_REPO（默认 PIPCLOUD-GH/glean）
+#   3. 同步目标：GH_REPO（默认 pipcloudlab/glean）
 #   4. python3（清单比对）；打包机内网到 uploads.github.com 约 1~2.6MB/s
 #
 # 原理（以 Gitea 为单一事实源，按 资产名+尺寸 对齐）：
@@ -24,7 +24,7 @@ GITEA_TOKEN_FILE="${GITEA_TOKEN_FILE:-$HOME/glean-secrets/glean-gitea-token}"
 GH_TOKEN_FILE="${GH_TOKEN_FILE:-$HOME/glean-secrets/github-token}"
 GITEA_URL="${GITEA_URL:-https://127.0.0.1:3080}"
 GITEA_REPO="${GITEA_REPO:-pipcloud/glean}"
-GH_REPO="${GH_REPO:-PIPCLOUD-GH/glean}"
+GH_REPO="${GH_REPO:-pipcloudlab/glean}"
 
 TAG=""
 while [ $# -gt 0 ]; do

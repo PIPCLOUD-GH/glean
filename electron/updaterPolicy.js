@@ -1,4 +1,4 @@
-const RELEASES_BASE_URL = "https://github.com/PIPCLOUD-GH/glean/releases";
+const RELEASES_BASE_URL = "https://github.com/pipcloudlab/glean/releases";
 // 自建源固定地址：/latest/ 目录托管 latest.yml 与安装包（发版时同步镜像）。
 const SELFHOSTED_LATEST_BASE_URL = "https://download.glean.pipcloud.cn/latest";
 const MANUAL_DOWNLOAD_NOTICE =
@@ -22,8 +22,8 @@ function buildDesktopFeed(channel) {
   if (channel === "selfhosted") {
     return { provider: "generic", url: `${SELFHOSTED_LATEST_BASE_URL}/` };
   }
-  // 仓库已迁移到 PIPCLOUD-GH；app-update.yml 里旧的 owner=pipcloud 会 404，这里固定纠正。
-  return { provider: "github", owner: "PIPCLOUD-GH", repo: "glean", releaseType: "release" };
+  // 仓库已迁移到 pipcloudlab；app-update.yml 里旧的 owner=pipcloud 会 404，这里固定纠正。
+  return { provider: "github", owner: "pipcloudlab", repo: "glean", releaseType: "release" };
 }
 
 /**

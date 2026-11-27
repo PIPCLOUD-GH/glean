@@ -1,4 +1,5 @@
 export const CLOUD_REPO: string;
+export const DOCKER_REPO: string;
 export const BUILD_WORKFLOW: string;
 export const PUBLISH_WORKFLOW: string;
 export const BUILD_TARGETS: readonly ['windows', 'macos', 'linux', 'android', 'ios', 'store', 'docker', 'fpk', 'upk', 'clipper', 'hot'];

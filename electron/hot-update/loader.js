@@ -12,7 +12,7 @@ const { createHotUpdateRuntime } = require("./runtime");
 const SELFHOSTED_HOT_URL = (runtimeVersion) =>
   `https://download.glean.pipcloud.cn/hot/stable/desktop/${runtimeVersion}.json`;
 const GITHUB_HOT_URL = (runtimeVersion) =>
-  `https://github.com/PIPCLOUD-GH/glean/releases/latest/download/glean-hot-desktop-${runtimeVersion}.json`;
+  `https://github.com/pipcloudlab/glean/releases/latest/download/glean-hot-desktop-${runtimeVersion}.json`;
 const HOT_ALLOWED_ORIGINS = ["https://download.glean.pipcloud.cn", "https://github.com"];
 
 /**

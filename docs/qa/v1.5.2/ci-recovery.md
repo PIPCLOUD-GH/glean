@@ -6,21 +6,21 @@ Scope: repair existing CI failures only. Phase E, product behavior, database mig
 
 ## Confirmed causes
 
-The original [PR #854 checks](https://github.com/PIPCLOUD-GH/glean/pull/854/checks) on `35ffb9dc`
+The original [PR #854 checks](https://github.com/pipcloudlab/glean/pull/854/checks) on `35ffb9dc`
 contained six failing workflows. The same failures were reproduced on the current base before repairs.
 Data Consistency Contract and Encrypted Notes CI on that original commit ultimately passed.
 
 | Workflow | Evidence / cause | Repair |
 | --- | --- | --- |
-| File Public Origin | [Backend job](https://github.com/PIPCLOUD-GH/glean/actions/runs/38739914548/job/116438594617): `file-public-origin-runtime` imports a DB-backed module without temporary DB setup; guard refuses the development path | Add the existing isolation preloader |
-| Backup Timezone | [Backend job](https://github.com/PIPCLOUD-GH/glean/actions/runs/38739914967/job/116438595961): `auto-full-backup` has the same import-time dependency | Preload isolation before both backup suites |
-| Backup Restore Integrity | [Backend job](https://github.com/PIPCLOUD-GH/glean/actions/runs/38739914892/job/116438595156): storage classification imports a DB-backed service; guard rejects it | Isolate all five targeted backend commands |
-| I18n Release | [Job](https://github.com/PIPCLOUD-GH/glean/actions/runs/38739914921/job/116438594935): the test duplicated runtime dictionary merging and omitted D4 `assetTools` | Check the actual runtime resource bundles; retain complete parity, interpolation and literal-key assertions |
-| Issue 355 Content Format | [Frontend job](https://github.com/PIPCLOUD-GH/glean/actions/runs/38739914876/job/116438595959): a whole-module `react-i18next` mock omitted `initReactI18next` | Preserve actual module exports while stubbing only `useTranslation` |
-| Issue 612 Data Protection | [Backend](https://github.com/PIPCLOUD-GH/glean/actions/runs/38739914458/job/116438594507) has an unisolated repository import; [frontend](https://github.com/PIPCLOUD-GH/glean/actions/runs/38739914458/job/116438594661) expects old HTML-preview source strings and reports two lint deltas | Use the preloader; execute actual preview-gate expressions and cover plaintext exclusion; type the boot diagnostic and the recurrence mock |
-| Frontend Loading Performance | [Follow-up job](https://github.com/PIPCLOUD-GH/glean/actions/runs/38741906637/job/116445479242) reaches the existing bundle budget and finds the entry at 2.39 MiB raw / 686.5 KiB gzip; the full Tiptap emoji catalog is bundled into it | Give the existing emoji dependency its own vendor chunk; retain all budget thresholds and application loading behavior |
-| Editor Runtime | [Follow-up job](https://github.com/PIPCLOUD-GH/glean/actions/runs/38743457239/job/116450812427), newly triggered by the Vite change, has the same incomplete `react-i18next` mock in the main `MarkdownPreview` suite | Preserve the real exports and replace only `useTranslation`, as in the Issue 494 suite |
-| Attachment Markdown Math | [Follow-up job](https://github.com/PIPCLOUD-GH/glean/actions/runs/38744099495/job/116453064716), triggered by the preview test change, exposes the same missing export in the attachment math suite | Preserve the real i18n exports while retaining the translation stub and all math/PDF assertions |
+| File Public Origin | [Backend job](https://github.com/pipcloudlab/glean/actions/runs/38739914548/job/116438594617): `file-public-origin-runtime` imports a DB-backed module without temporary DB setup; guard refuses the development path | Add the existing isolation preloader |
+| Backup Timezone | [Backend job](https://github.com/pipcloudlab/glean/actions/runs/38739914967/job/116438595961): `auto-full-backup` has the same import-time dependency | Preload isolation before both backup suites |
+| Backup Restore Integrity | [Backend job](https://github.com/pipcloudlab/glean/actions/runs/38739914892/job/116438595156): storage classification imports a DB-backed service; guard rejects it | Isolate all five targeted backend commands |
+| I18n Release | [Job](https://github.com/pipcloudlab/glean/actions/runs/38739914921/job/116438594935): the test duplicated runtime dictionary merging and omitted D4 `assetTools` | Check the actual runtime resource bundles; retain complete parity, interpolation and literal-key assertions |
+| Issue 355 Content Format | [Frontend job](https://github.com/pipcloudlab/glean/actions/runs/38739914876/job/116438595959): a whole-module `react-i18next` mock omitted `initReactI18next` | Preserve actual module exports while stubbing only `useTranslation` |
+| Issue 612 Data Protection | [Backend](https://github.com/pipcloudlab/glean/actions/runs/38739914458/job/116438594507) has an unisolated repository import; [frontend](https://github.com/pipcloudlab/glean/actions/runs/38739914458/job/116438594661) expects old HTML-preview source strings and reports two lint deltas | Use the preloader; execute actual preview-gate expressions and cover plaintext exclusion; type the boot diagnostic and the recurrence mock |
+| Frontend Loading Performance | [Follow-up job](https://github.com/pipcloudlab/glean/actions/runs/38741906637/job/116445479242) reaches the existing bundle budget and finds the entry at 2.39 MiB raw / 686.5 KiB gzip; the full Tiptap emoji catalog is bundled into it | Give the existing emoji dependency its own vendor chunk; retain all budget thresholds and application loading behavior |
+| Editor Runtime | [Follow-up job](https://github.com/pipcloudlab/glean/actions/runs/38743457239/job/116450812427), newly triggered by the Vite change, has the same incomplete `react-i18next` mock in the main `MarkdownPreview` suite | Preserve the real exports and replace only `useTranslation`, as in the Issue 494 suite |
+| Attachment Markdown Math | [Follow-up job](https://github.com/pipcloudlab/glean/actions/runs/38744099495/job/116453064716), triggered by the preview test change, exposes the same missing export in the attachment math suite | Preserve the real i18n exports while retaining the translation stub and all math/PDF assertions |
 
 The database guard is deliberately retained. Before-case commands for all four import-time failures
 exit with the isolation refusal, before opening the repository DB. All subsequent backend verification

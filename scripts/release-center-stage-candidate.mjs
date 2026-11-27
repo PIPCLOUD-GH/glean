@@ -71,7 +71,7 @@ export async function stageCandidate(root, input) {
       signed: false,
       approved: false,
       source: {
-        repository: "pipcloud/glean",
+        repository: "pipcloudlab/glean",
         sha: identity.sha,
         version: identity.version,
         requestId: identity.requestId,

@@ -4,14 +4,14 @@
 
 ## 提交与部署范围
 
-- 工具实现：`5ec624c2`；慢速下载修复与独立控制台 CI：`7e0c130c`。代码位于 [PR #858](https://github.com/PIPCLOUD-GH/glean/pull/858)，目标 `release/v1.5.2`，等待审阅合并。
-- 默认分支只通过 [PR #859](https://github.com/PIPCLOUD-GH/glean/pull/859) 接入专用调试工作流，合并提交 `3f929ffd`；没有把 release 分支的其他应用改动合入 main。
+- 工具实现：`5ec624c2`；慢速下载修复与独立控制台 CI：`7e0c130c`。代码位于 [PR #858](https://github.com/pipcloudlab/glean/pull/858)，目标 `release/v1.5.2`，等待审阅合并。
+- 默认分支只通过 [PR #859](https://github.com/pipcloudlab/glean/pull/859) 接入专用调试工作流，合并提交 `3f929ffd`；没有把 release 分支的其他应用改动合入 main。
 - 独立调试候选分支：`codex/release-center-debug-v1.5.2`，源码和工作流 SHA 均为 `f1066e49386200780d85ee651775895b513f71ca`。候选提交仅在工具实现上将四份 package/lockfile 的版本及 Android versionName 对齐为 `1.5.2`；不修改 Android versionCode，不合并到正式开发分支，不推版本 Tag。
 - 本轮真实服务为 [127.0.0.1:4319](http://127.0.0.1:4319)，独立数据库 `/tmp/glean-release-center-remote-debug/center.sqlite`。凭据仅从现有本机 GitHub 登录读入服务进程环境，没有保存到浏览器、源码或证据文件。重启机器后临时目录可能被清理，长期使用应按 README 指定持久化目录。
 
 ## 真实运行结果
 
-[GitHub Run 38851856910](https://github.com/PIPCLOUD-GH/glean/actions/runs/38851856910) 的 `plan`、`contracts`、Windows、macOS、Linux 五个 Job 均成功。只有专用手动调试事件，未签名 Full 包，所有 builder 均 `--publish never`；原发布、Store、iOS 工作流没有改动。
+[GitHub Run 38851856910](https://github.com/pipcloudlab/glean/actions/runs/38851856910) 的 `plan`、`contracts`、Windows、macOS、Linux 五个 Job 均成功。只有专用手动调试事件，未签名 Full 包，所有 builder 均 `--publish never`；原发布、Store、iOS 工作流没有改动。
 
 | 平台 | 本机下载校验文件 | archive 字节数 | 实际结果 |
 | --- | --- | ---: | --- |
@@ -45,10 +45,10 @@
 | 本机 Chromium | 4/4；超时改动前运行，页面代码未改变 | [浏览器](../../../tools/release-center/docs/evidence/remote-debug-20261016/local-browser-tests.txt) |
 | 本机 TypeScript + Vite | 通过，超时改动后运行 | [类型与构建](../../../tools/release-center/docs/evidence/remote-debug-20261016/local-build.txt) |
 | 本机旧发布 / Store 隔离 | 33/33、13/13 | [发布](../../../tools/release-center/docs/evidence/remote-debug-20261016/local-release-tests.txt)、[Store](../../../tools/release-center/docs/evidence/remote-debug-20261016/local-store-tests.txt) |
-| Ubuntu / Node 24，独立安装工具依赖 | 59/59、Chromium 4/4、TypeScript 与构建通过 | [CI Run](https://github.com/PIPCLOUD-GH/glean/actions/runs/38854891606)、[日志摘录](../../../tools/release-center/docs/evidence/remote-debug-20261016/ubuntu-console-ci.txt) |
+| Ubuntu / Node 24，独立安装工具依赖 | 59/59、Chromium 4/4、TypeScript 与构建通过 | [CI Run](https://github.com/pipcloudlab/glean/actions/runs/38854891606)、[日志摘录](../../../tools/release-center/docs/evidence/remote-debug-20261016/ubuntu-console-ci.txt) |
 | 真实三平台打包与 updater 校验 | 全部通过 | 上述真实 Run 与 verification.json |
 
-新增 `.github/workflows/release-center-ci.yml` 对工具及其发布校验接口变更自动运行 Node 24 测试、类型检查、构建和浏览器回归。PR 的各次提交状态见 [PR #858 checks](https://github.com/PIPCLOUD-GH/glean/pull/858/checks)；保存的 [PR 状态快照](../../../tools/release-center/docs/evidence/remote-debug-20261016/pull-requests.json) 标明采集时的代码 SHA，不将文档后续提交的状态混为该快照结果。
+新增 `.github/workflows/release-center-ci.yml` 对工具及其发布校验接口变更自动运行 Node 24 测试、类型检查、构建和浏览器回归。PR 的各次提交状态见 [PR #858 checks](https://github.com/pipcloudlab/glean/pull/858/checks)；保存的 [PR 状态快照](../../../tools/release-center/docs/evidence/remote-debug-20261016/pull-requests.json) 标明采集时的代码 SHA，不将文档后续提交的状态混为该快照结果。
 
 ## 实际页面
 

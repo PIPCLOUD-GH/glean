@@ -1,6 +1,6 @@
 import type { DesktopUpdateSnapshot } from "@/lib/updateExperience";
 
-export const DESKTOP_RELEASES_URL = "https://github.com/PIPCLOUD-GH/glean/releases";
+export const DESKTOP_RELEASES_URL = "https://github.com/pipcloudlab/glean/releases";
 
 const MISSING_ASSET_PATTERN = /(?:\b404\b|not[ -]?found|does not exist|no such file|asset[^\n]*(?:missing|不存在)|更新文件[^\n]*未正确发布)/i;
 

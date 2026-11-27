@@ -7,7 +7,7 @@
   "publisher": "gleanlab",
   "engines": { "glean": ">=1.5.0 <2.0.0" },
   "categories": ["capture"],
-  "repository": "https://github.com/PIPCLOUD-GH/glean",
+  "repository": "https://github.com/pipcloudlab/glean",
   "license": "AGPL-3.0",
   "runtime": "node-action",
   "main": "index.mjs",

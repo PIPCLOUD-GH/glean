@@ -11,7 +11,7 @@
     <a href="https://glean.pipcloud.cn/#/note/download">Download Center</a> ·
     <a href="https://glean.pipcloud.cn/#/note/tutorials">Help Center</a> ·
     <a href="http://note.glean.pipcloud.cn/">Live Demo</a> ·
-    <a href="https://github.com/PIPCLOUD-GH/glean/releases">Downloads</a> ·
+    <a href="https://github.com/pipcloudlab/glean/releases">Downloads</a> ·
     <a href="./docs/tutorials/README.md">Tutorials</a> ·
     <a href="./docs/tutorials/mcp.en.md">MCP Installation</a> ·
     <a href="./.agents/skills/glean-development/SKILL.md">AI Development Skill</a> ·
@@ -21,7 +21,7 @@
 
 <div align="center">
 
-[![GitHub Release](https://img.shields.io/github/v/release/pipcloud/glean?display_name=tag&sort=semver)](https://github.com/PIPCLOUD-GH/glean/releases)
+[![GitHub Release](https://img.shields.io/github/v/release/pipcloudlab/glean?display_name=tag&sort=semver)](https://github.com/pipcloudlab/glean/releases)
 [![Docker Pulls](https://img.shields.io/docker/pulls/pipcloud/glean?logo=docker&logoColor=white)](https://hub.docker.com/r/pipcloud/glean)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](./LICENSE)
 [![Node.js 24.22.1+ (24.x LTS)](https://img.shields.io/badge/Node.js-24.22.1%2B-339933?logo=node.js&logoColor=white)](https://nodejs.org/)
@@ -35,7 +35,7 @@
 
 ## v1.5.5 highlights · 2026-11-09
 
-**Improved two-way synchronization across web, desktop, and Android, plus desktop startup recovery and smoother interactions.** [Full release notes](./docs/releases/v1.5.5.md) · [Official v1.5.5 Release](https://github.com/PIPCLOUD-GH/glean/releases/tag/v1.5.5).
+**Improved two-way synchronization across web, desktop, and Android, plus desktop startup recovery and smoother interactions.** [Full release notes](./docs/releases/v1.5.5.md) · [Official v1.5.5 Release](https://github.com/pipcloudlab/glean/releases/tag/v1.5.5).
 
 > [!IMPORTANT]
 > Back up the database, attachments, and configuration before upgrading, and verify recovery. **Rolling back an application or Docker image does not roll back persistent data.** macOS GitHub downloads are unsigned and unnotarized; direct Windows EXE downloads are unsigned. Live sync depends on online devices connected to the same server and account, and cannot guarantee zero latency or conflicts.
@@ -56,7 +56,7 @@ Released November 2, 2026: reviewable AI edits, Markdown chapter folding, attach
 
 ## Earlier stable release · v1.5.3
 
-Released on October 23, 2026, v1.5.3 improved note editing, image handling, encryption controls, calendars and reminders, and cross-platform stability. Read the [v1.5.3 release notes](https://github.com/PIPCLOUD-GH/glean/releases/tag/v1.5.3).
+Released on October 23, 2026, v1.5.3 improved note editing, image handling, encryption controls, calendars and reminders, and cross-platform stability. Read the [v1.5.3 release notes](https://github.com/pipcloudlab/glean/releases/tag/v1.5.3).
 
 ## Connect AI clients to Glean
 
@@ -100,7 +100,7 @@ The supported source-build launcher uses Node.js 24.22.1+ (24.x LTS) and `packag
 
 ## Earlier releases
 
-See the [v1.5.1 release notes](https://github.com/PIPCLOUD-GH/glean/releases/tag/v1.5.1) for task reminders, AI actions, Android sync, and encrypted-note safeguards, or the [full changelog](./CHANGELOG.md) for historical updates.
+See the [v1.5.1 release notes](https://github.com/pipcloudlab/glean/releases/tag/v1.5.1) for task reminders, AI actions, Android sync, and encrypted-note safeguards, or the [full changelog](./CHANGELOG.md) for historical updates.
 
 ## Screenshots
 
@@ -149,7 +149,7 @@ Captured from a real local Glean instance (demo account, light theme, 2× scale)
 Docker Engine and Docker Compose v2 are required.
 
 ```bash
-git clone https://github.com/PIPCLOUD-GH/glean.git
+git clone https://github.com/pipcloudlab/glean.git
 cd glean
 docker compose up -d
 ```
@@ -190,7 +190,7 @@ After the service starts:
 - **Remote access:** Enter the NAS public domain, IPv4 address, or IPv6 service address in the web, desktop, or Android client, then sign in.
 - **Public deployment:** Configure an HTTPS reverse proxy. Do not expose an unencrypted HTTP service directly to the internet.
 
-See available packages in [GitHub Releases](https://github.com/PIPCLOUD-GH/glean/releases).
+See available packages in [GitHub Releases](https://github.com/pipcloudlab/glean/releases).
 
 Check status and logs:
 
@@ -216,7 +216,7 @@ GLEAN_IMAGE_TAG=v1.5.1 docker compose up -d
 ```
 
 > [!IMPORTANT]
-> **Before upgrading, create a full backup and verify persistent database and attachment storage.** Docker / NAS users should keep an independent backup; image rollback does not restore the database. See the [changelog](./CHANGELOG.md) and [public releases](https://github.com/PIPCLOUD-GH/glean/releases).
+> **Before upgrading, create a full backup and verify persistent database and attachment storage.** Docker / NAS users should keep an independent backup; image rollback does not restore the database. See the [changelog](./CHANGELOG.md) and [public releases](https://github.com/pipcloudlab/glean/releases).
 
 ### Managed Docker updates (optional)
 
@@ -297,7 +297,7 @@ See [`.env.example`](./.env.example) for the complete template.
 | Platform | Distribution / build | Status |
 | --- | --- | --- |
 | **Web / Docker** | Docker Hub or source build | Recommended deployment; supports `amd64`, `arm64`, or multi-architecture images |
-| **Windows / macOS / Linux** | [GitHub Releases](https://github.com/PIPCLOUD-GH/glean/releases) or `npm run electron:build` | Electron client can connect to a remote service or use the local backend |
+| **Windows / macOS / Linux** | [GitHub Releases](https://github.com/pipcloudlab/glean/releases) or `npm run electron:build` | Electron client can connect to a remote service or use the local backend |
 | **Android** | Release APK or Capacitor build under `frontend/` | Actively maintained; system share import, Markdown file import, immersive editing, mobile knowledge tree, gesture image preview, native task reminders, and remote NAS service sign-in |
 | **iOS** | Capacitor project and GitHub Actions/TestFlight flow | Requires Apple signing and a developer account; see [iOS release guide](./docs/iOS-Release.md) |
 | **HarmonyOS** | Open [`glean-harmony/`](./glean-harmony/) in DevEco Studio | ArkTS + ArkWeb MVP; some native capabilities are still being completed |
@@ -305,7 +305,7 @@ See [`.env.example`](./.env.example) for the complete template.
 | **UGREEN UGOS** | `.upk` in Releases or build scripts | Supports UGREEN NAS installation, depending on device architecture and app installation support; after deployment, connect and sign in using a LAN or public service address. |
 | **Other NAS** | Docker Compose | Synology, QNAP, ZSpace, and similar devices can use the Docker deployment |
 
-> Available packages vary by release. Check [GitHub Releases](https://github.com/PIPCLOUD-GH/glean/releases).
+> Available packages vary by release. Check [GitHub Releases](https://github.com/pipcloudlab/glean/releases).
 
 Desktop builds require macOS 12 (Monterey) or later; macOS 11 users will not be offered this version through automatic updates. See the [Node 24 migration notes](./docs/node24-upgrade.md).
 
@@ -314,7 +314,7 @@ Desktop builds require macOS 12 (Monterey) or later; macOS 11 users will not be 
 Requires Node.js 24.22.1+ (24.x LTS), npm, and Git. Electron and native builds also require platform toolchains.
 
 ```bash
-git clone https://github.com/PIPCLOUD-GH/glean.git
+git clone https://github.com/pipcloudlab/glean.git
 cd glean
 npm install
 npm run install:all
@@ -435,9 +435,9 @@ Example prompt: "Read the glean-development Skill first, inspect the code behind
 
 The README documents stable capabilities, recent highlights, and deployment. Complete commit-level history remains in the changelog.
 
-- [Latest release](https://github.com/PIPCLOUD-GH/glean/releases)
+- [Latest release](https://github.com/pipcloudlab/glean/releases)
 - [Full changelog](./CHANGELOG.md)
-- [Issues and roadmap](https://github.com/PIPCLOUD-GH/glean/issues)
+- [Issues and roadmap](https://github.com/pipcloudlab/glean/issues)
 
 ## Contributing
 
@@ -451,7 +451,7 @@ npm run build:all
 
 Feedback channels:
 
-- [GitHub Issues](https://github.com/PIPCLOUD-GH/glean/issues)
+- [GitHub Issues](https://github.com/pipcloudlab/glean/issues)
 - QQ group: `325372004`
 
 ## Acknowledgements

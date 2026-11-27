@@ -6,7 +6,7 @@ import { createSigningKey, manifestFor, PRODUCTION_ORIGINS, RUNTIME, sealEnvelop
 const key = createSigningKey();
 const other = createSigningKey();
 const R2 = `https://download.glean.pipcloud.cn/hot/stable/android/${RUNTIME}.json`;
-const GITHUB = `https://github.com/PIPCLOUD-GH/glean/releases/latest/download/glean-hot-android-${RUNTIME}.json`;
+const GITHUB = `https://github.com/pipcloudlab/glean/releases/latest/download/glean-hot-android-${RUNTIME}.json`;
 
 function setup(options: { supported?: boolean; connection?: string; currentVersion?: string; publicKey?: string; storage?: Map<string, string> } = {}) {
   const storage = options.storage ?? new Map<string, string>();

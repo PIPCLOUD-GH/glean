@@ -23,7 +23,7 @@ Identity values are *public*, unlike signing keys. Accidentally overriding ident
 `https://apps.microsoft.com/detail/9MZ7Z6S39LL3` is the **reserved Store listing URL**; it may not be publicly accessible until certification and publication.
 
 ## Build
-1. AppX candidate now builds automatically in the PR when the Store code changes (or open [Microsoft Store AppX workflow](https://github.com/PIPCLOUD-GH/glean/actions/workflows/microsoft-store-appx.yml).
+1. AppX candidate now builds automatically in the PR when the Store code changes (or open [Microsoft Store AppX workflow](https://github.com/pipcloudlab/glean/actions/workflows/microsoft-store-appx.yml).
 2. For a manual build, select the reviewed release tag or Store repair branch and click **Run workflow**. Record the resolved commit SHA with the artifact; do not reuse a package from an older version.
 3. Wait for `contracts` and `store-package` jobs. Download `glean-store-appx` artifact from this run.
 4. Upload the verified `.appx` to your reserved Glean application's Partner Center submission. Microsoft Store signs the release as part of its publication process. An unsigned local package may not install via `Add-AppxPackage`.

@@ -24,7 +24,7 @@ const example = (name: string) => JSON.parse(fs.readFileSync(path.join(root, "ex
 // Fixture plugin for contract edges that the proof plugins must not demonstrate.
 const probeManifest = {
   id: PROBE, name: "Editor Probe", description: "Test fixture", version: "1.0.0", apiVersion: 2, publisher: "probe-sample",
-  engines: { glean: ">=1.5.3 <2.0.0" }, categories: ["editor"], repository: "https://github.com/PIPCLOUD-GH/glean", license: "MIT",
+  engines: { glean: ">=1.5.3 <2.0.0" }, categories: ["editor"], repository: "https://github.com/pipcloudlab/glean", license: "MIT",
   runtime: "sandbox-js", main: "index.js", permissions: [],
   actions: [
     { id: "keys", name: "Keys", input: {} },

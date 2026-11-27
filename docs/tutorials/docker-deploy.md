@@ -72,7 +72,7 @@ AI 客户端完成配置后可能需要确认或重载；请让它列出笔记�
 ### 克隆部署模板
 
 ```bash
-git clone https://github.com/PIPCLOUD-GH/glean.git
+git clone https://github.com/pipcloudlab/glean.git
 cd glean
 cp .env.example .env
 ```

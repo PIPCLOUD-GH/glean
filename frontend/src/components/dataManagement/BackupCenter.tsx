@@ -1786,7 +1786,7 @@ function SmtpProviderGuide() {
         ? t("dataManager.smtp.guide.tlsOff")
         : t("dataManager.smtp.guide.tlsDepends");
 
-  const docUrl = "https://github.com/PIPCLOUD-GH/glean/blob/main/docs/backup-email-smtp.md";
+  const docUrl = "https://github.com/pipcloudlab/glean/blob/main/docs/backup-email-smtp.md";
 
   return (
     <div className="rounded-lg border border-sky-200/70 dark:border-sky-500/30 bg-sky-50/60 dark:bg-sky-500/5">

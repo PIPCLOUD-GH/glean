@@ -11,7 +11,7 @@
   "categories": [
     "capture"
   ],
-  "repository": "https://github.com/PIPCLOUD-GH/glean",
+  "repository": "https://github.com/pipcloudlab/glean",
   "license": "AGPL-3.0",
   "runtime": "sandbox-js",
   "main": "index.js",

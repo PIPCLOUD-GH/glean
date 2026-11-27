@@ -106,7 +106,7 @@ function manifestV3() {
     id: "gleanlab.demo", name: "Hello V3", description: "UI asset installation test", version: "0.1.0",
     apiVersion: 3, publisher: "gleanlab", engines: { glean: ">=1.5.3" },
     runtime: "declarative", categories: ["productivity"],
-    repository: "https://github.com/PIPCLOUD-GH/glean", license: "MIT",
+    repository: "https://github.com/pipcloudlab/glean", license: "MIT",
     permissions: ["plugin-storage:read"],
     contributes: { appPages: pages, uiAssets: { "ui/index.html": asset(html), "ui/app.js": asset(script) } },
   };

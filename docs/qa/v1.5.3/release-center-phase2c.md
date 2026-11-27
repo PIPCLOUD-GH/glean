@@ -1,6 +1,6 @@
 # GLEAN RELEASE CENTER · Phase 2C 独立桌面候选构建
 
-日期：2026-10-17。开发目标分支 `release/v1.5.3`，PR [#864](https://github.com/PIPCLOUD-GH/glean/pull/864)。
+日期：2026-10-17。开发目标分支 `release/v1.5.3`，PR [#864](https://github.com/pipcloudlab/glean/pull/864)。
 
 ## 为什么与正式发布分开
 
@@ -42,7 +42,7 @@
 
 尚未完成：
 - 使用可信源码 SHA 手动 dispatch 的真实三平台 Actions 构建、产物下载和 SHA 交叉核对。
-- 使用隔离测试仓库和独立凭据进行真实 GitHub Release Draft / 上传 / 发布 / 断网对账演练。当前还没有隔离仓库，不会写入 `pipcloud/glean` 的生产 Release。
+- 使用隔离测试仓库和独立凭据进行真实 GitHub Release Draft / 上传 / 发布 / 断网对账演练。当前还没有隔离仓库，不会写入 `pipcloudlab/glean` 的生产 Release。
 - 真实 Windows/macOS/Linux 安装启动、Mac 签名/公证、Windows 安全提示与安装器签名的正式验收。
 - 将经过上述验证的正式构建来源纳入 Phase 2B 的独立审批/发布链。在可信来源和签名门禁落实前，**保持正式发布开关关闭，不支持“候选直接晋升”**。
 

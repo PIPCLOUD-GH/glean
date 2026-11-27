@@ -3,7 +3,7 @@
  * R2 manifest is published only after all selected assets pass verification.
  */
 const R2_ORIGIN = "https://download.glean.pipcloud.cn";
-const OFFICIAL_RELEASE_PREFIX = "https://github.com/PIPCLOUD-GH/glean/releases/download/";
+const OFFICIAL_RELEASE_PREFIX = "https://github.com/pipcloudlab/glean/releases/download/";
 const TAG_PATTERN = /^v\d+\.\d+\.\d+$/;
 
 export type GithubMirrorAsset = {

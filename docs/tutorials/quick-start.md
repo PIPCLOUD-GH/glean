@@ -2,7 +2,7 @@
 
 > 从选择使用方式开始，完成登录、创建笔记本、写下第一篇笔记，并了解数据备份和 AI 配置。
 
-[官方网站](http://glean.pipcloud.cn/) · [在线体验](http://note.glean.pipcloud.cn/) · [客户端下载](https://github.com/PIPCLOUD-GH/glean/releases) · [教程中心](./README.md)
+[官方网站](http://glean.pipcloud.cn/) · [在线体验](http://note.glean.pipcloud.cn/) · [客户端下载](https://github.com/pipcloudlab/glean/releases) · [教程中心](./README.md)
 
 ## 1. 选择使用方式
 
@@ -13,7 +13,7 @@
 要求已经安装 Docker Engine 与 Docker Compose v2：
 
 ```bash
-git clone https://github.com/PIPCLOUD-GH/glean.git
+git clone https://github.com/pipcloudlab/glean.git
 cd glean
 docker compose up -d
 ```
@@ -35,7 +35,7 @@ http://<服务器或 NAS 的 IP>:3001
 
 ### 桌面端或 Android
 
-从 [GitHub Releases](https://github.com/PIPCLOUD-GH/glean/releases) 下载对应平台安装包：
+从 [GitHub Releases](https://github.com/pipcloudlab/glean/releases) 下载对应平台安装包：
 
 - Windows / macOS / Linux：Electron 桌面客户端
 - Android：APK
@@ -57,7 +57,7 @@ http://<服务器或 NAS 的 IP>:3001
 需要 Node.js 24.22.1+（24.x LTS）、npm 和 Git：
 
 ```bash
-git clone https://github.com/PIPCLOUD-GH/glean.git
+git clone https://github.com/pipcloudlab/glean.git
 cd glean
 
 # 根目录 Electron、Capacitor 和构建脚本依赖

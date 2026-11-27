@@ -8,7 +8,7 @@
   "engines": { "glean": ">=1.5.3 <2.0.0" },
   "categories": ["editor"],
   "keywords": ["剪藏", "精读", "摘录", "excerpt"],
-  "repository": "https://github.com/PIPCLOUD-GH/glean",
+  "repository": "https://github.com/pipcloudlab/glean",
   "license": "AGPL-3.0",
   "runtime": "sandbox-js",
   "main": "index.js",

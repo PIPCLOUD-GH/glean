@@ -17,7 +17,7 @@ export type { HotUpdateSnapshot } from "./controller";
 const PRODUCTION_CHANNEL = {
   urls: (runtimeVersion: string) => [
     `https://download.glean.pipcloud.cn/hot/stable/android/${runtimeVersion}.json`,
-    `https://github.com/PIPCLOUD-GH/glean/releases/latest/download/glean-hot-android-${runtimeVersion}.json`,
+    `https://github.com/pipcloudlab/glean/releases/latest/download/glean-hot-android-${runtimeVersion}.json`,
   ],
   allowedOrigins: ["https://download.glean.pipcloud.cn", "https://github.com"],
 };

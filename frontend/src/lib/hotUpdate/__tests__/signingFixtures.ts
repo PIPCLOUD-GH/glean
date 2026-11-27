@@ -33,7 +33,7 @@ export function manifestFor(version: string, overrides: Record<string, unknown> 
     zipSignature: "c2lnbmF0dXJl",
     urls: [
       `https://download.glean.pipcloud.cn/hot/v${version}/glean-hot-android-${version}.zip`,
-      `https://github.com/PIPCLOUD-GH/glean/releases/download/v${version}/glean-hot-android-${version}.zip`,
+      `https://github.com/pipcloudlab/glean/releases/download/v${version}/glean-hot-android-${version}.zip`,
     ],
     revokedBundleIds: [],
     ...overrides,

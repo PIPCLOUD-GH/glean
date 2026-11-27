@@ -28,7 +28,7 @@ import {
 type Phase = "idle" | "scanning" | "ready" | "importing" | "done" | "error";
 
 const WECHAT_DATA_ANALYSIS_RELEASE_URL = "https://github.com/LifeArchiveProject/WeChatDataAnalysis/releases/latest";
-const WECHAT_FAVORITES_TUTORIAL_URL = "https://github.com/PIPCLOUD-GH/glean/blob/main/docs/tutorials/wechat-favorites-import.md";
+const WECHAT_FAVORITES_TUTORIAL_URL = "https://github.com/pipcloudlab/glean/blob/main/docs/tutorials/wechat-favorites-import.md";
 
 const TYPE_LABELS: Record<string, { zh: string; en: string }> = {
   text: { zh: "文本", en: "Text" },

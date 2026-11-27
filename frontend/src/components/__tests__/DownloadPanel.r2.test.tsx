@@ -41,11 +41,11 @@ const extras = [
 ];
 const all = [...names, ...extras].map((name, i) => ({
   name, size: 1000 + i,
-  browserDownloadUrl: "https://github.com/PIPCLOUD-GH/glean/releases/download/" + tag + "/" + name,
+  browserDownloadUrl: "https://github.com/pipcloudlab/glean/releases/download/" + tag + "/" + name,
 }));
 const release = {
   available: true, tag, version: "1.5.5", name: tag,
-  htmlUrl: "https://github.com/PIPCLOUD-GH/glean/releases/tag/v1.5.5",
+  htmlUrl: "https://github.com/pipcloudlab/glean/releases/tag/v1.5.5",
   publishedAt: "2026-11-09", prerelease: false, draft: false, assets: all,
 };
 const mirror = {
@@ -88,7 +88,7 @@ describe("Settings > Download clients R2 verified downloads", () => {
   it("defaults to R2 for ten verified files and GitHub for UPK/portable", async () => {
     await renderPanel();
     expect(links()).toContain("https://download.glean.pipcloud.cn/v1.5.5/Glean-1.5.5-setup.exe");
-    expect(links()).toContain("https://github.com/PIPCLOUD-GH/glean/releases/download/v1.5.5/Glean-1.5.5-setup.exe");
+    expect(links()).toContain("https://github.com/pipcloudlab/glean/releases/download/v1.5.5/Glean-1.5.5-setup.exe");
     expect(links()).not.toContain("https://download.glean.pipcloud.cn/v1.5.5/Glean-1.5.5-portable.exe");
     expect(links()).not.toContain("https://download.glean.pipcloud.cn/v1.5.5/amd64_io.glean.note_1.5.5.0001.upk");
     expect(links()).not.toContain("https://download.glean.pipcloud.cn/v1.5.5/glean-1.5.5.fpk");
@@ -101,7 +101,7 @@ describe("Settings > Download clients R2 verified downloads", () => {
     mock.mirror.mockResolvedValue({ ...mirror, tag: "v1.5.6" });
     await renderPanel();
     expect(links().filter(url => url.includes("download.glean.pipcloud.cn"))).toEqual([]);
-    expect(links()).toContain("https://github.com/PIPCLOUD-GH/glean/releases/download/v1.5.5/Glean-1.5.5-setup.exe");
+    expect(links()).toContain("https://github.com/pipcloudlab/glean/releases/download/v1.5.5/Glean-1.5.5-setup.exe");
   });
 
   it("allows explicit GitHub selection", async () => {

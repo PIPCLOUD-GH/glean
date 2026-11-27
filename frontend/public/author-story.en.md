@@ -81,4 +81,4 @@ My goal is to maintain this project for **a hundred years**. As long as our devi
 
 If you're someone who loves tinkering with NAS, relies heavily on note-taking, and has high standards for digital privacy — come try it, give us feedback, file PRs, or join our community group (QQ: `325372004`). Let's build this small private knowledge base into the digital safe haven that homelabbers deserve.
 
-- **GitHub repository**: [pipcloud/glean](https://github.com/PIPCLOUD-GH/glean)
+- **GitHub repository**: [pipcloudlab/glean](https://github.com/pipcloudlab/glean)

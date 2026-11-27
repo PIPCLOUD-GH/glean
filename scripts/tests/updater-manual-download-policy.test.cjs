@@ -21,15 +21,15 @@ test("GitHub 通道手动下载固定指向 latest 页", () => {
   // 而检查到更新后 latest 页必然存在，所以一律指向它。
   assert.equal(
     buildReleaseDownloadUrl("v1.4.6"),
-    "https://github.com/PIPCLOUD-GH/glean/releases/latest",
+    "https://github.com/pipcloudlab/glean/releases/latest",
   );
   assert.equal(
     buildReleaseDownloadUrl("invalid"),
-    "https://github.com/PIPCLOUD-GH/glean/releases/latest",
+    "https://github.com/pipcloudlab/glean/releases/latest",
   );
   assert.equal(
     buildReleaseDownloadUrl("1.0.1", "github", "win32", "x64"),
-    "https://github.com/PIPCLOUD-GH/glean/releases/latest",
+    "https://github.com/pipcloudlab/glean/releases/latest",
   );
 });
 
@@ -48,10 +48,10 @@ test("自建通道直接给出 /latest/ 目录下的安装包地址", () => {
   );
 });
 
-test("feed 配置按通道切换，GitHub 固定指向 PIPCLOUD-GH 仓库", () => {
+test("feed 配置按通道切换，GitHub 固定指向 pipcloudlab 仓库", () => {
   assert.deepEqual(buildDesktopFeed("github"), {
     provider: "github",
-    owner: "PIPCLOUD-GH",
+    owner: "pipcloudlab",
     repo: "glean",
     releaseType: "release",
   });

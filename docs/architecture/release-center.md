@@ -53,7 +53,7 @@ Android 正式 APK/AAB 构建必须使用原有 keystore，并通过仓库变量
 ```mermaid
 flowchart LR
   UI[独立 React 控制台] -->|本机会话 + 同源检查| API[Node HTTP / SQLite / 审计]
-  API -->|REST 查询| GH[固定 pipcloud/glean]
+  API -->|REST 查询| GH[固定 pipcloudlab/glean]
   API -->|仅允许专用 dispatch / cancel| DEBUG[隔离 Debug workflow]
   DEBUG -->|固定源码 SHA / 所选 matrix| BUILD[原构建与元数据校验脚本]
   BUILD --> ART[调试 artifact + SHA manifest]

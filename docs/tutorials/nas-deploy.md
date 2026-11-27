@@ -37,7 +37,7 @@ docker-compose up -d
 
 ### .fpk 一键安装（推荐）
 
-1. 从 [Releases](https://github.com/PIPCLOUD-GH/glean/releases) 下载 .fpk
+1. 从 [Releases](https://github.com/pipcloudlab/glean/releases) 下载 .fpk
 2. 应用中心 → 设置 → 手动安装应用 → 选择文件
 3. 桌面出现图标，浏览器打开 `http://<飞牛IP>:3001`
 

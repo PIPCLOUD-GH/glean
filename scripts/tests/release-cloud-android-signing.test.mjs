@@ -53,7 +53,7 @@ test("release keystore identity is checked before Gradle without exposing signin
   const certificate = spawnSync("keytool", ["-exportcert", "-keystore", keystore, "-alias", alias, "-storepass", password]);
   assert.equal(certificate.status, 0, certificate.stderr.toString());
   const fingerprint = createHash("sha256").update(certificate.stdout).digest("hex");
-  const env = { ...process.env, GITHUB_ACTIONS:"true", GITHUB_REPOSITORY:"pipcloud/glean", GLEAN_ANDROID_KEYSTORE_B64:fs.readFileSync(keystore).toString("base64"), GLEAN_ANDROID_KEYSTORE_PASSWORD:password, GLEAN_ANDROID_KEY_ALIAS:alias, GLEAN_ANDROID_KEY_PASSWORD:password };
+  const env = { ...process.env, GITHUB_ACTIONS:"true", GITHUB_REPOSITORY:"pipcloudlab/glean", GLEAN_ANDROID_KEYSTORE_B64:fs.readFileSync(keystore).toString("base64"), GLEAN_ANDROID_KEYSTORE_PASSWORD:password, GLEAN_ANDROID_KEY_ALIAS:alias, GLEAN_ANDROID_KEY_PASSWORD:password };
   const run = pin => spawnSync(process.execPath, [fileURLToPath(new URL("../release-cloud-ci.mjs", import.meta.url)), "android-signing"], { cwd:directory, encoding:"utf8", env:{...env,GLEAN_ANDROID_CERT_SHA256:pin} });
   const rejected = run("0".repeat(64));
   assert.notEqual(rejected.status, 0);
@@ -99,7 +99,7 @@ test("Android staging uses the installed pinned SDK even when a newer SDK is pre
       GIT_DIR: gitDirectory,
       GIT_WORK_TREE: directory,
       GITHUB_ACTIONS: "true",
-      GITHUB_REPOSITORY: "pipcloud/glean",
+      GITHUB_REPOSITORY: "pipcloudlab/glean",
       ANDROID_HOME: sdk,
       RC_VERSION: "1.5.4",
       GLEAN_ANDROID_CERT_SHA256: fingerprint,

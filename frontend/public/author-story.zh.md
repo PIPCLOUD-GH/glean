@@ -81,4 +81,4 @@
 
 如果你也是一个喜欢折腾 NAS、重度依赖笔记，同时对数字隐私有极高要求的朋友，欢迎来体验、拍砖、提 PR，或者加入我们的反馈群（QQ 群：`325372004`）。让我们一起，把这个小小的私有知识库，打造成最懂折腾玩家的数字避风港。
 
-- **GitHub 仓库**：[pipcloud/glean](https://github.com/PIPCLOUD-GH/glean)
+- **GitHub 仓库**：[pipcloudlab/glean](https://github.com/pipcloudlab/glean)

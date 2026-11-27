@@ -7,7 +7,7 @@ test("formal release page and API fail closed before publication approval", asyn
   await page.goto("/#formal");
   await expect(page.getByRole("heading", { name: "接管已有正式构建" })).toBeVisible();
   const candidateWorkflow = page.getByRole("link", { name: /在 GitHub Actions 打开独立候选构建/ });
-  await expect(candidateWorkflow).toHaveAttribute("href", "https://github.com/PIPCLOUD-GH/glean/actions/workflows/release-center-candidate.yml");
+  await expect(candidateWorkflow).toHaveAttribute("href", "https://github.com/pipcloudlab/glean/actions/workflows/release-center-candidate.yml");
   await expect(page.getByText("候选包 · 不可直接发布")).toBeVisible();
   await expect(page.getByText("尚无正式候选。已完成的调试验收不会自动出现在这里。")).toBeVisible();
 

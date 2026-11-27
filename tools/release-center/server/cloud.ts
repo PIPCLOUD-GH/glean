@@ -118,7 +118,7 @@ export class Cloud {
             if (!found.length) continue;
             if (found[0].head_sha !== value.workflowSha || found[0].path !== `.github/workflows/${value.workflow}`) throw Error("远端工作流来源已变化，请人工核查");
             value.runId = found[0].id;
-            value.url = `https://github.com/PIPCLOUD-GH/glean/actions/runs/${value.runId}`;
+            value.url = `https://github.com/pipcloudlab/glean/actions/runs/${value.runId}`;
           }
           const remote = await this.github.run(value.runId!);
           if (remote.head_sha !== value.workflowSha || remote.path !== `.github/workflows/${value.workflow}`) throw Error("远端来源不匹配");

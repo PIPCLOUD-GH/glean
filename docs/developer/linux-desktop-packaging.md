@@ -1,6 +1,6 @@
 # Linux 桌面包图标与桌面入口
 
-Issue [#744](https://github.com/PIPCLOUD-GH/glean/issues/744) 反馈 v1.4.16 的 Debian 包在 Linux Mint Cinnamon 中图标不显示，同时 `.desktop` 出现 `entry=[object Object]`。
+Issue [#744](https://github.com/pipcloudlab/glean/issues/744) 反馈 v1.4.16 的 Debian 包在 Linux Mint Cinnamon 中图标不显示，同时 `.desktop` 出现 `entry=[object Object]`。
 
 `release/v1.5.0` 的 `7e31388e` 已修正资源和配置：
 

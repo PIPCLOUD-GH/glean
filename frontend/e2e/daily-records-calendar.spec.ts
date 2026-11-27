@@ -60,7 +60,7 @@ for (const width of [320, 1440]) {
     }, version);
     let updateRequests = 0;
     let serveUpdate = false;
-    await page.route("https://raw.githubusercontent.com/pipcloud/glean/main/frontend/public/holidays/**", route => {
+    await page.route("https://raw.githubusercontent.com/pipcloudlab/glean/main/frontend/public/holidays/**", route => {
       updateRequests++;
       if (serveUpdate) {
         const data = JSON.parse(fs.readFileSync(path.join(root, "frontend/public/holidays/cn-2026.json"), "utf8"));

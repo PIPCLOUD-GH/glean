@@ -167,7 +167,7 @@ export default function WhatsNewModal({ open, onClose, highlightVersion }: Whats
                   {t("whatsNew.loadFailed", "更新日志加载失败")}
                 </p>
                 <a
-                  href="https://github.com/PIPCLOUD-GH/glean/releases"
+                  href="https://github.com/pipcloudlab/glean/releases"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg
@@ -257,7 +257,7 @@ export default function WhatsNewModal({ open, onClose, highlightVersion }: Whats
                           flex items-center justify-between shrink-0
                           bg-zinc-50 dark:bg-zinc-900/60">
             <a
-              href="https://github.com/PIPCLOUD-GH/glean/releases"
+              href="https://github.com/pipcloudlab/glean/releases"
               target="_blank"
               rel="noopener noreferrer"
               className="text-xs text-zinc-500 dark:text-zinc-400 hover:text-accent-primary
