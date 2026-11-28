@@ -8,7 +8,7 @@ import {
   Bell,
   CloudOff,
   FolderOpen,
-  LibraryBig,
+  BookOpen,
   ListTodo,
   Link2,
   LogIn,
@@ -90,7 +90,7 @@ const NON_NOTE_WORKSPACE_VIEWS = new Set<ViewMode>([
 
 // Keep the return to all notes fixed and available independently of optional modules.
 const ALL_NOTES_ITEM: NavConfigItem = {
-  icon: <LibraryBig size={RAIL_ICON_SIZE} />, labelKey: "sidebar.allNotes", mode: "all", group: "workspace",
+  icon: <BookOpen size={RAIL_ICON_SIZE} />, labelKey: "sidebar.allNotes", mode: "all", group: "workspace",
 };
 
 const NAV_CONFIG: NavConfigItem[] = [
