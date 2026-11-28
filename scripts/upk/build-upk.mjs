@@ -24,7 +24,7 @@
  *   环境变量（与 scripts/release.sh 对接）：
  *     UPK_IMAGE_REF       覆盖镜像名（同 --image，优先级低于命令行）
  *     UPK_BUILD_NO        构建号（同 --build）
- *     DOCKERHUB_REPO      DockerHub 仓库名（如 pipcloud/glean），
+ *     DOCKERHUB_REPO      DockerHub 仓库名（如 pipcloudlab/glean），
  *                          会拼成 ${DOCKERHUB_REPO}:v${VERSION} 加入候选镜像列表
  *     UGCLI_BIN           ugcli 可执行文件路径，默认根目录 ugcli.exe / ugcli
  */
@@ -226,7 +226,7 @@ for (const a of ARCH_LIST) {
     }
     const tarName = `glean-${VERSION}-${a}.tar`;
     // ugcli check 会交叉验证 tar 内嵌的 RepoTag 与 docker-compose.yaml 的 image 字段是否一致。
-    // picked 可能是 pipcloud/glean:v1.1.6-amd64（带架构后缀），
+    // picked 可能是 pipcloudlab/glean:v1.1.6-amd64（带架构后缀），
     // 而 compose 里写的是 IMAGE_REF（不带后缀）——不一致会被 check 拦下。
     // 这里 save 前先 retag 到 IMAGE_REF，让 tar 里的 RepoTag 与 compose 对齐。
     // 多架构之间会覆盖同一个 tag，但无所谓：每个架构的 tar 在这一轮循环里

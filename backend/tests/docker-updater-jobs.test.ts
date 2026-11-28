@@ -9,7 +9,7 @@ import { setImmediate as nextTurn } from "node:timers/promises";
 test("DCC-008: Docker upgrade lifecycle refuses unsafe rollback", async (t) => {
   const directory = fs.mkdtempSync(path.join(os.tmpdir(), "glean-updater-"));
   const socket = path.join(directory, "docker.sock");
-  const digest = `pipcloud/glean@sha256:${"a".repeat(64)}`;
+  const digest = `pipcloudlab/glean@sha256:${"a".repeat(64)}`;
   const targetVersion = "1.5.3";
   const originalEnv = { ...process.env };
   process.env.GLEAN_DOCKER_SOCKET = socket;
@@ -58,7 +58,7 @@ test("DCC-008: Docker upgrade lifecycle refuses unsafe rollback", async (t) => {
     old = {
       Id: "old", Name: "/glean", Image: "sha256:old",
       Config: {
-        Image: "pipcloud/glean:v1.5.1",
+        Image: "pipcloudlab/glean:v1.5.1",
         Labels: {
           "com.glean.managed": "true", "com.glean.role": "app",
           "com.glean.project": "glean", "com.glean.instance": "glean",
@@ -171,8 +171,8 @@ test("DCC-008: Docker upgrade lifecycle refuses unsafe rollback", async (t) => {
       () => { targetImage.Config.Labels["org.opencontainers.image.version"] = "v1.5.1"; },
       () => { delete targetImage.Config.Env; },
       () => { delete targetImage.RepoDigests; },
-      () => { targetImage.RepoDigests = [digest.replace("pipcloud/glean", "other/image")]; },
-      () => { targetImage.RepoDigests = ["pipcloud/glean@sha256:invalid"]; },
+      () => { targetImage.RepoDigests = [digest.replace("pipcloudlab/glean", "other/image")]; },
+      () => { targetImage.RepoDigests = ["pipcloudlab/glean@sha256:invalid"]; },
     ]) {
       reset(); modify();
       assert.equal((await runUpdaterPreflight(targetVersion)).canApply, false);

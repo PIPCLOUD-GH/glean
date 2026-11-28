@@ -12,7 +12,7 @@ import {
 test("updater only accepts a concrete semantic version in the official image repository", () => {
   assert.equal(validateTargetVersion("v1.4.2"), "1.4.2");
   assert.equal(validateTargetVersion("1.4.2-rc.1"), "1.4.2-rc.1");
-  assert.equal(imageRefForVersion("1.4.2"), "pipcloud/glean:v1.4.2");
+  assert.equal(imageRefForVersion("1.4.2"), "pipcloudlab/glean:v1.4.2");
   assert.throws(() => validateTargetVersion("latest"));
   assert.throws(() => validateTargetVersion("pipcloud/other:1.0.0"));
   assert.throws(() => validateTargetVersion("1.4.2;rm -rf /"));
@@ -30,7 +30,7 @@ test("replacement preserves user runtime configuration without pinning old build
     Name: "/glean",
     Image: "sha256:old",
     Config: {
-      Image: "pipcloud/glean:v1.4.1",
+      Image: "pipcloudlab/glean:v1.4.1",
       Env: [
         "NODE_ENV=production",
         "DB_PATH=/app/data/glean.db",
@@ -90,13 +90,13 @@ test("replacement preserves user runtime configuration without pinning old build
 
   const payload = buildReplacementCreatePayload(
     current,
-    "pipcloud/glean:v1.4.2",
+    "pipcloudlab/glean:v1.4.2",
     [{ name: "glean_glean-network", aliases: ["glean"], links: [] }],
     oldImage,
     targetImage,
   );
 
-  assert.equal(payload.Image, "pipcloud/glean:v1.4.2");
+  assert.equal(payload.Image, "pipcloudlab/glean:v1.4.2");
   assert.deepEqual(payload.Env.sort(), [
     "PUBLIC_WEB_ORIGIN=https://notes.example.com",
     "TZ=Asia/Shanghai",

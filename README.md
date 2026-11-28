@@ -22,7 +22,7 @@
 <div align="center">
 
 [![GitHub Release](https://img.shields.io/github/v/release/pipcloudlab/glean?display_name=tag&sort=semver)](https://github.com/pipcloudlab/glean/releases)
-[![Docker Pulls](https://img.shields.io/docker/pulls/pipcloud/glean?logo=docker&logoColor=white)](https://hub.docker.com/r/pipcloud/glean)
+[![Docker Pulls](https://img.shields.io/docker/pulls/pipcloudlab/glean?logo=docker&logoColor=white)](https://hub.docker.com/r/pipcloudlab/glean)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](./LICENSE)
 [![Node.js 24.22.1+（24.x LTS）](https://img.shields.io/badge/Node.js-24.22.1%2B-339933?logo=node.js&logoColor=white)](https://nodejs.org/)
 [![Docker](https://img.shields.io/badge/Docker-Compose%20v2-2496ED?logo=docker&logoColor=white)](./docker-compose.yml)
@@ -217,7 +217,7 @@ docker compose pull
 docker compose up -d
 ```
 
-需要固定 Docker 镜像时，请先确认目标标签已经在 [Docker Hub](https://hub.docker.com/r/pipcloud/glean/tags) 发布。以下使用已公开可用的 v1.5.1 标签示例（v1.5.2 镜像可用后再替换）：
+需要固定 Docker 镜像时，请先确认目标标签已经在 [Docker Hub](https://hub.docker.com/r/pipcloudlab/glean/tags) 发布。以下使用已公开可用的 v1.5.1 标签示例（v1.5.2 镜像可用后再替换）：
 
 ```bash
 GLEAN_IMAGE_TAG=v1.5.1 docker compose pull
@@ -250,7 +250,7 @@ docker run -d \
   -p 3001:3001 \
   -e TZ=Asia/Shanghai \
   -v /opt/glean/data:/app/data \
-  pipcloud/glean:v1.5.1
+  pipcloudlab/glean:v1.5.1
 ```
 
 ## 数据、备份与配置

@@ -186,7 +186,7 @@ function registryManifest(ref) {
 }
 
 function promoteDocker(source, incoming) {
-  const repo = "pipcloud/glean";
+  const repo = "pipcloudlab/glean";
   const digests = [];
   for (const arch of ["amd64", "arm64"]) {
     command("docker", ["load", "--input", path.join(incoming, `full-docker-${arch}`, `image-${arch}.tar`)], false);

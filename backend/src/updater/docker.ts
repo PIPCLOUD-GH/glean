@@ -3,7 +3,7 @@ import fs from "fs";
 import path from "path";
 
 export const OFFICIAL_IMAGE_REPOSITORY = (
-  process.env.GLEAN_UPDATER_ALLOWED_IMAGE || "pipcloud/glean"
+  process.env.GLEAN_UPDATER_ALLOWED_IMAGE || "pipcloudlab/glean"
 ).trim();
 export const MANAGED_INSTANCE = (process.env.GLEAN_UPDATER_INSTANCE || "glean").trim();
 export const MANAGED_CONTAINER_NAME = (process.env.GLEAN_UPDATER_CONTAINER_NAME || "glean").trim();

@@ -1,6 +1,6 @@
 services:
   glean:
-    image: pipcloud/glean:${GLEAN_IMAGE_TAG:-latest}
+    image: pipcloudlab/glean:${GLEAN_IMAGE_TAG:-latest}
     container_name: glean
     restart: unless-stopped
     ports:
@@ -29,7 +29,7 @@ services:
       com.glean.role: "app"
       com.glean.project: "glean"
       com.glean.instance: "${GLEAN_INSTANCE_ID:-glean}"
-      com.glean.image-repository: "pipcloud/glean"
+      com.glean.image-repository: "pipcloudlab/glean"
     healthcheck:
       test:
         - CMD
@@ -47,7 +47,7 @@ services:
   # 默认关闭：只有显式传入 --profile updater 才会启动。
   # 该容器是唯一挂载 Docker Socket 的进程；主应用永远不挂载 Socket。
   glean-updater:
-    image: pipcloud/glean:${GLEAN_IMAGE_TAG:-latest}
+    image: pipcloudlab/glean:${GLEAN_IMAGE_TAG:-latest}
     container_name: glean-updater
     profiles: ["updater"]
     restart: unless-stopped
@@ -62,7 +62,7 @@ services:
       - GLEAN_UPDATER_TOKEN=${GLEAN_UPDATER_TOKEN:-}
       - GLEAN_UPDATER_INSTANCE=${GLEAN_INSTANCE_ID:-glean}
       - GLEAN_UPDATER_CONTAINER_NAME=glean
-      - GLEAN_UPDATER_ALLOWED_IMAGE=pipcloud/glean
+      - GLEAN_UPDATER_ALLOWED_IMAGE=pipcloudlab/glean
       - GLEAN_UPDATER_TARGET_URL=http://glean:3001
       - GLEAN_UPDATER_STATE_DIR=/var/lib/glean-updater
     volumes:

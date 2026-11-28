@@ -11,7 +11,7 @@ Glean 的 Docker 在线升级只面向官方 `docker-compose.yml` 部署。该�
   - `com.glean.role=app`
   - `com.glean.project=glean`
   - `com.glean.instance=<实例标识>`
-- 目标镜像仓库固定为 `pipcloud/glean`，API 不接受容器名、镜像仓库、挂载、环境变量、Shell 或 Docker Engine 参数。
+- 目标镜像仓库固定为 `pipcloudlab/glean`，API 不接受容器名、镜像仓库、挂载、环境变量、Shell 或 Docker Engine 参数。
 
 ## 启用
 
@@ -71,7 +71,7 @@ docker ps -a --filter label=com.glean.project=glean
 非托管 NAS 容器不经过上述更新代理，需在面板手动完成以下步骤：
 
 1. 停止容器，备份原来映射到 `/app/data` 的完整目录，记录原挂载、端口与配置。
-2. 拉取已发布的明确版本 `pipcloud/glean:v<版本号>`，核对镜像来源、架构和 Digest；仅重启旧容器不会换镜像。
+2. 拉取已发布的明确版本 `pipcloudlab/glean:v<版本号>`，核对镜像来源、架构和 Digest；仅重启旧容器不会换镜像。
 3. 使用新镜像重建容器，保留原来的数据目录映射、端口与配置。
 4. 启动后核对 `/api/version` 的 `appVersion`、`schemaVersion` 和 `codeSchemaVersion`，并确认笔记与附件正常，再确认升级完成。
 5. 遇到“数据库版本高于当前程序支持”时，停止反复重启并改用兼容的新镜像；不要删除数据、降低数据库版本号或直接换回旧镜像。

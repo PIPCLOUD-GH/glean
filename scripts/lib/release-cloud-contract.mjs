@@ -1,7 +1,7 @@
 // GitHub 仓库（gh / Actions / Release 链路用）
 export const CLOUD_REPO = 'pipcloudlab/glean';
-// Docker Hub 镜像仓库（与 GitHub owner 不同名，勿混用）
-export const DOCKER_REPO = 'pipcloud/glean';
+// Docker Hub 镜像仓库（2026-11-28 起与 GitHub owner 同名，均为 pipcloudlab）
+export const DOCKER_REPO = 'pipcloudlab/glean';
 export const BUILD_WORKFLOW = 'release-build.yml';
 export const PUBLISH_WORKFLOW = 'release-publish.yml';
 export const BUILD_TARGETS = ['windows', 'macos', 'linux', 'android', 'ios', 'store', 'docker', 'fpk', 'upk', 'clipper', 'hot'];

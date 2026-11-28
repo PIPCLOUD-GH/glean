@@ -175,7 +175,7 @@ test('Docker promotes verified archives across runner image IDs and rejects corr
  const previousSummary=process.env.GITHUB_STEP_SUMMARY,previousFetch=global.fetch;
  process.env.GITHUB_STEP_SUMMARY=join(directory,'summary');
  t.after(()=>{global.fetch=previousFetch;if(previousSummary===undefined)delete process.env.GITHUB_STEP_SUMMARY;else process.env.GITHUB_STEP_SUMMARY=previousSummary;});
- const images=['amd64','arm64'].map((arch,i)=>({ref:`pipcloud/glean:v1.5.3-${arch}`,id:`sha256:${String(i+1).repeat(64)}`,arch,sha,version:'1.5.3'}));
+ const images=['amd64','arm64'].map((arch,i)=>({ref:`pipcloudlab/glean:v1.5.3-${arch}`,id:`sha256:${String(i+1).repeat(64)}`,arch,sha,version:'1.5.3'}));
  const runnerImages=images.map((image,i)=>({...image,id:`sha256:${String(i+3).repeat(64)}`}));
  for(const image of images){const dir=join(directory,`release-docker-${image.arch}`);await mkdir(dir);await writeFile(join(dir,'image.tar'),'verified archive');image.archiveSha256=(await fileDigest(join(dir,'image.tar'))).sha256;await writeFile(join(dir,'image.json'),JSON.stringify(image));}
  const remote=new Map(),local=new Map(),calls=[];let lose=true,badRevision=false;

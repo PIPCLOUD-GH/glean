@@ -22,7 +22,7 @@
 <div align="center">
 
 [![GitHub Release](https://img.shields.io/github/v/release/pipcloudlab/glean?display_name=tag&sort=semver)](https://github.com/pipcloudlab/glean/releases)
-[![Docker Pulls](https://img.shields.io/docker/pulls/pipcloud/glean?logo=docker&logoColor=white)](https://hub.docker.com/r/pipcloud/glean)
+[![Docker Pulls](https://img.shields.io/docker/pulls/pipcloudlab/glean?logo=docker&logoColor=white)](https://hub.docker.com/r/pipcloudlab/glean)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](./LICENSE)
 [![Node.js 24.22.1+ (24.x LTS)](https://img.shields.io/badge/Node.js-24.22.1%2B-339933?logo=node.js&logoColor=white)](https://nodejs.org/)
 [![Docker](https://img.shields.io/badge/Docker-Compose%20v2-2496ED?logo=docker&logoColor=white)](./docker-compose.yml)
@@ -208,7 +208,7 @@ docker compose pull
 docker compose up -d
 ```
 
-To pin a Docker image, first verify the tag in [Docker Hub](https://hub.docker.com/r/pipcloud/glean/tags). The following example uses the publicly available v1.5.1 tag; replace it only once the v1.5.2 image is published:
+To pin a Docker image, first verify the tag in [Docker Hub](https://hub.docker.com/r/pipcloudlab/glean/tags). The following example uses the publicly available v1.5.1 tag; replace it only once the v1.5.2 image is published:
 
 ```bash
 GLEAN_IMAGE_TAG=v1.5.1 docker compose pull
@@ -243,7 +243,7 @@ docker run -d \
   -p 3001:3001 \
   -e TZ=Asia/Shanghai \
   -v /opt/glean/data:/app/data \
-  pipcloud/glean:v1.5.1
+  pipcloudlab/glean:v1.5.1
 ```
 
 ## Data, backups, and configuration

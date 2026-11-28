@@ -45,7 +45,7 @@ docker run --privileged --rm tonistiigi/binfmt --install arm64
 ```bash
 bash scripts/release.sh --build-only --arch arm64 -y
 # 构建完成后:
-docker run --platform linux/arm64 -p 3001:3001 -v glean-data:/app/data pipcloud/glean:arm64
+docker run --platform linux/arm64 -p 3001:3001 -v glean-data:/app/data pipcloudlab/glean:arm64
 ```
 
 **B. 导出 tar 文件（内网没 registry 的常用姿势）**
@@ -75,7 +75,7 @@ bash scripts/release.sh --build-only --arch multi \
 **E. 正式发布多架构镜像到 Docker Hub（推荐姿势）**
 
 ```bash
-# 一次打 :vX.Y.Z + :latest 两个 tag，推送到 pipcloud/glean，并同步 git tag
+# 一次打 :vX.Y.Z + :latest 两个 tag，推送到 pipcloudlab/glean，并同步 git tag
 bash scripts/release.sh -v 1.3.0 --arch multi -y
 ```
 
@@ -91,7 +91,7 @@ docker run -d \
   --restart unless-stopped \
   -p 3001:3001 \
   -v glean-data:/app/data \
-  pipcloud/glean:arm64
+  pipcloudlab/glean:arm64
 ```
 
 访问 `http://<板子 IP>:3001` 即可。
@@ -105,7 +105,7 @@ docker compose up -d
 ```
 
 > 若使用已构建的 arm64 镜像而非本地再次 build，可把 compose 里的 `build:`
-> 整块删掉，只保留 `image: pipcloud/glean:arm64`（或任意你 push 到的镜像名）。
+> 整块删掉，只保留 `image: pipcloudlab/glean:arm64`（或任意你 push 到的镜像名）。
 
 ---
 
@@ -143,7 +143,7 @@ docker build -t glean:arm64 .
 如需统一密钥（多实例共享登录态），用 `-e JWT_SECRET=...` 显式注入。
 
 ### Q5. 板子能反过来给 x86 主机用吗？
-`pipcloud/glean:arm64` 镜像不能在 x86 上原生跑，但启用了 binfmt/qemu 的主机
+`pipcloudlab/glean:arm64` 镜像不能在 x86 上原生跑，但启用了 binfmt/qemu 的主机
 可以通过 `docker run --platform linux/arm64` 模拟执行（慢，仅用于验证）。
 
 ---

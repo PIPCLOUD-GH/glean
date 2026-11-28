@@ -349,7 +349,7 @@ docker run -d \
   --restart unless-stopped \
   -p 3001:3001 \
   -v glean-data:/app/data \
-  pipcloud/glean:arm64
+  pipcloudlab/glean:arm64
 ```
 
 访问 `http://<板子 IP>:3001` 即可。
