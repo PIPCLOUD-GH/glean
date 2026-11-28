@@ -23,7 +23,7 @@ cd "$ROOT"
 GITEA_TOKEN_FILE="${GITEA_TOKEN_FILE:-$HOME/glean-secrets/glean-gitea-token}"
 GH_TOKEN_FILE="${GH_TOKEN_FILE:-$HOME/glean-secrets/github-token}"
 GITEA_URL="${GITEA_URL:-https://127.0.0.1:3080}"
-GITEA_REPO="${GITEA_REPO:-pipcloud/glean}"
+GITEA_REPO="${GITEA_REPO:-pipcloudlab/glean}"
 GH_REPO="${GH_REPO:-pipcloudlab/glean}"
 
 TAG=""
